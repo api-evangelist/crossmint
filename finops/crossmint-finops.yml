@@ -5,20 +5,20 @@ provider: Crossmint
 providerId: crossmint
 created: '2026-05-08'
 modified: '2026-05-08'
-reconciled: false
+reconciled: true
 tags:
 - Web3
-- Wallet
+- Wallets
 - NFT
-- Onboarding
-- API
+- Payments
+- Checkout
 - FinOps
-- Cost Management
 - FOCUS
-description: FOCUS-aligned FinOps placeholder for Crossmint. Pipeline will replace with real billing details.
-notes: Initial scaffold — billing model has not yet been reconciled.
+description: Crossmint bills production usage per operation with checkout transaction
+  fees and minting fees on top of any gas pass-through.
+notes: Invoiced via Crossmint.
 sources:
-- https://www.crossmint.com/
+- https://www.crossmint.com/pricing
 - https://focus.finops.org/focus-specification/v1-3/
 alignedWith:
   framework: FinOps Foundation Framework
@@ -26,16 +26,15 @@ alignedWith:
   dataSpec: FOCUS
   dataSpecVersion: '1.3'
   dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
-publisherName: Crossmint
+publisherName: Crossmint, Inc.
 serviceCategory: Web3
 billingModel:
-  pricingCategory: To Be Reconciled
+  pricingCategory: Usage-Based
   billingFrequency: Monthly
   billingCurrency: USD
   chargeCategories:
   - Usage
   - Purchase
-  - Adjustment
 focusColumns:
   ServiceName: Crossmint
   ServiceCategory: Web3
@@ -45,22 +44,42 @@ focusColumns:
   BillingCurrency: USD
   ChargeCategory: Usage
 meters:
-- name: api_usage
-  description: Catch-all meter pending reconciliation.
-  unit: varies
+- name: wallet_operations
+  description: Wallet operations (create, sign, send).
+  unit: operation
   aggregation: sum
   dimensions:
-  - account
-  - resource
+  - project
+  - chain
+- name: mints
+  description: NFT mints.
+  unit: mint
+  aggregation: sum
+  dimensions:
+  - project
+  - collection
+  - chain
+- name: checkout_volume
+  description: Checkout dollar volume.
+  unit: USD
+  aggregation: sum
+  dimensions:
+  - project
+- name: gas_pass_through
+  description: Gas reimbursed/sponsored.
+  unit: USD
+  aggregation: sum
+  dimensions:
+  - chain
 principles:
 - name: Visibility
-  description: Pull provider invoices or usage exports until a self-serve usage feed is documented.
+  description: Use Crossmint dashboard usage tab and invoices.
 - name: Allocation
-  description: Tag invoice line items to consuming business units in your FinOps store.
+  description: Tag projects per app/team.
 - name: Optimization
-  description: Levers depend on the provider's billing model; review at renewal once reconciled.
+  description: Batch mints; use Solana for low-fee high-volume.
 - name: Accountability
-  description: Assign a contract owner to review billing against negotiated terms.
+  description: Project owners review monthly spend.
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

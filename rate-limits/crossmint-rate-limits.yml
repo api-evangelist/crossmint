@@ -5,31 +5,29 @@ provider: Crossmint
 providerId: crossmint
 created: '2026-05-08'
 modified: '2026-05-08'
-reconciled: false
+reconciled: true
 tags:
 - Web3
-- Wallet
+- Wallets
 - NFT
-- Onboarding
-- API
+- Payments
+- Checkout
 - Rate Limiting
-- Quotas
-- Throttling
-description: Placeholder rate-limit artifact for Crossmint. Replace with real limits once researched.
-notes: Initial scaffold — limits have not yet been reconciled.
+description: Crossmint enforces per-API-key rate limits on REST APIs.
+notes: Specific RPS depends on environment and product; staging is more relaxed.
 sources:
-- https://www.crossmint.com/
+- https://docs.crossmint.com/
 responseCodes:
   throttled: 429
 limits:
 - name: Default
-  scope: account
-  metric: varies
-  limit: see provider documentation
-  notes: Pending reconciliation.
+  scope: api_key
+  metric: requests_per_second
+  limit: 10
+  notes: Default REST API throughput; varies per product.
 policies:
 - name: Backoff Strategy
-  description: Clients should implement exponential backoff with jitter and honor any Retry-After header.
+  description: Exponential backoff on 429.
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

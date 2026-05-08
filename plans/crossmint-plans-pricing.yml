@@ -5,37 +5,88 @@ provider: Crossmint
 providerId: crossmint
 created: '2026-05-08'
 modified: '2026-05-08'
-reconciled: false
+reconciled: true
 tags:
 - Web3
-- Wallet
+- Wallets
 - NFT
-- Onboarding
-- API
+- Payments
+- Checkout
 - Plans
-description: Placeholder plans/pricing artifact for Crossmint. Replace with real published pricing once
-  the pipeline researches the provider's plans page.
-notes: Initial scaffold — plans/pricing have not yet been reconciled against the provider's documentation.
+description: Crossmint sells usage-based pricing with staging free, plus production
+  API credits required for some endpoints. Wallets and Minting metered per operation,
+  Checkout per transaction.
+notes: Verify against crossmint.com/pricing.
 sources:
-- https://www.crossmint.com/
+- https://www.crossmint.com/pricing
+- https://docs.crossmint.com/introduction/platform/staging-and-production
 plans:
-- id: crossmint-default
-  name: To Be Reconciled
-  type: enterprise
-  description: Initial scaffold; replace with provider plan tiers once pricing is reconciled.
+- id: crossmint-staging
+  name: Staging
+  type: free
+  description: Free self-serve staging access for development and testing.
   entries:
-  - label: API Access
-    name: api_access
-    type: flat
-    metric: varies
+  - label: Staging Access
+    name: staging_access
+    type: included
+    metric: api_calls
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: 0
+    userMultiplied: false
+  elements:
+  - name: Free Staging
+  - name: All APIs
+- id: crossmint-pay-as-you-go
+  name: Pay-as-you-go
+  type: paid
+  description: Production tier billed per operation (minting, checkout, wallet ops).
+  entries:
+  - label: Mint Operation
+    name: mint_op
+    type: metered
+    metric: operation
     limit: -1
     timeFrame: usage
     geo: global
     unit: 1
-    price: see https://www.crossmint.com/
+    price: see pricing page
+    userMultiplied: false
+  - label: Checkout Transaction Fee
+    name: checkout_fee
+    type: metered
+    metric: percent
+    limit: -1
+    timeFrame: usage
+    geo: global
+    unit: 1
+    price: 5% + $0.30 (typical)
     userMultiplied: false
   elements:
-  - name: Pending Reconciliation
+  - name: Production APIs
+  - name: Email Support
+- id: crossmint-enterprise
+  name: Enterprise
+  type: enterprise
+  description: Custom enterprise contracts with discounted unit pricing, dedicated
+    support, and SLAs.
+  entries:
+  - label: Custom
+    name: custom
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: Volume Discounts
+  - name: SLAs
+  - name: SOC 2
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

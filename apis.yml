@@ -1,7 +1,7 @@
 aid: crossmint
 url: https://raw.githubusercontent.com/api-evangelist/crossmint/refs/heads/main/apis.yml
 name: Crossmint
-x-type: company
+kind: company
 description: Crossmint is a Web3 platform offering APIs for wallets, NFT minting,
   checkout, payments, embedded checkout, and verifiable credentials. Supports server-managed
   wallets across EVM and Solana, fiat-on-ramp checkout, and credit-card-funded NFT

@@ -1,0 +1,328 @@
+openapi: 3.1.0
+info:
+  title: Crossmint Wallets API
+  description: |
+    Crossmint REST API for creating and managing server-side custodial and
+    non-custodial smart wallets across EVM and Solana. Covers wallet creation,
+    balances, transactions, transfers, signatures, delegated signers, and
+    NFT enumeration. Endpoint inventory drawn from https://docs.crossmint.com.
+  version: "2025-06-09"
+  contact:
+    name: Crossmint Developers
+    url: https://docs.crossmint.com
+servers:
+  - url: https://www.crossmint.com/api/2025-06-09
+    description: Production
+  - url: https://staging.crossmint.com/api/2025-06-09
+    description: Staging
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+security:
+  - ApiKeyAuth: []
+paths:
+  /wallets:
+    post:
+      summary: Create wallet
+      operationId: createWallet
+      tags: [Wallets]
+      parameters:
+        - in: header
+          name: x-idempotency-key
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type: { type: string }
+                chainType: { type: string, enum: [evm, solana] }
+                chain: { type: string }
+                owner: { type: string }
+                config:
+                  type: object
+      responses:
+        "200": { description: Wallet }
+  /wallets/{walletLocator}:
+    get:
+      summary: Get wallet by locator
+      operationId: getWallet
+      tags: [Wallets]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Wallet }
+  /wallets/{walletLocator}/balances:
+    get:
+      summary: Get wallet balance
+      operationId: getWalletBalance
+      tags: [Balances]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+        - in: query
+          name: tokens
+          schema: { type: string }
+        - in: query
+          name: chains
+          schema: { type: string }
+      responses:
+        "200": { description: Balances }
+  /wallets/{walletLocator}/transactions:
+    get:
+      summary: List wallet transactions
+      operationId: getWalletTransactions
+      tags: [Transactions]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Transactions }
+    post:
+      summary: Create transaction
+      operationId: createTransaction
+      tags: [Transactions]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                params:
+                  type: object
+      responses:
+        "200": { description: Transaction }
+  /wallets/{walletLocator}/transactions/{transactionId}:
+    get:
+      summary: Get transaction
+      operationId: getTransaction
+      tags: [Transactions]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+        - in: path
+          name: transactionId
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Transaction }
+  /wallets/{walletLocator}/transactions/{transactionId}/approve:
+    post:
+      summary: Approve transaction
+      operationId: approveTransaction
+      tags: [Transactions]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+        - in: path
+          name: transactionId
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                approvals:
+                  type: array
+                  items: { type: object }
+      responses:
+        "200": { description: Approved }
+  /wallets/{walletLocator}/transfers:
+    get:
+      summary: List wallet transfers
+      operationId: listTransfers
+      tags: [Transfers]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Transfers }
+    post:
+      summary: Transfer token
+      operationId: transferToken
+      tags: [Transfers]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipient: { type: string }
+                token: { type: string }
+                amount: { type: string }
+      responses:
+        "200": { description: Transfer }
+  /wallets/{walletLocator}/transfers/{transferId}:
+    get:
+      summary: Get transfer
+      operationId: getTransfer
+      tags: [Transfers]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+        - in: path
+          name: transferId
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Transfer }
+  /wallets/{walletLocator}/signatures:
+    get:
+      summary: List signatures
+      operationId: listSignatures
+      tags: [Signatures]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Signatures }
+    post:
+      summary: Create signature
+      operationId: createSignature
+      tags: [Signatures]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type: { type: string }
+                params:
+                  type: object
+      responses:
+        "200": { description: Signature }
+  /wallets/{walletLocator}/signatures/{signatureId}:
+    get:
+      summary: Get signature
+      operationId: getSignature
+      tags: [Signatures]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+        - in: path
+          name: signatureId
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Signature }
+  /wallets/{walletLocator}/signatures/{signatureId}/approve:
+    post:
+      summary: Approve signature
+      operationId: approveSignature
+      tags: [Signatures]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+        - in: path
+          name: signatureId
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Approved }
+  /wallets/{walletLocator}/delegated-signers:
+    post:
+      summary: Create delegated signer
+      operationId: createDelegatedSigner
+      tags: [Signers]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { type: object }
+      responses:
+        "200": { description: Signer }
+  /wallets/{walletLocator}/delegated-signers/{signerId}:
+    get:
+      summary: Get delegated signer
+      operationId: getDelegatedSigner
+      tags: [Signers]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+        - in: path
+          name: signerId
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Signer }
+    delete:
+      summary: Remove delegated signer
+      operationId: deleteDelegatedSigner
+      tags: [Signers]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+        - in: path
+          name: signerId
+          required: true
+          schema: { type: string }
+      responses:
+        "204": { description: Deleted }
+  /wallets/{walletLocator}/nfts:
+    get:
+      summary: List wallet NFTs
+      operationId: getWalletNfts
+      tags: [NFTs]
+      parameters:
+        - in: path
+          name: walletLocator
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: NFTs }

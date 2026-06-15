@@ -1,0 +1,466 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Crossmint Wallets API",
+    "version": "2025-06-09"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Wallets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets",
+            "headers": [
+              {
+                "name": "x-idempotency-key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create wallet"
+        },
+        {
+          "info": {
+            "name": "Get wallet by locator",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get wallet by locator"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Balances",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get wallet balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/balances",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "tokens",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "chains",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get wallet balance"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List wallet transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/transactions",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List wallet transactions"
+        },
+        {
+          "info": {
+            "name": "Create transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/transactions",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create transaction"
+        },
+        {
+          "info": {
+            "name": "Get transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/transactions/:transactionId",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "transactionId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get transaction"
+        },
+        {
+          "info": {
+            "name": "Approve transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/transactions/:transactionId/approve",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "transactionId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Approve transaction"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Transfers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List wallet transfers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/transfers",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List wallet transfers"
+        },
+        {
+          "info": {
+            "name": "Transfer token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/transfers",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Transfer token"
+        },
+        {
+          "info": {
+            "name": "Get transfer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/transfers/:transferId",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "transferId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get transfer"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Signatures",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List signatures",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/signatures",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List signatures"
+        },
+        {
+          "info": {
+            "name": "Create signature",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/signatures",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create signature"
+        },
+        {
+          "info": {
+            "name": "Get signature",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/signatures/:signatureId",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "signatureId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get signature"
+        },
+        {
+          "info": {
+            "name": "Approve signature",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/signatures/:signatureId/approve",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "signatureId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Approve signature"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Signers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create delegated signer",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/delegated-signers",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create delegated signer"
+        },
+        {
+          "info": {
+            "name": "Get delegated signer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/delegated-signers/:signerId",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "signerId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get delegated signer"
+        },
+        {
+          "info": {
+            "name": "Remove delegated signer",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/delegated-signers/:signerId",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "signerId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove delegated signer"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "NFTs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List wallet NFTs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/nfts",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List wallet NFTs"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

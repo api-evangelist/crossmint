@@ -6,7 +6,7 @@ description: Crossmint is a Web3 platform offering APIs for wallets, NFT minting
   checkout, payments, embedded checkout, and verifiable credentials. Supports server-managed
   wallets across EVM and Solana, fiat-on-ramp checkout, and credit-card-funded NFT
   purchases.
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - Web3
   - Wallets

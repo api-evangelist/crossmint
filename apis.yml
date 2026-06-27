@@ -95,7 +95,7 @@ common:
     url: rate-limits/crossmint-rate-limits.yml
   - type: FinOps
     url: finops/crossmint-finops.yml
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://docs.crossmint.com/llms.txt
 maintainers:
   - FN: Kin Lane

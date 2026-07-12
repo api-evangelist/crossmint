@@ -83,6 +83,12 @@ apis:
     - type: Documentation
       url: https://docs.crossmint.com/payments/headless/overview
 common:
+  - type: VulnerabilityDisclosure
+    url: security/crossmint-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/crossmint-domain-security.yml
+  - type: Authentication
+    url: authentication/crossmint-authentication.yml
   - type: GitHubOrganization
     url: https://github.com/crossmint
   - type: LinkedIn

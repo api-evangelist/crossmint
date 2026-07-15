@@ -1,0 +1,247 @@
+generated: '2026-07-15'
+method: generated
+source: openapi/crossmint-openapi.yml
+description: Recommended x-agentic-access execution contracts, classified heuristically from
+  the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
+  audience per deployment. See research/curity/agentic-governance/.
+summary:
+  operations: 18
+  by_action_class:
+    acting: 8
+    connected: 10
+  by_consequence:
+    write: 7
+    read: 10
+    physical: 1
+  human_in_the_loop_required: 0
+operations:
+- path: /wallets
+  method: post
+  operationId: createWallet
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /wallets/{walletLocator}
+  method: get
+  operationId: getWallet
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /wallets/{walletLocator}/balances
+  method: get
+  operationId: getWalletBalance
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /wallets/{walletLocator}/transactions
+  method: get
+  operationId: getWalletTransactions
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /wallets/{walletLocator}/transactions
+  method: post
+  operationId: createTransaction
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /wallets/{walletLocator}/transactions/{transactionId}
+  method: get
+  operationId: getTransaction
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /wallets/{walletLocator}/transactions/{transactionId}/approve
+  method: post
+  operationId: approveTransaction
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /wallets/{walletLocator}/transfers
+  method: get
+  operationId: listTransfers
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /wallets/{walletLocator}/transfers
+  method: post
+  operationId: transferToken
+  x-agentic-access:
+    action-class: acting
+    consequence: physical
+    subject: required
+    audience: null
+    token:
+      max-ttl: 300
+      exchange: true
+      purpose-required: true
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /wallets/{walletLocator}/transfers/{transferId}
+  method: get
+  operationId: getTransfer
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /wallets/{walletLocator}/signatures
+  method: get
+  operationId: listSignatures
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /wallets/{walletLocator}/signatures
+  method: post
+  operationId: createSignature
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /wallets/{walletLocator}/signatures/{signatureId}
+  method: get
+  operationId: getSignature
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /wallets/{walletLocator}/signatures/{signatureId}/approve
+  method: post
+  operationId: approveSignature
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /wallets/{walletLocator}/delegated-signers
+  method: post
+  operationId: createDelegatedSigner
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /wallets/{walletLocator}/delegated-signers/{signerId}
+  method: get
+  operationId: getDelegatedSigner
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none
+- path: /wallets/{walletLocator}/delegated-signers/{signerId}
+  method: delete
+  operationId: deleteDelegatedSigner
+  x-agentic-access:
+    action-class: acting
+    consequence: write
+    subject: required
+    audience: null
+    token:
+      max-ttl: 900
+    escalation:
+      human-in-the-loop: conditional
+      triggers:
+      - abnormal
+      - high-value
+    audit: required
+- path: /wallets/{walletLocator}/nfts
+  method: get
+  operationId: getWalletNfts
+  x-agentic-access:
+    action-class: connected
+    consequence: read
+    subject: optional
+    token:
+      max-ttl: 3600
+    audit: none

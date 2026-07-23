@@ -1,0 +1,81 @@
+openapi: 3.1.0
+info:
+  title: Crossmint Balances Wallets API
+  description: 'Crossmint REST API for creating and managing server-side custodial and
+
+    non-custodial smart wallets across EVM and Solana. Covers wallet creation,
+
+    balances, transactions, transfers, signatures, delegated signers, and
+
+    NFT enumeration. Endpoint inventory drawn from https://docs.crossmint.com.
+
+    '
+  version: '2025-06-09'
+  contact:
+    name: Crossmint Developers
+    url: https://docs.crossmint.com
+servers:
+- url: https://www.crossmint.com/api/2025-06-09
+  description: Production
+- url: https://staging.crossmint.com/api/2025-06-09
+  description: Staging
+security:
+- ApiKeyAuth: []
+tags:
+- name: Wallets
+paths:
+  /wallets:
+    post:
+      summary: Create wallet
+      operationId: createWallet
+      tags:
+      - Wallets
+      parameters:
+      - in: header
+        name: x-idempotency-key
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                chainType:
+                  type: string
+                  enum:
+                  - evm
+                  - solana
+                chain:
+                  type: string
+                owner:
+                  type: string
+                config:
+                  type: object
+      responses:
+        '200':
+          description: Wallet
+  /wallets/{walletLocator}:
+    get:
+      summary: Get wallet by locator
+      operationId: getWallet
+      tags:
+      - Wallets
+      parameters:
+      - in: path
+        name: walletLocator
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Wallet
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY

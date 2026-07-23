@@ -1,0 +1,94 @@
+openapi: 3.1.0
+info:
+  title: Crossmint Wallets Balances Transfers API
+  description: 'Crossmint REST API for creating and managing server-side custodial and
+
+    non-custodial smart wallets across EVM and Solana. Covers wallet creation,
+
+    balances, transactions, transfers, signatures, delegated signers, and
+
+    NFT enumeration. Endpoint inventory drawn from https://docs.crossmint.com.
+
+    '
+  version: '2025-06-09'
+  contact:
+    name: Crossmint Developers
+    url: https://docs.crossmint.com
+servers:
+- url: https://www.crossmint.com/api/2025-06-09
+  description: Production
+- url: https://staging.crossmint.com/api/2025-06-09
+  description: Staging
+security:
+- ApiKeyAuth: []
+tags:
+- name: Transfers
+paths:
+  /wallets/{walletLocator}/transfers:
+    get:
+      summary: List wallet transfers
+      operationId: listTransfers
+      tags:
+      - Transfers
+      parameters:
+      - in: path
+        name: walletLocator
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Transfers
+    post:
+      summary: Transfer token
+      operationId: transferToken
+      tags:
+      - Transfers
+      parameters:
+      - in: path
+        name: walletLocator
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipient:
+                  type: string
+                token:
+                  type: string
+                amount:
+                  type: string
+      responses:
+        '200':
+          description: Transfer
+  /wallets/{walletLocator}/transfers/{transferId}:
+    get:
+      summary: Get transfer
+      operationId: getTransfer
+      tags:
+      - Transfers
+      parameters:
+      - in: path
+        name: walletLocator
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: transferId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Transfer
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY

@@ -1,0 +1,47 @@
+openapi: 3.1.0
+info:
+  title: Crossmint Wallets Balances NFTs API
+  description: 'Crossmint REST API for creating and managing server-side custodial and
+
+    non-custodial smart wallets across EVM and Solana. Covers wallet creation,
+
+    balances, transactions, transfers, signatures, delegated signers, and
+
+    NFT enumeration. Endpoint inventory drawn from https://docs.crossmint.com.
+
+    '
+  version: '2025-06-09'
+  contact:
+    name: Crossmint Developers
+    url: https://docs.crossmint.com
+servers:
+- url: https://www.crossmint.com/api/2025-06-09
+  description: Production
+- url: https://staging.crossmint.com/api/2025-06-09
+  description: Staging
+security:
+- ApiKeyAuth: []
+tags:
+- name: NFTs
+paths:
+  /wallets/{walletLocator}/nfts:
+    get:
+      summary: List wallet NFTs
+      operationId: getWalletNfts
+      tags:
+      - NFTs
+      parameters:
+      - in: path
+        name: walletLocator
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: NFTs
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY

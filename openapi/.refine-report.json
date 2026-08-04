@@ -1,0 +1,26 @@
+{
+  "provider": "crossmint",
+  "sources": [
+    "crossmint-balances-api-openapi.yml",
+    "crossmint-nfts-api-openapi.yml",
+    "crossmint-signatures-api-openapi.yml",
+    "crossmint-signers-api-openapi.yml",
+    "crossmint-transactions-api-openapi.yml",
+    "crossmint-transfers-api-openapi.yml",
+    "crossmint-wallets-api-openapi.yml"
+  ],
+  "outputs": [
+    "crossmint-balances-api-openapi.yml",
+    "crossmint-nfts-api-openapi.yml",
+    "crossmint-signatures-api-openapi.yml",
+    "crossmint-signers-api-openapi.yml",
+    "crossmint-transactions-api-openapi.yml",
+    "crossmint-transfers-api-openapi.yml",
+    "crossmint-wallets-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

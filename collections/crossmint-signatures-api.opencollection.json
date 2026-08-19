@@ -1,0 +1,112 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Crossmint Wallets Balances Signatures API",
+    "version": "2025-06-09"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Signatures",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List signatures",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/signatures",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List signatures"
+        },
+        {
+          "info": {
+            "name": "Create signature",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/signatures",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create signature"
+        },
+        {
+          "info": {
+            "name": "Get signature",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/signatures/:signatureId",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "signatureId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get signature"
+        },
+        {
+          "info": {
+            "name": "Approve signature",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/signatures/:signatureId/approve",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "signatureId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Approve signature"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

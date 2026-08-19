@@ -1,0 +1,89 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Crossmint Wallets Balances Transfers API",
+    "version": "2025-06-09"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transfers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List wallet transfers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/transfers",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List wallet transfers"
+        },
+        {
+          "info": {
+            "name": "Transfer token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/transfers",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Transfer token"
+        },
+        {
+          "info": {
+            "name": "Get transfer",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/transfers/:transferId",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "transferId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get transfer"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

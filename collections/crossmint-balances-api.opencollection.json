@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Crossmint Wallets Balances API",
+    "version": "2025-06-09"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Balances",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get wallet balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/balances",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "tokens",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "chains",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get wallet balance"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

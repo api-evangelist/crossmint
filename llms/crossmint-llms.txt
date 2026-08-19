@@ -1,0 +1,490 @@
+# Crossmint
+
+> Crossmint is a blockchain infrastructure platform for developers. It provides smart wallets, user identity (KYC/KYB), stablecoin orchestration, checkout for onchain and physical-world assets, fiat-to-stablecoin onramp, stablecoin-to-fiat offramp, tokenization (NFTs, credentials, IP), and payment infrastructure for AI agents — all across 50+ blockchains through a single API.
+
+Key facts for integrating with Crossmint:
+
+- Two environments exist: staging (`staging.crossmint.com`, free) and production (`www.crossmint.com`). Always develop in staging first.
+- Staging works with blockchain testnets (e.g. `base-sepolia`, `ethereum-sepolia`, `polygon-amoy`, Solana devnet, Stellar testnet), while production works with mainnets (e.g. `base`, `ethereum`, `polygon`, `solana`, `stellar`). Use a testnet chain with staging API keys and a mainnet chain with production API keys. See [supported chains](https://docs.crossmint.com/introduction/supported-chains.md).
+- API keys can be server-side (`sk_...`) or client-side (`ck_...`), and are scoped per environment and per project.
+- Every documentation page is available as markdown by appending `.md` to its URL. The complete documentation content is available in [llms-full.txt](https://docs.crossmint.com/llms-full.txt).
+- The interactive API reference lives at [docs.crossmint.com/api-reference](https://docs.crossmint.com/api-reference/introduction.md).
+
+## Getting Started
+
+- [Platform Overview](https://docs.crossmint.com/introduction/platform-overview.md): High-level map of every Crossmint product and how they fit together.
+- [Getting Started](https://docs.crossmint.com/introduction/getting-started.md): Create a developer account, get API keys, and make your first API call.
+- [Using AI Assistants](https://docs.crossmint.com/introduction/ai-assistants.md): How to use Crossmint docs with AI assistants, including llms.txt and MCP.
+- [Supported Chains](https://docs.crossmint.com/introduction/supported-chains.md): Tap into 50+ blockchains in one single integration
+- [Staging vs Production Environments](https://docs.crossmint.com/introduction/platform/staging-vs-production.md): Differences between the staging (staging.crossmint.com) and production (www.crossmint.com) environments, and how to promote your integration.
+- [Account Verification](https://docs.crossmint.com/introduction/platform/account-verification.md): Learn how to get your account verified
+- [Project and Team Management](https://docs.crossmint.com/introduction/platform/projects-and-user-management.md): Manage your projects and their members
+- [API Keys Overview](https://docs.crossmint.com/introduction/platform/api-keys/overview.md): Get your keys in seconds and start building
+- [Rate Limits](https://docs.crossmint.com/introduction/platform/api-keys/rate-limits.md): Understand the throughput available for API calls
+- [Scopes](https://docs.crossmint.com/introduction/platform/api-keys/scopes.md): Enabling required permissions for API calls
+- [Server-side Keys](https://docs.crossmint.com/introduction/platform/api-keys/server-side.md): How to create and use server-side API keys
+- [Client-side Keys](https://docs.crossmint.com/introduction/platform/api-keys/client-side.md): How to create and use client-side API keys
+- [JWT Authentication](https://docs.crossmint.com/introduction/platform/api-keys/jwt-authentication.md): Enable advanced security for client-side API Keys
+- [Glossary](https://docs.crossmint.com/introduction/glossary.md): Key terms and definitions used across the Crossmint documentation.
+
+## Wallets
+
+- [Wallets Overview](https://docs.crossmint.com/wallets/overview.md): Create and manage smart wallets for users, AI agents, or company operations across EVM, Solana, and Stellar.
+- [React](https://docs.crossmint.com/wallets/quickstarts/react.md): Create user wallets from your frontend in under 5 minutes
+- [Node.js](https://docs.crossmint.com/wallets/quickstarts/nodejs.md): Create and manage wallets from your backend in under 5 minutes
+- [REST API](https://docs.crossmint.com/wallets/quickstarts/restapi.md): Create and manage wallets from your backend using the Crossmint REST API
+- [React Native](https://docs.crossmint.com/wallets/quickstarts/react-native.md): Create user wallets from your Expo app in under 5 minutes
+- [Flutter](https://docs.crossmint.com/wallets/quickstarts/flutter.md): Create user wallets from your Flutter app in under 5 minutes
+- [Swift](https://docs.crossmint.com/wallets/quickstarts/swift.md): Create user wallets from your iOS app in under 5 minutes
+- [Kotlin](https://docs.crossmint.com/wallets/quickstarts/kotlin.md): Create user wallets from your mobile app in under 5 minutes
+- [Architecture](https://docs.crossmint.com/wallets/architecture.md): Crossmint Wallets Architecture
+- [Signers](https://docs.crossmint.com/wallets/concepts/signers.md): Understanding the different signer types in Crossmint wallets and when to use each one
+- [Recovery](https://docs.crossmint.com/wallets/concepts/recovery.md): How wallet recovery works in Crossmint — the separation of recovery and day-to-day signing, new device flows, and OTP verification
+- [Custody Models](https://docs.crossmint.com/wallets/concepts/custody-models.md): How signer choices map to custody architectures — fully custodial, non-custodial, and hybrid models
+- [Wallet Locators](https://docs.crossmint.com/wallets/concepts/wallet-locators.md): Identifiers to reference and manage your wallets across chains, environments, and users
+- [Treasury Wallets](https://docs.crossmint.com/wallets/concepts/treasury.md): Programmable wallets for managing your company's stablecoin treasury
+- [Wallet Extensions](https://docs.crossmint.com/wallets/guides/wallet-extensions/overview.md): Overview of wallet plugin capabilities including yield generation, token swapping, and credit card issuance
+- [Create Wallet](https://docs.crossmint.com/wallets/guides/create-wallet.md): Create a wallet using Crossmint's APIs
+- [Fund a Staging Wallet](https://docs.crossmint.com/wallets/guides/fund-staging-wallet.md): Fund your staging wallets with testnet tokens using Crossmint's USDXM stablecoin
+- [Check Balances](https://docs.crossmint.com/wallets/guides/check-balances.md): Retrieve and manage wallet balances using Crossmint's APIs
+- [Transfer Tokens](https://docs.crossmint.com/wallets/guides/transfer-tokens.md): Transfer tokens between wallets using Crossmint's APIs
+- [Custom EVM Transactions](https://docs.crossmint.com/wallets/guides/send-transaction-evm.md): Send arbitrary EVM contract calls (to, value, data) from a Crossmint wallet
+- [Custom Solana Transactions](https://docs.crossmint.com/wallets/guides/send-transaction-solana.md): Send arbitrary Solana versioned transactions from a Crossmint wallet
+- [Custom Stellar Transactions](https://docs.crossmint.com/wallets/guides/send-transaction-stellar.md): Send arbitrary Soroban contract calls from a Crossmint wallet
+- [Sign Messages](https://docs.crossmint.com/wallets/guides/sign-message.md): Sign messages and typed data from a Crossmint wallet
+- [List Wallet Transfers](https://docs.crossmint.com/wallets/guides/list-transfers.md): Retrieve inbound and outbound transfer history for a wallet
+- [Device Signer](https://docs.crossmint.com/wallets/guides/signers/device-signer.md): How device signers work — hardware-backed P256 keypairs for frictionless transaction signing.
+- [Passkey Signer](https://docs.crossmint.com/wallets/guides/signers/passkey.md): Configure a passkey signer at wallet creation using WebAuthn biometric authentication.
+- [External Wallet Signer](https://docs.crossmint.com/wallets/guides/signers/external-wallet.md): Configure an external wallet or keypair as a signer at wallet creation.
+- [Server Signer](https://docs.crossmint.com/wallets/guides/signers/server-signer.md): Authorize wallet operations directly from your server, using an API key and secret.
+- [Cloud KMS Signers](https://docs.crossmint.com/wallets/guides/signers/cloud-kms.md): Use a cloud key management service as a secure signer for your Crossmint wallet.
+- [Server-Side Wallet with Device Signer](https://docs.crossmint.com/wallets/guides/signers/device-signer-server-wallet.md): Build a seamless wallet experience where your server manages wallet creation and recovery while users sign transactions instantly on their device — no OTP required.
+- [Add Signers to a Wallet](https://docs.crossmint.com/wallets/guides/signers/add-signers.md): Add signers to an existing wallet — passkeys, external wallets, device signers, email, and phone.
+- [List Wallet Signers](https://docs.crossmint.com/wallets/guides/signers/list-signers.md): Retrieve all operational signers registered on a wallet, check registration status, and access the recovery signer
+- [Restrict a Signer with Scopes](https://docs.crossmint.com/wallets/guides/signers/scopes.md): Set spending limits, recipient whitelists, and an expiry to signers.
+- [Remove a Signer from a Wallet](https://docs.crossmint.com/wallets/guides/signers/remove-signer.md): Remove a signer from an existing Crossmint wallet.
+- [Configure Wallet Recovery](https://docs.crossmint.com/wallets/guides/signers/configure-recovery.md): Set up a recovery signer so users can regain wallet access from a new device.
+- [Recover a Wallet](https://docs.crossmint.com/wallets/guides/signers/wallet-recovery.md): Regain access to a wallet when your operational signer is lost — use the recovery signer to enroll a new signer or transfer funds.
+- [Swapping & Bridging Overview](https://docs.crossmint.com/wallets/guides/wallet-extensions/swapping-and-bridging.md): Exchange tokens and move assets across chains with Crossmint wallets
+- [Jupiter](https://docs.crossmint.com/wallets/guides/wallet-extensions/swap-jupiter.md): Swap tokens using Jupiter in Solana
+- [LI.FI](https://docs.crossmint.com/wallets/guides/wallet-extensions/bridge-lifi.md): Bridge tokens between chains using Crossmint wallets and LI.FI
+- [Relay](https://docs.crossmint.com/wallets/guides/wallet-extensions/relay.md): Bridge and swap tokens across chains using Crossmint wallets and Relay
+- [Yield.xyz](https://docs.crossmint.com/wallets/guides/wallet-extensions/yield-xyz.md): Generate yield from your wallet's tokens using Crossmint and Yield.xyz
+- [Morpho](https://docs.crossmint.com/wallets/guides/wallet-extensions/morpho.md): Supply USDC to Morpho Vaults and enable yield for your users
+- [Card Issuance](https://docs.crossmint.com/wallets/guides/wallet-extensions/credit-cards.md): Build a complete Visa credit card application for your users using Rain cards and Crossmint wallets.
+- [Ondo Global Markets](https://docs.crossmint.com/wallets/guides/wallet-extensions/swap-ondo.md): Swap USDC for Ondo Global Markets tokenized stocks
+- [Use Your Own Auth Provider](https://docs.crossmint.com/wallets/guides/bring-your-own-auth.md): Integrate Crossmint with Auth0, Firebase, Supabase, Stytch, Cognito, or your own JWT-based auth
+- [Cover Transaction Fees for Your Users](https://docs.crossmint.com/wallets/guides/gas-sponsorship.md): Sponsor gas fees so users can transact without holding native tokens
+- [Wallet Webhooks](https://docs.crossmint.com/wallets/guides/webhooks.md): Set up webhooks to receive real-time events including transfers and signer exports
+- [Set Up a Treasury Wallet](https://docs.crossmint.com/wallets/guides/treasury-wallets.md): Create and fund a company-owned wallet for stablecoin operations
+- [Export Private Key](https://docs.crossmint.com/wallets/guides/export-private-key.md): Allow users to export private keys using email or phone signers
+- [Spam Filters](https://docs.crossmint.com/wallets/guides/spam-filters.md): Automatically block spam NFTs from your wallets
+- [Troubleshooting](https://docs.crossmint.com/wallets/guides/troubleshooting.md): Common errors and debugging techniques for Crossmint wallet integrations
+- [Migrate to V1](https://docs.crossmint.com/wallets/guides/migrate-to-v1.md): Complete migration guide for existing clients — all breaking changes with before/after examples.
+
+## Identity & Auth
+
+> Crossmint Auth provides user authentication, but it is not recommended for production applications. For production, bring your own auth provider and integrate it with Crossmint wallets. Identity registers user data (KYC/KYB) required for regulated products such as onramp, offramp, and stablecoin orchestration.
+
+- [Identity & Auth Introduction](https://docs.crossmint.com/authentication/introduction.md): Authenticate users and register customer identities for regulated activities.
+- [Identity Overview](https://docs.crossmint.com/identity/overview.md): Register user information to grant access to Crossmint's regulated products such as onramp, offramp, and stablecoin orchestration.
+- [Identity Quickstart ⚡](https://docs.crossmint.com/identity/quickstart.md): Register users and upload documents to enable regulated product access.
+- [Data Requirements](https://docs.crossmint.com/identity/data-requirements.md): Required data fields by activity type and region
+- [Register User Data](https://docs.crossmint.com/identity/register-user-data.md): Provide personal information about recipients in order to comply with regulation
+- [Crossmint Auth Overview](https://docs.crossmint.com/authentication/overview.md): Authenticate users into your app with Crossmint Auth. Note: Crossmint Auth is not recommended for production use; for production, bring your own auth provider.
+- [React](https://docs.crossmint.com/authentication/quickstarts/react.md): Sign up your first user in 5 minutes with React
+- [React Native](https://docs.crossmint.com/authentication/quickstarts/react-native.md): Authenticate users in your Expo app in under 5 minutes
+- [Flutter](https://docs.crossmint.com/authentication/quickstarts/flutter.md): Authenticate users in your Flutter app in under 5 minutes
+- [Login Methods](https://docs.crossmint.com/authentication/login-methods.md): Customize how users can log in to your app
+- [User Profile](https://docs.crossmint.com/authentication/user-profile.md): Retrieve user profile data such as email or social login metadata
+- [Customization](https://docs.crossmint.com/authentication/customization.md): Customize the authentication flow and email templates
+- [Server-Side Rendering (SSR)](https://docs.crossmint.com/authentication/ssr.md): Integrate Crossmint Auth on the server-side for user authentication and management
+- [Secure Cookies](https://docs.crossmint.com/authentication/security.md): Learn how to securely store Crossmint Auth cookies in your application
+- [User Webhooks](https://docs.crossmint.com/authentication/webhooks.md): Crossmint provides webhooks to notify your application about important user-related events. Below are the details of the available webhooks
+
+## Stablecoin Orchestration
+
+- [Stablecoin Orchestration Overview](https://docs.crossmint.com/stablecoin-orchestration/overview.md): Move stablecoins globally using Crossmint's regulated infrastructure: treasury wallets, compliant payouts, pay-ins, swaps, and on/off-ramps.
+- [Regulatory Landscape](https://docs.crossmint.com/stablecoin-orchestration/concepts/regulatory-landscape.md): Why stablecoin transfers are regulated, what compliance requirements apply, and when they apply to your use case
+- [Solution Architecture](https://docs.crossmint.com/stablecoin-orchestration/concepts/solution-architecture.md): How Crossmint handles stablecoin compliance on your behalf and how to architect your integration
+- [Treasury Wallets](https://docs.crossmint.com/stablecoin-orchestration/guides/create-treasury-wallet.md): Set up a company-owned wallet for stablecoin operations
+- [Fund a Treasury Wallet](https://docs.crossmint.com/stablecoin-orchestration/guides/on-off-ramps/funding-company-wallets.md): Add funds to your treasury wallet by bank transfer
+- [Treasury Withdrawals](https://docs.crossmint.com/stablecoin-orchestration/guides/on-off-ramps/withdrawing-from-company-wallets.md): Offramp stablecoins from your treasury wallet to your bank account
+- [Pay-ins](https://docs.crossmint.com/stablecoin-orchestration/guides/pay-ins.md): Receive stablecoin payments from customers and partners
+- [Regulated Transfers Overview](https://docs.crossmint.com/stablecoin-orchestration/regulated-transfers/overview.md): Compliant global stablecoin payouts through a single API, with KYC/KYB and sanctions screening handled by Crossmint.
+- [Quickstart](https://docs.crossmint.com/stablecoin-orchestration/regulated-transfers/quickstart.md): Send payouts from your treasury wallet
+- [Making a Payout](https://docs.crossmint.com/stablecoin-orchestration/regulated-transfers/guides/transfers.md): Execute compliant payouts and handle compliance errors
+- [Internal Transfers](https://docs.crossmint.com/stablecoin-orchestration/guides/internal-transfers.md): Move stablecoins between your own treasury wallets
+- [Swaps](https://docs.crossmint.com/stablecoin-orchestration/guides/swaps.md): Convert stablecoins between tokens and across chains
+
+## Checkout
+
+- [Checkout Overview](https://docs.crossmint.com/payments/introduction.md): Allow your users to buy onchain and physical-world assets (NFTs, tokens, Amazon/Shopify products) using credit cards, Apple Pay, Google Pay, or cross-chain crypto. Effective July 1, 2026, token checkout is not available for buyers in the European Economic Area (EEA); NFT checkout remains available.
+- [Plan Your Integration](https://docs.crossmint.com/payments/plan-your-solution.md): Walk through key decisions to design your Crossmint Checkout integration
+- [Hosted Checkout (Pay Button) Overview](https://docs.crossmint.com/payments/pay-button/overview.md): Add a button to your site which opens the Crossmint checkout in a pop-up or new tab. Fastest way to accept payments.
+- [Hosted Checkout Quickstart ⚡](https://docs.crossmint.com/payments/pay-button/quickstart.md): Accept payments in under 5 min by just adding a button to your frontend
+- [Configure Payment Options](https://docs.crossmint.com/payments/pay-button/guides/payment-methods.md): Customize the payment methods available to users
+- [Item Selection](https://docs.crossmint.com/payments/pay-button/guides/item-selection.md): Specify which items to purchase with Hosted Checkout
+- [Order Status](https://docs.crossmint.com/payments/pay-button/guides/order-status.md): Track order status with Hosted Checkout
+- [Production Launch](https://docs.crossmint.com/payments/pay-button/guides/production-launch.md): Follow this checklist to ensure you are ready for production launch with Pay Button
+- [Specify Recipient](https://docs.crossmint.com/payments/pay-button/guides/specify-recipient.md): Select where purchased items should be delivered in Hosted Checkout
+- [React Hooks](https://docs.crossmint.com/payments/pay-button/guides/hooks.md): Learn how to use React hooks to control and customize the Hosted Checkout UI
+- [Customize the Button UI](https://docs.crossmint.com/payments/pay-button/guides/ui-customization.md): Modify the payment button and checkout experience to match your website's style
+- [Localization](https://docs.crossmint.com/payments/pay-button/customize/localization.md): Customize the language and currency displayed on checkout
+- [Embedded Checkout Overview](https://docs.crossmint.com/payments/embedded/overview.md): Embed a fully customizable checkout UI directly in your app with Crossmint SDK components.
+- [Pay with Card - NFTs (React)](https://docs.crossmint.com/payments/embedded/quickstarts/credit-card-nft.md): Embed a onchain checkout into a web app in under 5 minutes
+- [Pay with Card - Memecoins (React)](https://docs.crossmint.com/payments/embedded/quickstarts/credit-card-memecoin.md): Create a fully customized embedded memecoin checkout experience that accepts credit cards
+- [One-Tap Apple Pay - Tokens (React)](https://docs.crossmint.com/payments/embedded/quickstarts/apple-pay-only.md): Render only the Apple Pay button and build the rest of the checkout experience in your own UI
+- [Pay with Card - Memecoins (React Native)](https://docs.crossmint.com/payments/embedded/quickstarts/credit-card-memecoin-react-native.md): Create a fully customized embedded memecoin checkout experience for React Native that accepts credit cards
+- [Pay with Card - Memecoins (Flutter)](https://docs.crossmint.com/payments/embedded/quickstarts/credit-card-memecoin-flutter.md): Create a fully customized embedded memecoin checkout experience for Flutter that accepts credit cards
+- [Payment Methods](https://docs.crossmint.com/payments/embedded/guides/payment-methods.md): Enable a complete payment suite for your digital asset checkout - from traditional credit cards and digital wallets to cross-chain crypto payments, all through a single integration
+- [Production Launch](https://docs.crossmint.com/payments/embedded/guides/production-launch.md): Follow this checklist to ensure you are ready for production launch with Embedded Checkout
+- [Mobile WebView Integration](https://docs.crossmint.com/payments/embedded/guides/webview-integration.md): Render the embedded checkout inside your own WebView on iOS, Android, or React Native, with Apple Pay and Google Pay support
+- [Apple Pay Integration Guide](https://docs.crossmint.com/payments/embedded/guides/apple-pay.md): Learn how to enable Apple Pay on your site for Checkout
+- [Google Pay Mobile](https://docs.crossmint.com/payments/embedded/guides/google-pay.md): Learn how to enable Google Pay for token checkout and onramp flows using Crossmint's mobile SDKs
+- [Item Selection](https://docs.crossmint.com/payments/embedded/guides/item-selection.md): Specify which items to purchase with Embedded Checkout
+- [Use Connected Wallet as Payer](https://docs.crossmint.com/payments/embedded/guides/custom-payer.md): Learn how to configure an already connected wallet as the payer wallet
+- [Specify Recipient](https://docs.crossmint.com/payments/embedded/guides/specify-recipient.md): Select where purchased items should be delivered in Embedded Checkout
+- [UI Customization](https://docs.crossmint.com/payments/embedded/guides/ui-customization.md): Learn how to customize the Embedded Checkout UI to match your brand identity and design system
+- [Localization](https://docs.crossmint.com/payments/embedded/customize/localization.md): Customize the language and currency displayed on checkout
+- [React Hooks](https://docs.crossmint.com/payments/embedded/guides/hooks.md): Learn how to use React hooks to control and customize your Embedded Checkout experience
+- [Headless Checkout Overview](https://docs.crossmint.com/payments/headless/overview.md): Build fully custom checkout experiences against the Orders REST API, with your own UI.
+- [Pay with Card - Memecoins](https://docs.crossmint.com/payments/headless/quickstarts/credit-card-memecoin-cko.md): Create a fully customized memecoin checkout experience that accepts credit cards
+- [Pay with Card - NFTs](https://docs.crossmint.com/payments/headless/quickstarts/credit-card-nft.md): Create a fully customized checkout experience with credit cards.
+- [Pay with USDC](https://docs.crossmint.com/payments/headless/quickstarts/paying-usdc.md): Buy or sell any tokenized asset with USDC, in an API call
+- [Pay with Other Crypto](https://docs.crossmint.com/payments/headless/quickstarts/crypto.md): Create a fully customized checkout experience with crypto payments.
+- [Plan Your Solution](https://docs.crossmint.com/payments/headless/guides/plan-your-solution.md): Detailed integration guide to build out a fully custom digital asset checkout experience
+- [Item Selection](https://docs.crossmint.com/payments/headless/guides/item-selection.md): Specify which items to purchase with Headless Checkout API
+- [Client or Server](https://docs.crossmint.com/payments/headless/guides/client-or-server.md): Understand the reasons to use client-side or server-side API keys
+- [Production Launch](https://docs.crossmint.com/payments/headless/guides/production-launch.md): Follow this checklist to ensure you are ready for production launch with Headless Checkout
+- [Payment Methods](https://docs.crossmint.com/payments/headless/guides/payment-methods.md): Understand the supported payment methods and how to implement them
+- [Localization](https://docs.crossmint.com/payments/headless/guides/localization.md): Customize the language of the email receipt for headless checkouts
+- [Specify Recipient](https://docs.crossmint.com/payments/headless/guides/specify-recipient.md): Select where purchased items should be delivered in Headless Checkout
+- [Physical Product Purchases](https://docs.crossmint.com/payments/headless/guides/physical-good-purchases.md): How to purchase physical products with crypto using Headless Checkout
+- [Order Errors](https://docs.crossmint.com/payments/headless/guides/physical-product-order-errors.md): Common reasons why physical product orders may fail and how to resolve them
+- [Amazon Integration](https://docs.crossmint.com/payments/headless/guides/providers/amazon.md): How to enable crypto purchases of Amazon products using Headless Checkout
+- [Shopify Integration](https://docs.crossmint.com/payments/headless/guides/providers/shopify.md): How to enable crypto purchases of Shopify products using Headless Checkout
+- [Design Your UI](https://docs.crossmint.com/payments/headless/guides/design-your-ui.md): How to get started with setting up your UI
+- [Quote Phase](https://docs.crossmint.com/payments/headless/guides/order-lifecycle/quote-phase.md): Initial phase of the order lifecycle
+- [Pay with Crypto](https://docs.crossmint.com/payments/headless/guides/order-lifecycle/crypto-payment-phase.md): Payment acceptance phase of the order lifecycle for pay with crypto
+- [Pay with Card](https://docs.crossmint.com/payments/headless/guides/order-lifecycle/credit-card-payment-phase.md): Payment acceptance phase of the order lifecycle for credit cards.
+- [Delivery Phase](https://docs.crossmint.com/payments/headless/guides/order-lifecycle/delivery-phase.md): Token delivery phase of the order lifecycle
+- [Order Complete Phase](https://docs.crossmint.com/payments/headless/guides/order-lifecycle/completed-phase.md): Completion phase of the order lifecycle
+- [Supporting Your Customers](https://docs.crossmint.com/payments/headless/guides/supporting-your-customers.md): Support your customers facing issues with the checkout process
+- [Multiple Line Items](https://docs.crossmint.com/payments/headless/guides/multiple-line-items.md): How to handle orders with multiple NFTs at once
+- [Status Codes](https://docs.crossmint.com/payments/headless/guides/status-codes.md): Guide to understanding the status codes returned from the Headless Checkout APIs
+- [Checking Supported Tokens](https://docs.crossmint.com/payments/advanced/supported-tokens.md): Learn how to check if a memecoin or token is supported by Crossmint Checkout
+- [Create/Deploy an NFT Collection](https://docs.crossmint.com/payments/guides/create-collection.md): Easily deploy a collection in the console and enable payments
+- [Register External Collection](https://docs.crossmint.com/payments/guides/register-collection.md): Import custom and/or third party contracts
+- [Collection Registration and Verification API](https://docs.crossmint.com/payments/advanced/registration-and-verification-api.md): Launchpads now use Crossmint's API to register and verify a collection.
+- [NFT Marketplaces & Launchpads](https://docs.crossmint.com/payments/advanced/marketplaces-and-launchpads.md): Add fiat and cross-chain crypto payments to your platform
+- [NFT Drops Priced in USDC](https://docs.crossmint.com/payments/advanced/usdc-support.md): How to set up Crossmint if your collection is denominated in USDC
+- [NFT Drops with Dynamic Price or Quantity](https://docs.crossmint.com/payments/advanced/dynamic-quantity-and-price.md): Details about implementing dynamic functionality into the Checkout
+- [NFT Drops Gated by Accesslists](https://docs.crossmint.com/payments/advanced/accesslists.md): Allow purchasing in accesslist-protected NFT drops
+- [Mint to Specific Template](https://docs.crossmint.com/payments/advanced/mint-to-specific-template.md): Specify which NFT template to mint from during checkout (for Managed collections only)
+- [Testing Tips](https://docs.crossmint.com/payments/advanced/testing-tips.md): This document is intended to share some of the best practices and tips for testing.
+- [Improving Conversion](https://docs.crossmint.com/payments/advanced/improving-conversion.md): Best practices to maximize checkout conversion
+- [Receipt Customization](https://docs.crossmint.com/payments/advanced/receipt-customization.md): Customize your users' order receipt
+- [Webhooks](https://docs.crossmint.com/payments/advanced/webhooks.md): Track order lifecycle events and payment status with webhooks
+
+## Onramp
+
+- [Onramp Overview](https://docs.crossmint.com/onramp/overview.md): Allow your users to buy stablecoins with credit card, Apple Pay, Google Pay, and more, delivered to any wallet.
+- [User Onboarding and KYC](https://docs.crossmint.com/onramp/introduction/user-onboarding.md): Register users for the Onramp
+- [React](https://docs.crossmint.com/onramp/quickstarts/react.md): Allow your users to buy stablecoins with cards
+- [React Native](https://docs.crossmint.com/onramp/quickstarts/react-native.md): Allow your mobile users to buy stablecoins with cards
+- [Flutter](https://docs.crossmint.com/onramp/quickstarts/flutter.md): Allow your mobile users to buy stablecoins with cards
+- [Swift](https://docs.crossmint.com/onramp/quickstarts/swift.md): Allow your iOS users to buy stablecoins with credit cards and Apple Pay
+- [Kotlin](https://docs.crossmint.com/onramp/quickstarts/kotlin.md): Allow your Android users to buy stablecoins with credit cards and Google Pay
+- [Import User KYC Data (Onramp)](https://docs.crossmint.com/onramp/guides/import-user-kyc-data.md): Use existing KYC data for faster onboarding
+- [Onramp to Non-Crossmint Wallets](https://docs.crossmint.com/onramp/guides/onramp-to-external-wallets.md): Enable onramp orders to wallets not powered by Crossmint
+- [Payment Methods](https://docs.crossmint.com/onramp/concepts/payment-methods.md): Understanding the payment methods available for onramp
+- [Add Payment Methods](https://docs.crossmint.com/onramp/guides/payment-methods.md): Enable cards, Apple Pay, and Google Pay for onramp
+- [UI Customization](https://docs.crossmint.com/onramp/guides/ui-customization.md): Customize the onramp checkout UI to match your brand identity and design system
+- [Create Order (Onramp)](https://docs.crossmint.com/onramp/api-reference/create-order.md): Create an onramp order to buy tokens with a card, scoped to the onramp flow
+- [Get Order (Onramp)](https://docs.crossmint.com/onramp/api-reference/get-order.md): Retrieve an onramp order by ID to track KYC, payment, and delivery status
+- [List Orders (Onramp)](https://docs.crossmint.com/onramp/api-reference/list-orders.md): Retrieve a paginated list of onramp orders to track and reconcile purchases
+
+## Offramp
+
+- [Offramp Overview](https://docs.crossmint.com/offramp/overview.md): Allow your users to convert stablecoins to fiat currency and withdraw to their bank accounts.
+- [Payment Schemes](https://docs.crossmint.com/offramp/payment-methods.md): Supported payout rails and geographies for Crossmint Offramp
+- [REST API Quickstart](https://docs.crossmint.com/offramp/quickstarts/rest-api.md): Allow users to offramp stablecoins to fiat
+- [How It Works](https://docs.crossmint.com/offramp/concepts/how-it-works.md): How your users convert USDC into fiat and withdraw to their bank account
+- [KYC & Compliance](https://docs.crossmint.com/offramp/concepts/kyc-and-compliance.md): How identity verification and compliance work for Crossmint Offramp
+- [Import User KYC Data (Offramp)](https://docs.crossmint.com/offramp/guides/import-user-kyc-data.md): Pass your users' existing KYC data to Crossmint so they skip verification
+- [Collect Bank Accounts](https://docs.crossmint.com/offramp/guides/collect-bank-accounts.md): Save and manage your users' bank accounts as reusable payment methods
+- [Manage Orders](https://docs.crossmint.com/offramp/guides/manage-orders.md): Track offramp order status through every phase, handle webhooks, and troubleshoot common issues
+- [Launch in Production](https://docs.crossmint.com/offramp/guides/going-to-production.md): Move your offramp integration from staging to live payouts
+- [Create Order (Offramp)](https://docs.crossmint.com/offramp/api-reference/create-order.md): Create an offramp order to cash out stablecoins to fiat, scoped to the offramp flow
+- [Submit Deposit (Offramp)](https://docs.crossmint.com/offramp/api-reference/process-payment.md): Associate the broadcast on-chain stablecoin deposit with an offramp order by its transaction ID
+- [Get Order (Offramp)](https://docs.crossmint.com/offramp/api-reference/get-order.md): Retrieve an offramp order by ID to track the deposit and fiat payout status
+- [List Orders (Offramp)](https://docs.crossmint.com/offramp/api-reference/list-orders.md): Retrieve a paginated list of offramp orders to track and reconcile payouts
+- [The Payment Method Object (Offramp)](https://docs.crossmint.com/offramp/api-reference/payment-methods/payment-method-object.md): Attributes and structure of a saved bank account payout method
+- [Create Payment Method (Offramp)](https://docs.crossmint.com/offramp/api-reference/payment-methods/create-payment-method.md): Save a bank account payout method so offramp orders can settle fiat to it
+- [List Payment Methods by User (Offramp)](https://docs.crossmint.com/offramp/api-reference/payment-methods/list-payment-methods.md): Retrieve the bank account payout methods saved for a given user
+- [Retrieve a Payment Method (Offramp)](https://docs.crossmint.com/offramp/api-reference/payment-methods/get-payment-method.md): Fetch a single bank account payout method by its ID
+- [Update a Payment Method (Offramp)](https://docs.crossmint.com/offramp/api-reference/payment-methods/update-payment-method.md): Update the billing details or default status of a payout method
+- [Delete a Payment Method (Offramp)](https://docs.crossmint.com/offramp/api-reference/payment-methods/delete-payment-method.md): Soft-delete a payout method that can no longer be used
+
+## Tokenization
+
+- [Tokenization Overview](https://docs.crossmint.com/minting/introduction.md): Mint and distribute NFTs, SFTs, verifiable credentials, and IP assets at scale via API.
+- [Non-Fungible Tokens (NFTs)](https://docs.crossmint.com/minting/quickstarts/nfts.md): Mint an NFT in under 5 minutes
+- [Semi-Fungible Tokens (SFTs)](https://docs.crossmint.com/minting/quickstarts/sfts.md): Mint and send limited sets of identical digital assets in under 5 minutes
+- [Create Collections](https://docs.crossmint.com/minting/nfts/integrate/create-collections.md): Deploy smart contracts and NFT collections
+- [Define Metadata](https://docs.crossmint.com/minting/nfts/integrate/define-metadata.md): Understand NFT metadata standards & storage options
+- [Mint Tokens](https://docs.crossmint.com/minting/nfts/integrate/mint-tokens.md): Create and distribute tokens at scale
+- [Configure Admin Functions](https://docs.crossmint.com/minting/nfts/integrate/configure-admin-functions.md): Manage token controls including admin burn and admin transfer
+- [Mint In Bulk](https://docs.crossmint.com/minting/nfts/integrate/mint-in-bulk.md): Scale your NFT operations with bulk minting capabilities
+- [Update NFTs](https://docs.crossmint.com/minting/nfts/integrate/update-nfts.md): Make your NFTs change over time
+- [Manage Delivery](https://docs.crossmint.com/minting/nfts/integrate/manage-delivery.md): Configure recipient options and customize email delivery notifications
+- [List for Sale](https://docs.crossmint.com/minting/nfts/integrate/list-for-sale.md): Configure royalties and marketplace profiles for your NFT collections
+- [Bring Your Own Contract](https://docs.crossmint.com/minting/nfts/integrate/bring-your-own-contract.md): Use Crossmint's infrastructure with your own smart contract
+- [Webhooks and Status APIs](https://docs.crossmint.com/minting/nfts/integrate/webhooks-and-status-apis.md): Listen for updates in mints, edits, collection creations and other async events
+- [Pricing](https://docs.crossmint.com/minting/nfts/integrate/pricing.md): Crossmint Mint API Pricing
+- [Credentials Quickstart ⚡](https://docs.crossmint.com/minting/quickstarts/credentials.md): Mint credentials that users control, share, and verify anywhere in under 5 minutes
+- [Create Credential Types](https://docs.crossmint.com/minting/verifiable-credentials/integrate/create-credential-types.md): Specify the schema that the Verifiable Credential adheres to
+- [Create Credential Templates](https://docs.crossmint.com/minting/verifiable-credentials/integrate/create-credential-templates.md): Create Verifiable Credential templates with a single API call
+- [Issue Credentials](https://docs.crossmint.com/minting/verifiable-credentials/integrate/issue-credentials.md): Specify the credential's values and a recipient to send it to
+- [Retrieve Credentials](https://docs.crossmint.com/minting/verifiable-credentials/integrate/retrieve-credentials.md): Get access to credentials you care about
+- [Decrypt Credentials](https://docs.crossmint.com/minting/verifiable-credentials/integrate/decrypt-credentials.md): Decrypt credentials you care about
+- [Verify Credentials](https://docs.crossmint.com/minting/verifiable-credentials/integrate/verify-credentials.md): Ensure that the credential is valid
+- [Revoke Credentials](https://docs.crossmint.com/minting/verifiable-credentials/integrate/revoke-credentials.md): Invalidate a credential, rendering it no longer trustworthy or verifiable
+- [Credential Storage](https://docs.crossmint.com/minting/verifiable-credentials/integrate/store-credentials.md): Choose how to store credential data
+- [Credential Encryption](https://docs.crossmint.com/minting/verifiable-credentials/integrate/encrypt-credentials.md): Encrypt private credential data
+- [Delegated Signature](https://docs.crossmint.com/minting/verifiable-credentials/integrate/delegated-signatures.md): Sign credentials with your wallet of choice
+- [Webhook](https://docs.crossmint.com/minting/verifiable-credentials/integrate/webhooks.md): Receive updates about your credentials
+- [IP Assets Quickstart ⚡](https://docs.crossmint.com/minting/quickstarts/ip.md): Mint IP credentials for creators to secure their work in under 5 minutes
+
+## Agents
+
+- [Agents Overview](https://docs.crossmint.com/agents/overview.md): Payment infrastructure for AI agents: agent cards, stablecoin wallets, and payment flows like x402 and browser checkout.
+- [How Agents Pay](https://docs.crossmint.com/agents/how-agents-pay.md): Learn why agents need to pay and how they can make payments.
+- [Cards](https://docs.crossmint.com/agents/cards-quickstart.md): Get your agent paying with agent cards in 15 minutes.
+- [Stablecoin Wallets](https://docs.crossmint.com/agents/stablecoin-wallet-quickstart.md): Get your agent paying with stablecoins in 10 minutes.
+- [Register an Agent](https://docs.crossmint.com/agents/payment-methods/cards/register-agent.md): Authenticate a user and create an agent identity for the cards flow.
+- [Save a Card](https://docs.crossmint.com/agents/payment-methods/cards/save-card.md): Tokenize a user's card via Crossmint's PCI-compliant UI so it can later be enrolled for agentic use.
+- [Verify a Card](https://docs.crossmint.com/agents/payment-methods/cards/enroll-card.md): Authorize a saved card for agentic use with a one-time device-binding ceremony.
+- [Create an Agent Card](https://docs.crossmint.com/agents/payment-methods/cards/create-agent-card.md): Give an agent scoped permission to use a card with spending rules.
+- [Retrieve Secure Card Numbers](https://docs.crossmint.com/agents/payment-methods/cards/retrieve-agent-card.md): Fetch a secure one-time card number, expiration, and CVC for an active agent card.
+- [Customize UI](https://docs.crossmint.com/agents/payment-methods/cards/customize-verification-ui.md): Style the card verification and spending authorization modals to match your brand.
+- [Remove Cards](https://docs.crossmint.com/agents/payment-methods/cards/remove-cards.md): Remove saved cards, delete agents, and rotate agent cards.
+- [Create a User Wallet](https://docs.crossmint.com/agents/payment-methods/stablecoin-wallets/create-user-wallet.md): Create a non-custodial wallet owned by your end user, with email or passkey recovery.
+- [Authorize the Agent](https://docs.crossmint.com/agents/payment-methods/stablecoin-wallets/authorize-agent.md): Grant your agent delegated control over the user's wallet.
+- [Onramp & Add Funds](https://docs.crossmint.com/agents/payment-methods/stablecoin-wallets/onramp-add-funds.md): Let users fund their wallet with a credit card so the agent can spend from it.
+- [Server Agent Wallets](https://docs.crossmint.com/agents/payment-methods/stablecoin-wallets/server-agent-wallets.md): Backend-only wallets for autonomous agents with no end user.
+- [Using the Wallet](https://docs.crossmint.com/agents/payment-methods/stablecoin-wallets/on-chain-actions.md): Use the wallet to send stablecoins, swap, bridge, and call any contract from your agent.
+- [Remove Agent Access](https://docs.crossmint.com/agents/payment-methods/stablecoin-wallets/remove-agent-access.md): Revoke an agent signer from a user's wallet.
+- [x402](https://docs.crossmint.com/agents/payment-flows/x402.md): Pay x402-protected endpoints with a Crossmint wallet.
+- [MPP](https://docs.crossmint.com/agents/payment-flows/mpp.md): Pay MPP endpoints with a Crossmint EVM wallet
+- [Agent Checkouts](https://docs.crossmint.com/agents/agent-checkouts-quickstart.md): Buy from any merchant URL by letting Crossmint drive a real browser through the checkout on your user's behalf.
+
+## Solution Guides
+
+- [Solutions Overview](https://docs.crossmint.com/solutions/overview.md): Guides tailored to business verticals and use cases: fintech, n8n automation, and IP tokenization.
+- [Remittances](https://docs.crossmint.com/solutions/fintech/remittances.md): Build modern remittance flows that are faster, lower cost, and unlock new revenue streams
+- [Neobanks](https://docs.crossmint.com/solutions/fintech/neobanks.md): Launch a global stablecoin neobank product in days
+- [Stablecoin Payouts](https://docs.crossmint.com/solutions/fintech/stablecoin-payouts.md): Instant, low-cost global payments with stablecoins
+- [Global Payroll](https://docs.crossmint.com/solutions/fintech/global-payroll.md): Pay employees and contractors worldwide instantly
+- [n8n Integration](https://docs.crossmint.com/solutions/n8n/overview.md): Full-featured n8n integration for Crossmint Wallet and Checkout APIs.
+- [n8n Quickstart ⚡](https://docs.crossmint.com/solutions/n8n/quickstart.md): Build your first workflow in under 5 minutes
+- [Example Workflows](https://docs.crossmint.com/solutions/n8n/example-workflows.md): Ready-to-use workflow templates to get you started
+- [Wallets Node](https://docs.crossmint.com/solutions/n8n/nodes/wallets.md): Manage blockchain wallets, balances, and token transfers
+- [Checkout Node](https://docs.crossmint.com/solutions/n8n/nodes/checkout.md): Automate purchases from Amazon and Shopify using digital money
+- [Checkout Trigger Node (x402 Paywall)](https://docs.crossmint.com/solutions/n8n/nodes/checkout-trigger.md): Accept cryptocurrency payments via the x402 protocol to gate access to your n8n workflows
+- [Story Protocol Overview](https://docs.crossmint.com/solutions/story-protocol/introduction.md): Create, manage, and monetize IP assets on Story Protocol using Crossmint.
+- [Server Wallets Quickstart ⚡](https://docs.crossmint.com/solutions/story-protocol/wallets/server-side-wallets.md): Create server wallets on Story in under 5 minutes
+- [Client Wallets Quickstart ⚡](https://docs.crossmint.com/solutions/story-protocol/wallets/client-side-wallets.md): Create client wallets and create your first NFT on Story in under 5 minutes
+- [Music Quickstart ⚡](https://docs.crossmint.com/solutions/story-protocol/music-quickstart.md): Register your music on Story in under 5 minutes
+- [Literature Quickstart ⚡](https://docs.crossmint.com/solutions/story-protocol/literature-quickstart.md): Register your literature works on Story in under 5 minutes
+- [Images Quickstart ⚡](https://docs.crossmint.com/solutions/story-protocol/images-quickstart.md): Register your designs on Story in under 5 minutes
+
+## CLI
+
+- [Get started with the Crossmint CLI](https://docs.crossmint.com/cli/install.md): Manage and configure your Crossmint projects directly from the command line
+- [Crossmint login](https://docs.crossmint.com/cli/login.md): Authenticate to the Crossmint platform
+- [Crossmint logout](https://docs.crossmint.com/cli/logout.md): Sign out from the Crossmint platform
+- [Crossmint whoami](https://docs.crossmint.com/cli/whoami.md): Display current user, environment and selected project
+- [Crossmint help](https://docs.crossmint.com/cli/help.md): List all commands and provides the help documentation for a given command
+- [Crossmint keys create](https://docs.crossmint.com/cli/keys/create.md): Create a new API key
+- [Crossmint keys list](https://docs.crossmint.com/cli/keys/list.md): List all API keys
+- [Crossmint keys delete](https://docs.crossmint.com/cli/keys/delete.md): Delete an API key
+- [Crossmint keys edit](https://docs.crossmint.com/cli/keys/edit.md): Edit an API key
+- [Crossmint projects create](https://docs.crossmint.com/cli/projects/create.md): Create a new project in Crossmint
+- [Crossmint projects select](https://docs.crossmint.com/cli/projects/select.md): Select a project to work with
+- [Crossmint projects list](https://docs.crossmint.com/cli/projects/list.md): List all projects in your Crossmint account
+- [Crossmint projects details](https://docs.crossmint.com/cli/projects/details.md): View details of a project
+
+## API Reference
+
+> REST API endpoints and webhooks. Test them live from the browser at [docs.crossmint.com/api-reference](https://docs.crossmint.com/api-reference/introduction.md).
+
+- [API Reference Introduction](https://docs.crossmint.com/api-reference/introduction.md): Explore the REST APIs and test them live from the browser.
+- [Webhooks Overview](https://docs.crossmint.com/introduction/platform/webhooks/overview.md): Listen for events across wallets, payments, minting, and credentials to automatically trigger reactions in your application
+- [Add an Endpoint](https://docs.crossmint.com/introduction/platform/webhooks/add-endpoint.md): Configure an endpoint to receive webhook messages.
+- [Verify Webhooks](https://docs.crossmint.com/introduction/platform/webhooks/verify-webhooks.md): Verify the signature and timestamp when processing webhooks
+- [Best Practices](https://docs.crossmint.com/introduction/platform/webhooks/best-practices.md): Best practices for implementing reliable webhook handlers
+- [Get Usage (Admin API)](https://docs.crossmint.com/api-reference/admin/get-usage.md): Retrieve project usage metrics via the Admin API.
+- [Create Wallet](https://docs.crossmint.com/api-reference/wallets/create-wallet.md)
+- [Get Wallet By Locator](https://docs.crossmint.com/api-reference/wallets/get-wallet-by-locator.md)
+- [Get Wallet Balance](https://docs.crossmint.com/api-reference/wallets/get-wallet-balance.md)
+- [Fund Wallet](https://docs.crossmint.com/api-reference/wallets/fund-wallet.md)
+- [Get NFTs from Wallet](https://docs.crossmint.com/api-reference/wallets/get-nfts-from-wallet.md)
+- [Create Transaction](https://docs.crossmint.com/api-reference/wallets/create-transaction.md)
+- [Get Transaction](https://docs.crossmint.com/api-reference/wallets/get-transaction.md)
+- [Get Wallet Transactions](https://docs.crossmint.com/api-reference/wallets/get-transactions.md)
+- [Approve Transaction](https://docs.crossmint.com/api-reference/wallets/approve-transaction.md)
+- [Create Signature](https://docs.crossmint.com/api-reference/wallets/create-signature.md)
+- [Get All Signatures](https://docs.crossmint.com/api-reference/wallets/get-signatures.md)
+- [Get Signature](https://docs.crossmint.com/api-reference/wallets/get-signature.md)
+- [Approve Signature](https://docs.crossmint.com/api-reference/wallets/approve-signature.md)
+- [Create Delegated Signer](https://docs.crossmint.com/api-reference/wallets/register-delegated-key.md)
+- [Remove Delegated Signer](https://docs.crossmint.com/api-reference/wallets/remove-delegated-key.md)
+- [Get Delegated Signer](https://docs.crossmint.com/api-reference/wallets/get-signer.md)
+- [Transfer Token](https://docs.crossmint.com/api-reference/wallets/transfer-token.md)
+- [Get Transfer Transaction](https://docs.crossmint.com/api-reference/wallets/get-transfer-token.md)
+- [List Wallet Transfers](https://docs.crossmint.com/api-reference/wallets/list-transfers.md)
+- [Create or Update User](https://docs.crossmint.com/api-reference/users/upsert-user.md)
+- [Get a User](https://docs.crossmint.com/api-reference/users/get-user.md)
+- [Accept Legal Document](https://docs.crossmint.com/api-reference/users/accept-legal-document.md)
+- [Upload a User Document](https://docs.crossmint.com/api-reference/users/upload-document.md)
+- [Get a User Document by ID](https://docs.crossmint.com/api-reference/users/get-document.md)
+- [Trigger Identity Verification](https://docs.crossmint.com/api-reference/users/trigger-identity-verification.md)
+- [Get Identity Verification Status](https://docs.crossmint.com/api-reference/users/get-identity-verification.md)
+- [Link External Wallet to User](https://docs.crossmint.com/api-reference/users/link-wallet.md)
+- [Get Linked External Wallet](https://docs.crossmint.com/api-reference/users/get-linked-wallet.md)
+- [Create Order](https://docs.crossmint.com/api-reference/headless/create-order.md)
+- [Get Order](https://docs.crossmint.com/api-reference/headless/get-order.md)
+- [List Orders](https://docs.crossmint.com/api-reference/headless/list-orders.md)
+- [Edit Order](https://docs.crossmint.com/api-reference/headless/edit-order.md)
+- [Process Payment](https://docs.crossmint.com/api-reference/headless/process-payment.md)
+- [Get All Tokens](https://docs.crossmint.com/api-reference/headless/get-all-tokens.md)
+- [Check Token Support](https://docs.crossmint.com/api-reference/headless/check-token-support.md)
+- [The Payment Method Object](https://docs.crossmint.com/api-reference/headless/payment-methods/payment-method-object.md): Attributes and structure of a saved payment method
+- [Create Payment Method (Checkout)](https://docs.crossmint.com/api-reference/headless/payment-methods/create-payment-method.md): Save a payment method for a user so it can be used with Checkout, Onramp, and Offramp orders
+- [List Payment Methods by User](https://docs.crossmint.com/api-reference/headless/payment-methods/list-payment-methods.md): Retrieve all payment methods saved for a given user
+- [Retrieve a Payment Method](https://docs.crossmint.com/api-reference/headless/payment-methods/get-payment-method.md): Fetch a single payment method by its ID
+- [Update a Payment Method](https://docs.crossmint.com/api-reference/headless/payment-methods/update-payment-method.md): Update the billing details or default status of an existing payment method
+- [Delete a Payment Method](https://docs.crossmint.com/api-reference/headless/payment-methods/delete-payment-method.md): Soft-delete a payment method. The record is retained for compliance but can no longer be used.
+- [Mint NFT](https://docs.crossmint.com/api-reference/minting/nfts/mint-nft.md)
+- [Mint NFT with ID](https://docs.crossmint.com/api-reference/minting/nfts/mint-nft-idempotent.md)
+- [Mint SFT](https://docs.crossmint.com/api-reference/minting/nfts/mint-sft.md)
+- [Get All NFTs](https://docs.crossmint.com/api-reference/minting/nfts/get-nfts.md)
+- [Mint Status](https://docs.crossmint.com/api-reference/minting/nfts/mint-status.md)
+- [Edit NFT](https://docs.crossmint.com/api-reference/minting/nfts/edit-nft.md)
+- [Burn NFT](https://docs.crossmint.com/api-reference/minting/nfts/burn-nft.md)
+- [Create Collection](https://docs.crossmint.com/api-reference/minting/collection/create-collection.md)
+- [Create Collection (Idempotent)](https://docs.crossmint.com/api-reference/minting/collection/create-collection-idempotent.md)
+- [Get All Collections](https://docs.crossmint.com/api-reference/minting/collection/get-all-collections.md)
+- [Get Collection Info](https://docs.crossmint.com/api-reference/minting/collection/get-collection.md)
+- [Update Collection](https://docs.crossmint.com/api-reference/minting/collection/update-collection.md)
+- [Set Royalties](https://docs.crossmint.com/api-reference/minting/collection/set-royalties.md)
+- [Get Royalties Configuration](https://docs.crossmint.com/api-reference/minting/collection/get-royalties-configuration.md)
+- [Remove Royalties](https://docs.crossmint.com/api-reference/minting/collection/remove-royalties.md)
+- [Set Base URI](https://docs.crossmint.com/api-reference/minting/collection/set-base-uri.md)
+- [Get Base URI](https://docs.crossmint.com/api-reference/minting/collection/get-base-uri.md)
+- [Set Transferability](https://docs.crossmint.com/api-reference/minting/collection/set-transferability.md)
+- [Get Transferability](https://docs.crossmint.com/api-reference/minting/collection/get-transferability.md)
+- [Create Template](https://docs.crossmint.com/api-reference/minting/template/create-template.md)
+- [Create Template with ID](https://docs.crossmint.com/api-reference/minting/template/create-template-idempotent.md)
+- [Get Template](https://docs.crossmint.com/api-reference/minting/template/get-template.md)
+- [Get All Templates](https://docs.crossmint.com/api-reference/minting/template/get-all-templates.md)
+- [Edit Template](https://docs.crossmint.com/api-reference/minting/template/edit-template.md)
+- [Delete Template](https://docs.crossmint.com/api-reference/minting/template/delete-template.md)
+- [Get Action Status](https://docs.crossmint.com/api-reference/common/get-action-status.md)
+- [Create Credential template](https://docs.crossmint.com/api-reference/verifiable-credentials/templates/create-template.md)
+- [Issue Credential](https://docs.crossmint.com/api-reference/verifiable-credentials/credentials/issue-credential.md)
+- [Get Credential by Credential ID](https://docs.crossmint.com/api-reference/verifiable-credentials/credentials/retrieve-credential-by-id.md)
+- [Get Credential by NFT ID](https://docs.crossmint.com/api-reference/verifiable-credentials/credentials/retrieve-credential-by-nft.md)
+- [Get Credential by NFT Locator](https://docs.crossmint.com/api-reference/verifiable-credentials/credentials/retrieve-credential-by-nft-locator.md)
+- [Retrieve credential nfts](https://docs.crossmint.com/api-reference/verifiable-credentials/credentials/retrieve-credential-nfts.md)
+- [Verify Credential](https://docs.crossmint.com/api-reference/verifiable-credentials/credentials/verify-credential.md)
+- [Revoke Credential](https://docs.crossmint.com/api-reference/verifiable-credentials/credentials/revoke-credential.md)
+- [Create Credential Type](https://docs.crossmint.com/api-reference/verifiable-credentials/types/create-type.md)
+- [Create Credential Type with Name](https://docs.crossmint.com/api-reference/verifiable-credentials/types/create-named-type.md)
+- [Get a Credential Type](https://docs.crossmint.com/api-reference/verifiable-credentials/types/get-type.md)
+- [Create IP Collection](https://docs.crossmint.com/api-reference/ip/create-ip-collection.md)
+- [Create IP Collection (Idempotent)](https://docs.crossmint.com/api-reference/ip/create-ip-collection-idempotent.md)
+- [Get IP Collection](https://docs.crossmint.com/api-reference/ip/get-ip-collection.md)
+- [Get All IP Collections](https://docs.crossmint.com/api-reference/ip/get-all-ip-collections.md)
+- [Get IP Assets in Collection](https://docs.crossmint.com/api-reference/ip/get-ip-assets.md)
+- [Get IP Asset](https://docs.crossmint.com/api-reference/ip/get-ip-asset.md)
+- [Create IP Asset](https://docs.crossmint.com/api-reference/ip/create-ip-asset.md)
+- [Create IP Asset (Idempotent)](https://docs.crossmint.com/api-reference/ip/create-ip-asset-idempotent.md)
+- [Update IP Asset](https://docs.crossmint.com/api-reference/ip/update-ip-asset.md)
+- [Get IP Action](https://docs.crossmint.com/api-reference/ip/get-ip-action.md)
+- [Get IP Asset License](https://docs.crossmint.com/api-reference/ip/get-ip-license.md)
+- [Get IP Asset Graph](https://docs.crossmint.com/api-reference/ip/get-ip-graph.md)
+- [List Agents](https://docs.crossmint.com/api-reference/agentic-commerce/agents/list-agents.md)
+- [Create Agent](https://docs.crossmint.com/api-reference/agentic-commerce/agents/create-agent.md)
+- [Delete Agent](https://docs.crossmint.com/api-reference/agentic-commerce/agents/delete-agent.md)
+- [Create Payment Method (Agents)](https://docs.crossmint.com/api-reference/agentic-commerce/payment-methods/create-payment-method.md)
+- [List Payment Methods (Agents)](https://docs.crossmint.com/api-reference/agentic-commerce/payment-methods/list-payment-methods.md)
+- [Delete Payment Method (Agents)](https://docs.crossmint.com/api-reference/agentic-commerce/payment-methods/delete-payment-method.md)
+- [Create Agentic Enrollment](https://docs.crossmint.com/api-reference/agentic-commerce/agentic-enrollment/create-agentic-enrollment.md)
+- [Get Agentic Enrollment](https://docs.crossmint.com/api-reference/agentic-commerce/agentic-enrollment/get-agentic-enrollment.md)
+- [List Agent Cards](https://docs.crossmint.com/api-reference/agentic-commerce/order-intents/list-order-intents.md)
+- [Get Agent Card](https://docs.crossmint.com/api-reference/agentic-commerce/order-intents/get-order-intent.md)
+- [Create Agent Card](https://docs.crossmint.com/api-reference/agentic-commerce/order-intents/create-order-intent.md)
+- [Get Agent Card Credentials](https://docs.crossmint.com/api-reference/agentic-commerce/order-intents/get-order-intent-credentials.md)
+- [Revoke Agent Card](https://docs.crossmint.com/api-reference/agentic-commerce/order-intents/revoke-order-intent.md)
+
+## SDK Reference
+
+> Key pages for the Crossmint client SDKs. Exhaustive class, method, and type documentation lives under [docs.crossmint.com/sdk-reference](https://docs.crossmint.com/sdk-reference/wallets/typescript/overview.md), and full page content is available in [llms-full.txt](https://docs.crossmint.com/llms-full.txt).
+
+- [TypeScript SDK (Wallets)](https://docs.crossmint.com/sdk-reference/wallets/typescript/overview.md): Getting started with the @crossmint/wallets-sdk TypeScript SDK.
+- [TypeScript: Reference (Wallets)](https://docs.crossmint.com/sdk-reference/wallets/typescript/reference.md): Full API reference for the @crossmint/wallets-sdk: classes, methods, and types.
+- [TypeScript SDK (Auth)](https://docs.crossmint.com/sdk-reference/auth/typescript/overview.md): Getting started with the @crossmint/server-sdk for Crossmint authentication.
+- [TypeScript: Reference (Auth)](https://docs.crossmint.com/sdk-reference/auth/typescript/reference.md): Full API reference for Crossmint authentication in the server SDK: classes, functions, and types.
+- [Credentials SDK Introduction](https://docs.crossmint.com/sdk-reference/credentials/introduction.md): Getting started with the @crossmint/client-sdk-verifiable-credentials TypeScript SDK.
+- [React SDK (Wallets)](https://docs.crossmint.com/sdk-reference/wallets/react/get-started.md): Installation and setup for the React SDK for Crossmint wallets.
+- [React: Providers](https://docs.crossmint.com/sdk-reference/wallets/react/providers.md): React context providers for React SDK reference for Crossmint wallets
+- [React: Hooks](https://docs.crossmint.com/sdk-reference/wallets/react/hooks.md): React hooks for React SDK reference for Crossmint wallets
+- [React: Components](https://docs.crossmint.com/sdk-reference/wallets/react/components.md): React components for React SDK reference for Crossmint wallets
+- [React SDK (Checkout)](https://docs.crossmint.com/sdk-reference/checkout/react/get-started.md): Installation and setup for the React SDK for Crossmint checkout.
+- [React: Providers](https://docs.crossmint.com/sdk-reference/checkout/react/providers.md): React context providers for React SDK reference for Crossmint checkout
+- [React: Hooks](https://docs.crossmint.com/sdk-reference/checkout/react/hooks.md): React hooks for React SDK reference for Crossmint checkout
+- [React: Components](https://docs.crossmint.com/sdk-reference/checkout/react/components.md): React components for React SDK reference for Crossmint checkout
+- [React SDK (Auth)](https://docs.crossmint.com/sdk-reference/auth/react/get-started.md): Installation and setup for the React SDK for Crossmint authentication.
+- [React: Providers](https://docs.crossmint.com/sdk-reference/auth/react/providers.md): React context providers for React SDK reference for Crossmint authentication
+- [React: Hooks](https://docs.crossmint.com/sdk-reference/auth/react/hooks.md): React hooks for React SDK reference for Crossmint authentication
+- [React: Components](https://docs.crossmint.com/sdk-reference/auth/react/components.md): React components for React SDK reference for Crossmint authentication
+- [React Native SDK (Wallets)](https://docs.crossmint.com/sdk-reference/wallets/react-native/get-started.md): Installation and setup for the React Native SDK for Crossmint wallets.
+- [React Native: Providers](https://docs.crossmint.com/sdk-reference/wallets/react-native/providers.md): React Native context providers for React Native SDK reference for Crossmint wallets
+- [React Native: Hooks](https://docs.crossmint.com/sdk-reference/wallets/react-native/hooks.md): React Native hooks for React Native SDK reference for Crossmint wallets
+- [React Native: Components](https://docs.crossmint.com/sdk-reference/wallets/react-native/components.md): React Native components for React Native SDK reference for Crossmint wallets
+- [React Native SDK (Checkout)](https://docs.crossmint.com/sdk-reference/checkout/react-native/get-started.md): Installation and setup for the React Native SDK for Crossmint checkout.
+- [React Native: Providers](https://docs.crossmint.com/sdk-reference/checkout/react-native/providers.md): React Native context providers for React Native SDK reference for Crossmint checkout
+- [React Native: Hooks](https://docs.crossmint.com/sdk-reference/checkout/react-native/hooks.md): React Native hooks for React Native SDK reference for Crossmint checkout
+- [React Native: Components](https://docs.crossmint.com/sdk-reference/checkout/react-native/components.md): React Native components for React Native SDK reference for Crossmint checkout
+- [React Native SDK (Auth)](https://docs.crossmint.com/sdk-reference/auth/react-native/get-started.md): Installation and setup for the React Native SDK for Crossmint authentication.
+- [React Native: Providers](https://docs.crossmint.com/sdk-reference/auth/react-native/providers.md): React Native context providers for React Native SDK reference for Crossmint authentication
+- [React Native: Hooks](https://docs.crossmint.com/sdk-reference/auth/react-native/hooks.md): React Native hooks for React Native SDK reference for Crossmint authentication
+- [Flutter SDK (Wallets)](https://docs.crossmint.com/sdk-reference/wallets/flutter/get-started.md): Install the Crossmint Flutter SDK and set up the client and wallet controller.
+- [Flutter: Providers](https://docs.crossmint.com/sdk-reference/wallets/flutter/providers.md): Flutter providers and scopes for the Flutter SDK reference for Crossmint wallets
+- [Flutter: Controllers](https://docs.crossmint.com/sdk-reference/wallets/flutter/controllers.md): Flutter controllers for the Flutter SDK reference for Crossmint wallets
+- [Flutter: Widgets](https://docs.crossmint.com/sdk-reference/wallets/flutter/widgets.md): Flutter widgets for the Flutter SDK reference for Crossmint wallets
+- [Flutter SDK (Checkout)](https://docs.crossmint.com/sdk-reference/checkout/flutter/get-started.md): Installation and setup for the Flutter SDK for Crossmint checkout.
+- [Flutter: Widgets](https://docs.crossmint.com/sdk-reference/checkout/flutter/widgets.md): Flutter widgets for the Flutter SDK reference for Crossmint checkout
+- [Flutter: Models](https://docs.crossmint.com/sdk-reference/checkout/flutter/models.md): Configuration and data models for the Flutter SDK reference for Crossmint checkout
+- [Swift: ApiKeySigner](https://docs.crossmint.com/sdk-reference/wallets/swift/classes/apikeysigner.md): Swift Class
+- [Swift: CrossmintAuthManager](https://docs.crossmint.com/sdk-reference/wallets/swift/classes/crossmintauthmanager.md): Swift Class
+- [Swift: CrossmintSDK](https://docs.crossmint.com/sdk-reference/wallets/swift/classes/crossmintsdk.md): Swift Class
+- [Swift: EVMEmailSigner](https://docs.crossmint.com/sdk-reference/wallets/swift/classes/evmemailsigner.md): Swift Class
+- [Swift: EVMWallet](https://docs.crossmint.com/sdk-reference/wallets/swift/classes/evmwallet.md): Swift Class
+- [Swift: PasskeySigner](https://docs.crossmint.com/sdk-reference/wallets/swift/classes/passkeysigner.md): Swift Class
+- [Swift: SolanaEmailSigner](https://docs.crossmint.com/sdk-reference/wallets/swift/classes/solanaemailsigner.md): Swift Class
+- [Swift: SolanaWallet](https://docs.crossmint.com/sdk-reference/wallets/swift/classes/solanawallet.md): Swift Class
+- [Swift: StellarEmailSigner](https://docs.crossmint.com/sdk-reference/wallets/swift/classes/stellaremailsigner.md): Swift Class
+- [Swift: StellarWallet](https://docs.crossmint.com/sdk-reference/wallets/swift/classes/stellarwallet.md): Swift Class
+- [Swift: Wallet](https://docs.crossmint.com/sdk-reference/wallets/swift/classes/wallet.md): Swift Class
+- [Swift: CrossmintWallets](https://docs.crossmint.com/sdk-reference/wallets/swift/protocols/crossmintwallets.md): Swift Protocol
+- [Swift: Signer](https://docs.crossmint.com/sdk-reference/wallets/swift/protocols/signer.md): Swift Protocol
+- [Swift: Chain](https://docs.crossmint.com/sdk-reference/wallets/swift/enums/chain.md): Swift Enumeration
+- [Swift: SignerType](https://docs.crossmint.com/sdk-reference/wallets/swift/enums/signertype.md): Swift Enumeration
+- [Swift: TransactionStatus](https://docs.crossmint.com/sdk-reference/wallets/swift/enums/transactionstatus.md): Swift Enumeration
+- [Swift: WalletType](https://docs.crossmint.com/sdk-reference/wallets/swift/enums/wallettype.md): Swift Enumeration
+- [Kotlin SDK (Wallets)](https://docs.crossmint.com/sdk-reference/wallets/kotlin.md): API reference for the Crossmint Kotlin SDK.
+- [Kotlin SDK (Checkout)](https://docs.crossmint.com/sdk-reference/checkout/kotlin.md): API reference for Crossmint checkout in the Kotlin SDK.

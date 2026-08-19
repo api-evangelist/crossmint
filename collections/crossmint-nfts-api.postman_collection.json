@@ -1,0 +1,134 @@
+{
+  "item": [
+    {
+      "id": "595b3640-366b-4b29-bbaa-35d6d153d800",
+      "name": "NFTs",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "fdf74b5e-5090-4259-b771-9d67c16cce62",
+          "name": "List wallet NFTs",
+          "request": {
+            "name": "List wallet NFTs",
+            "description": {},
+            "url": {
+              "path": [
+                "wallets",
+                ":walletLocator",
+                "nfts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletLocator",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "81305201-a31d-4012-8c0b-752ec8390af6",
+              "name": "NFTs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wallets",
+                    ":walletLocator",
+                    "nfts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletLocator",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://www.crossmint.com/api/2025-06-09",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-KEY"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "43b596b3-0f1b-4641-80d0-6c973f335bd7",
+    "name": "Crossmint Wallets Balances NFTs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Crossmint REST API for creating and managing server-side custodial and\nnon-custodial smart wallets across EVM and Solana. Covers wallet creation,\nbalances, transactions, transfers, signatures, delegated signers, and\nNFT enumeration. Endpoint inventory drawn from https://docs.crossmint.com.\n\n\nContact Support:\n Name: Crossmint Developers",
+      "type": "text/plain"
+    }
+  }
+}

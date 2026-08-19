@@ -1,0 +1,116 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Crossmint Wallets Balances Transactions API",
+    "version": "2025-06-09"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Transactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List wallet transactions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/transactions",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List wallet transactions"
+        },
+        {
+          "info": {
+            "name": "Create transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/transactions",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create transaction"
+        },
+        {
+          "info": {
+            "name": "Get transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/transactions/:transactionId",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "transactionId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get transaction"
+        },
+        {
+          "info": {
+            "name": "Approve transaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator/transactions/:transactionId/approve",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "transactionId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Approve transaction"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

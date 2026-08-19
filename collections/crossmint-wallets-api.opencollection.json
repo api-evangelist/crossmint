@@ -1,0 +1,65 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Crossmint Balances Wallets API",
+    "version": "2025-06-09"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Wallets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create wallet",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets",
+            "headers": [
+              {
+                "name": "x-idempotency-key",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create wallet"
+        },
+        {
+          "info": {
+            "name": "Get wallet by locator",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://www.crossmint.com/api/2025-06-09/wallets/:walletLocator",
+            "params": [
+              {
+                "name": "walletLocator",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get wallet by locator"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

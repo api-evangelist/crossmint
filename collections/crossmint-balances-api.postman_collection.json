@@ -1,0 +1,154 @@
+{
+  "item": [
+    {
+      "id": "15b268e8-16c9-4b99-9efe-1579039bab99",
+      "name": "Balances",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "9c6479ac-6631-421d-a09a-981b1919fff7",
+          "name": "Get wallet balance",
+          "request": {
+            "name": "Get wallet balance",
+            "description": {},
+            "url": {
+              "path": [
+                "wallets",
+                ":walletLocator",
+                "balances"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "tokens",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "chains",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "walletLocator",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7049daea-9c85-40ad-bb16-7246c58df794",
+              "name": "Balances",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "wallets",
+                    ":walletLocator",
+                    "balances"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "tokens",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "chains",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "walletLocator",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://www.crossmint.com/api/2025-06-09",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-KEY"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "92504dbd-3404-4944-9ab8-4975d2d2029b",
+    "name": "Crossmint Wallets Balances API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Crossmint REST API for creating and managing server-side custodial and\nnon-custodial smart wallets across EVM and Solana. Covers wallet creation,\nbalances, transactions, transfers, signatures, delegated signers, and\nNFT enumeration. Endpoint inventory drawn from https://docs.crossmint.com.\n\n\nContact Support:\n Name: Crossmint Developers",
+      "type": "text/plain"
+    }
+  }
+}

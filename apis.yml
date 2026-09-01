@@ -129,7 +129,7 @@ apis:
     https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
     (prod)
   tags:
-  - NFTs
+  - NFT
   tags_raw:
   - NFTs
   properties:

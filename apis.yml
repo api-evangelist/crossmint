@@ -122,20 +122,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/crossmint-balances-api-openapi.yml
-- aid: crossmint:crossmint-nfts-api
-  name: Crossmint NFTs API
-  description: The NFTs API from Crossmint — 1 operation(s) for nfts.
-  humanURL: https://docs.crossmint.com/wallets/introduction
-  baseURL: >-
-    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
-    (prod)
-  tags:
-  - NFT
-  tags_raw:
-  - NFTs
-  properties:
-  - type: OpenAPI
-    url: openapi/crossmint-nfts-api-openapi.yml
 - aid: crossmint:crossmint-signatures-api
   name: Crossmint Signatures API
   description: The Signatures API from Crossmint — 3 operation(s) for signatures.
@@ -198,6 +184,18 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/crossmint-wallets-api-openapi.yml
+- aid: crossmint:crossmint-nfts-api
+  name: Crossmint NF Ts API
+  description: The NFTs API from Crossmint — 1 operation(s) for nfts.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - NFTs
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-nfts-api-openapi.yml
 common:
   - type: AgenticAccess
     url: agentic-access/crossmint-agentic-access.yml

@@ -1,13 +1,7 @@
 {
   "provider": "crossmint",
   "sources": [
-    "crossmint-balances-api-openapi.yml",
-    "crossmint-nfts-api-openapi.yml",
-    "crossmint-signatures-api-openapi.yml",
-    "crossmint-signers-api-openapi.yml",
-    "crossmint-transactions-api-openapi.yml",
-    "crossmint-transfers-api-openapi.yml",
-    "crossmint-wallets-api-openapi.yml"
+    "_original/crossmint-openapi.yml"
   ],
   "outputs": [
     "crossmint-balances-api-openapi.yml",
@@ -18,9 +12,31 @@
     "crossmint-transfers-api-openapi.yml",
     "crossmint-wallets-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "crossmint-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "crossmint-openapi.yml: declared missing tag: Balances",
+    "crossmint-openapi.yml: declared missing tag: NFTs",
+    "crossmint-openapi.yml: declared missing tag: Signatures",
+    "crossmint-openapi.yml: declared missing tag: Signers",
+    "crossmint-openapi.yml: declared missing tag: Transactions",
+    "crossmint-openapi.yml: declared missing tag: Transfers",
+    "crossmint-openapi.yml: declared missing tag: Wallets",
+    "superseded outputs removed: crossmint-nf-ts-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 12 total)"
+  ],
+  "skipped": [
+    "crossmint-balances-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "crossmint-nf-ts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "crossmint-signatures-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "crossmint-signers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "crossmint-transactions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "crossmint-transfers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "crossmint-wallets-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

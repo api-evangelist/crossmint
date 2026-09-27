@@ -12,9 +12,7 @@
     "crossmint-transfers-api-openapi.yml",
     "crossmint-wallets-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 1 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -27,12 +25,11 @@
     "crossmint-openapi.yml: declared missing tag: Transactions",
     "crossmint-openapi.yml: declared missing tag: Transfers",
     "crossmint-openapi.yml: declared missing tag: Wallets",
-    "superseded outputs removed: crossmint-nf-ts-api-openapi.yml",
-    "apis.yml register: written (+1 apis, 12 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "crossmint-balances-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "crossmint-nf-ts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "crossmint-nfts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "crossmint-signatures-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "crossmint-signers-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "crossmint-transactions-api-openapi.yml: previously refined output, superseded by openapi/_original/",

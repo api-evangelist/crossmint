@@ -1,0 +1,12 @@
+{
+ "url": "https://www.crossmint.com/openapi.yaml",
+ "final": "https://www.crossmint.com/openapi.yaml",
+ "status": 200,
+ "content_type": "text/yaml; charset=UTF-8",
+ "bytes": 6066296,
+ "sha256": "b5d72b7dafc24be74fe11a4a6f663a85a3cc5ba68967cf332efc304ad5679f89",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}

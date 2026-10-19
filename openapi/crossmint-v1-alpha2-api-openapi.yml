@@ -1,0 +1,510 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@crossmint.com
+    name: Crossmint Support
+    url: https://www.crossmint.com
+  description: Generated from Crossmint's published product API specifications. Do not edit by hand.
+  title: Crossmint V1 Alpha2 API
+  version: 1.0.0
+servers:
+- description: Staging environment (testnets)
+  url: https://staging.crossmint.com/api
+- description: Production environment (mainnets)
+  url: https://www.crossmint.com/api
+tags:
+- name: V1 Alpha2
+paths:
+  /v1-alpha2/tokens:
+    get:
+      description: 'Returns a paginated list of the tokens that Crossmint supports for checkout, newest first: the tokens your users can buy through Crossmint. Access to this endpoint is enabled per project; contact support to enable it.
+
+
+        **API scope required**: `tokens.read`'
+      operationId: tokens.v1Alpha2.list
+      parameters:
+      - description: Filter tokens by blockchain. Comma-separated list of chain names, for example `solana,base`.
+        in: query
+        name: chains
+        required: false
+        schema:
+          example: solana,base
+          type: string
+      - description: Cursor for pagination. Use the `nextCursor` or `previousCursor` value from a previous response to move between pages.
+        in: query
+        name: cursor
+        required: false
+        schema:
+          type: string
+      - description: Maximum number of tokens per page. Defaults to 30. The maximum is 100.
+        in: query
+        name: limit
+        required: false
+        schema:
+          example: '30'
+          type: string
+      - description: Filter tokens by category. Comma-separated list of token classes. Omit it to return every discoverable class (memecoin,onramp).
+        in: query
+        name: tokenClasses
+        required: false
+        schema:
+          example: memecoin,onramp
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllTokensResponseDTO'
+          description: Paginated list of supported tokens. `nextCursor` and `previousCursor` are present when more pages exist in that direction.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid query parameters, such as an unknown chain or token class.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Access to this endpoint is not enabled for the project, or the project cannot sell fungible tokens.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Rate limit exceeded.
+      security:
+      - apiKey: []
+      summary: Get All Tokens
+      tags:
+      - V1 Alpha2
+  /v1-alpha2/tokens/{tokenLocator}:
+    get:
+      description: 'Returns a token by its locator, with `available` (whether Crossmint supports it) and the payment features Crossmint offers for it.
+
+
+        **API scope required**: `tokens.read` or `orders.create`'
+      operationId: tokens.v1Alpha2.get
+      parameters:
+      - description: Locator of the fungible token, in the format `<chain>:<tokenAddress>`. Solana and EVM chains are supported, for example `base:0xa4a2e2ca3fbfe21aed83471d28b6f65a233c6e00`.
+        in: path
+        name: tokenLocator
+        required: true
+        schema:
+          example: solana:6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportedTokenResponseDTO'
+          description: The token and its availability.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: '`tokenLocator` is not a valid Solana or EVM fungible token locator.'
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The project cannot sell fungible tokens.
+        '429':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Rate limit exceeded.
+      security:
+      - apiKey: []
+      summary: Check Token Support
+      tags:
+      - V1 Alpha2
+  /v1-alpha2/wallets/{walletLocator}/balances:
+    get:
+      description: 'Get the balance of a wallet for a given chain and currency
+
+
+        **API scope required**: `wallets:balance.read`'
+      operationId: wallets.v1Alpha2.balances.get
+      parameters:
+      - description: 'A wallet locator can be of the format:
+
+          - `<walletAddress>`
+
+          - `email:<email>:<walletType>`
+
+          - `userId:<userId>:<walletType>`
+
+          - `userId:<userId>:<walletType>` (white label user example)
+
+          - `phoneNumber:<phoneNumber>:<walletType>`
+
+          - `twitter:<handle>:<walletType>`
+
+          - `x:<handle>:<walletType>`
+
+          - `me:<walletType>` (Use when calling from the client side with a client API key)'
+        in: path
+        name: walletLocator
+        required: true
+        schema:
+          type: string
+      - description: The blockchain(s) to query. Comma-separated list of chains
+        in: query
+        name: chains
+        required: false
+        schema:
+          type: string
+      - description: The tokens to query. Comma-separated list
+        in: query
+        name: tokens
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletBalanceResponseDTO'
+          description: Returns the balance of the wallet for the given chain and currency
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletV1Alpha2ErrorDTO'
+          description: Returns an error (400) if the wallet locator is invalid or if the address type is not supported
+      security:
+      - apiKey: []
+      summary: Get Wallet Balance
+      tags:
+      - V1 Alpha2
+    post:
+      description: 'Send funds to a wallet.
+
+
+        **API scope required**: `wallets.fund`'
+      operationId: wallets.v1Alpha2.balances.fund
+      parameters:
+      - description: 'A wallet locator can be of the format:
+
+          - `<walletAddress>`
+
+          - `email:<email>:<walletType>`
+
+          - `userId:<userId>:<walletType>`
+
+          - `userId:<userId>:<walletType>` (white label user example)
+
+          - `phoneNumber:<phoneNumber>:<walletType>`
+
+          - `twitter:<handle>:<walletType>`
+
+          - `x:<handle>:<walletType>`
+
+          - `me:<walletType>` (Use when calling from the client side with a client API key)'
+        in: path
+        name: walletLocator
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FundWalletAmountDTO'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletBalanceResponseDTO'
+          description: Funds sent successfully.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletV1Alpha2ErrorDTO'
+          description: Returns an error (404) if a wallet with the specified locator not found
+      security:
+      - apiKey: []
+      summary: Fund Wallet
+      tags:
+      - V1 Alpha2
+components:
+  schemas:
+    GetAllTokensResponseDTO:
+      properties:
+        data:
+          description: Supported tokens for the current page.
+          items:
+            description: The queried token and the features that Crossmint supports for it.
+            examples:
+            - available: true
+              features:
+                creditCardPayment: true
+              token: solana:6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN
+            properties:
+              available:
+                description: '`true` when Crossmint supports the token.'
+                type: boolean
+              features:
+                description: The payment features that Crossmint supports for the token.
+                properties:
+                  creditCardPayment:
+                    description: '`true` when the token can be bought with a credit card.'
+                    type: boolean
+                required:
+                - creditCardPayment
+                title: Token features
+                type: object
+              token:
+                description: The token locator that was queried, in the format `<chain>:<tokenAddress>`.
+                type: string
+            required:
+            - available
+            - features
+            - token
+            title: The requested token and its availability
+            type: object
+          type: array
+        nextCursor:
+          description: Cursor to fetch the next page. Absent when there are no more results.
+          type: string
+        previousCursor:
+          description: Cursor to fetch the previous page. Absent on the first page.
+          type: string
+      required:
+      - data
+      title: Paginated list of supported tokens
+      type: object
+    SupportedTokenResponseDTO:
+      properties:
+        available:
+          description: '`true` when Crossmint supports the token.'
+          type: boolean
+        features:
+          description: The payment features that Crossmint supports for the token.
+          properties:
+            creditCardPayment:
+              description: '`true` when the token can be bought with a credit card.'
+              type: boolean
+          required:
+          - creditCardPayment
+          title: Token features
+          type: object
+        token:
+          description: The token locator that was queried, in the format `<chain>:<tokenAddress>`.
+          type: string
+      required:
+      - available
+      - features
+      - token
+      title: The requested token and its availability
+      type: object
+    FundWalletAmountDTO:
+      properties:
+        amount:
+          description: The amount of currency to fund the wallet with. Between 1 and 100
+          examples:
+          - 10
+          maximum: 100
+          minimum: 1
+          type: number
+        chain:
+          description: The chain to fund the wallet with
+          enum:
+          - arbitrum-sepolia
+          - avalanche-fuji
+          - base-sepolia
+          - ethereum-sepolia
+          - optimism-sepolia
+          - polygon-amoy
+          - sei-atlantic-2-testnet
+          - skale-nebula-testnet
+          - solana
+          - stellar
+          examples:
+          - base-sepolia
+          type: string
+        token:
+          const: usdxm
+          description: The currency to fund the wallet with. Only USDXM is supported.
+          examples:
+          - usdxm
+          type: string
+      required:
+      - amount
+      - chain
+      - token
+      type: object
+    WalletV1Alpha2ErrorDTO:
+      properties:
+        code:
+          description: Optional stable error code identifying the specific failure case. Present when the backend raises a structured error that consumers may want to detect programmatically.
+          examples:
+          - DEVICE_SIGNER_NOT_SUPPORTED
+          type: string
+        error:
+          const: true
+          type: boolean
+        message:
+          description: Error message
+          examples:
+          - <error message>
+          type: string
+      required:
+      - error
+      - message
+      type: object
+    ApiErrorDto:
+      properties:
+        code:
+          description: Machine-readable error code for programmatic handling
+          type: string
+        error:
+          example: true
+          type: boolean
+        message:
+          description: Human-readable error message describing what went wrong
+          type: string
+        parameters:
+          additionalProperties:
+            oneOf:
+            - items:
+                type: string
+              type: array
+            - type: string
+          description: Values that explain a coded error, such as the limit that was exceeded, the amount that remains, or the list of supported currencies.
+          type: object
+      required:
+      - error
+      - message
+      type: object
+    WalletBalanceResponseDTO:
+      description: The balances of the wallet
+      examples:
+      - balances:
+          base: '121000000'
+          ethereum: '121000000'
+          total: '242000000'
+        decimals: 6
+        token: usdc
+      - balances:
+          ethereum: '1000000000000000000'
+          total: '1000000000000000000'
+        decimals: 18
+        token: eth
+      items:
+        properties:
+          balances:
+            additionalProperties:
+              type: string
+            description: The balance of the wallet in different chains
+            propertyNames:
+              type: string
+            type: object
+          decimals:
+            description: The number of decimals of the token
+            examples:
+            - 18
+            type: number
+          token:
+            description: The token
+            enum:
+            - alphausd
+            - ape
+            - apt
+            - aurosusd
+            - avax
+            - betausd
+            - bnb
+            - bonk
+            - busd
+            - celo
+            - chz
+            - credit
+            - degen
+            - eth
+            - eurc
+            - flow
+            - fuel
+            - hbar
+            - ip
+            - matic
+            - mgusd
+            - mnt
+            - pathusd
+            - phantom-cash
+            - pirate
+            - plume
+            - pol
+            - pyusd0
+            - sei
+            - sfuel
+            - sol
+            - sui
+            - superverse
+            - thetausd
+            - u2u
+            - usdc
+            - usdce
+            - usdf
+            - usdg
+            - usdm0
+            - usdm1
+            - usdt
+            - usdxm
+            - vic
+            - weth
+            - wirex-usdc
+            - wirex-usdc
+            - wld
+            - xion
+            - xlm
+            - xmeme
+            - zcx
+            examples:
+            - eth
+            type: string
+        required:
+        - balances
+        - decimals
+        - token
+        type: object
+      type: array
+  securitySchemes:
+    apiKey:
+      description: API key required for authentication
+      in: header
+      name: X-API-KEY
+      type: apiKey
+    orderClientSecret:
+      description: The `clientSecret` returned when the order was created, sent as the raw `Authorization` header value. Lets a browser or mobile client read and continue its own order without a server-side API key.
+      in: header
+      name: Authorization
+      type: apiKey
+    userJwt:
+      bearerFormat: JWT
+      description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
+      scheme: bearer
+      type: http

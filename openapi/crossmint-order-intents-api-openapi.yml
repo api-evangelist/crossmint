@@ -1,0 +1,994 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@crossmint.com
+    name: Crossmint Support
+    url: https://www.crossmint.com
+  description: Generated from Crossmint's published product API specifications. Do not edit by hand.
+  title: Crossmint Order Intents API
+  version: 1.0.0
+servers:
+- description: Staging environment (testnets)
+  url: https://staging.crossmint.com/api
+- description: Production environment (mainnets)
+  url: https://www.crossmint.com/api
+tags:
+- name: Order Intents
+paths:
+  /unstable/order-intents:
+    get:
+      description: 'List all order intents for the authenticated user.
+
+
+        **API scope required**: `order-intents.read`'
+      operationId: orderIntents.list
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/OrderIntentResponseDto'
+                type: array
+          description: Returns the list of order intents
+      security:
+      - apiKey: []
+        userJwt: []
+      summary: List Order Intents
+      tags:
+      - Order Intents
+    post:
+      description: 'Create a new order intent.
+
+
+        **API scope required**: `order-intents.create`'
+      operationId: orderIntents.create
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderIntentInputDto'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderIntentResponseDto'
+          description: The order intent has been successfully created
+      security:
+      - apiKey: []
+        userJwt: []
+      summary: Create Order Intent
+      tags:
+      - Order Intents
+  /unstable/order-intents/{orderIntentId}:
+    delete:
+      description: 'Cancel an active order intent.
+
+
+        **API scope required**: `order-intents.revoke`'
+      operationId: orderIntents.cancel
+      parameters:
+      - in: path
+        name: orderIntentId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The order intent has been successfully cancelled
+      security:
+      - apiKey: []
+        userJwt: []
+      summary: Cancel Order Intent
+      tags:
+      - Order Intents
+    get:
+      description: 'Get a specific order intent by ID.
+
+
+        **API scope required**: `order-intents.read`'
+      operationId: orderIntents.get
+      parameters:
+      - in: path
+        name: orderIntentId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderIntentResponseDto'
+          description: Returns the order intent
+      security:
+      - apiKey: []
+        userJwt: []
+      summary: Get Order Intent
+      tags:
+      - Order Intents
+  /unstable/order-intents/{orderIntentId}/credentials:
+    post:
+      description: 'Create a payment credential from an order intent.
+
+
+        **API scope required**: `order-intents.credentials`'
+      operationId: orderIntents.credentials.create
+      parameters:
+      - in: path
+        name: orderIntentId
+        required: true
+        schema:
+          type: string
+      - description: 'Makes a retry of this request safe: a second call with the same key never consumes the amount again. Credential payloads are returned once, so a replay after a successful mint answers 409 `ORDER_INTENT_CREDENTIAL_ALREADY_ISSUED`. Without it every call is a new mint. 1 to 255 characters.'
+        in: header
+        name: Idempotency-Key
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderIntentCredentialInputDto'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderIntentCredentialResponseDto'
+          description: Returns the payment credential
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: 'The card security code must be collected again before an `encrypted-card` credential can be issued (`code: "ORDER_INTENT_CVC_RECOLLECTION_REQUIRED"`). The rail stays `pending_cvc_recollection`: recollect the CVC and retry.
+
+
+            A credential was already issued for this `Idempotency-Key` (`code: "ORDER_INTENT_CREDENTIAL_ALREADY_ISSUED"`). Credential payloads are returned once; use a new key for a new mint.'
+      security:
+      - apiKey: []
+        userJwt: []
+      summary: Create Order Intent Credential
+      tags:
+      - Order Intents
+components:
+  schemas:
+    OrderIntentResponseDto:
+      additionalProperties: false
+      properties:
+        amount:
+          additionalProperties: false
+          properties:
+            available:
+              pattern: ^\d+(\.\d{1,4})?$
+              type: string
+            currency:
+              pattern: ^[A-Za-z]{3}$
+              type: string
+            reserved:
+              pattern: ^\d+(\.\d{1,4})?$
+              type: string
+            spent:
+              pattern: ^\d+(\.\d{1,4})?$
+              type: string
+            total:
+              pattern: ^\d+(\.\d{1,4})?$
+              type: string
+          required:
+          - available
+          - currency
+          - reserved
+          - spent
+          - total
+          type: object
+        description:
+          type: string
+        expiresAt:
+          description: ISO 8601. A UTC offset is accepted. Fractional seconds are optional.
+          example: 2024-01-15 10:30:00+00:00
+          format: date-time
+          type: string
+        merchant:
+          additionalProperties: false
+          allOf:
+          - $ref: '#/components/schemas/AgenticOrderIntentMerchantDto'
+          properties:
+            acquirerBin:
+              pattern: ^\d{6}$
+              type: string
+            categoryCode:
+              pattern: ^\d{4}$
+              type: string
+            countryCode:
+              pattern: ^[A-Za-z]{2}$
+              type: string
+            name:
+              maxLength: 200
+              minLength: 1
+              type: string
+            url:
+              maxLength: 2048
+              pattern: ^https?:\/\/
+              type: string
+        orderIntentId:
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+          type: string
+        paymentMethodId:
+          minLength: 1
+          type: string
+        rails:
+          items:
+            anyOf:
+            - additionalProperties: false
+              properties:
+                credentialFormats:
+                  items:
+                    const: card
+                    type: string
+                  maxItems: 1
+                  minItems: 1
+                  type: array
+                error:
+                  additionalProperties: false
+                  properties:
+                    code:
+                      minLength: 1
+                      type: string
+                  required:
+                  - code
+                  type: object
+                rail:
+                  const: encrypted-card
+                  type: string
+                status:
+                  const: error
+                  type: string
+              required:
+              - credentialFormats
+              - error
+              - rail
+              - status
+              type: object
+            - additionalProperties: false
+              properties:
+                credentialFormats:
+                  items:
+                    const: card
+                    type: string
+                  maxItems: 1
+                  minItems: 1
+                  type: array
+                error:
+                  not: {}
+                rail:
+                  const: encrypted-card
+                  type: string
+                status:
+                  enum:
+                  - active
+                  - pending_cvc_recollection
+                  type: string
+              required:
+              - credentialFormats
+              - rail
+              - status
+              type: object
+            - additionalProperties: false
+              properties:
+                credentialFormats:
+                  items:
+                    const: identifier
+                    type: string
+                  type: array
+                error:
+                  additionalProperties: false
+                  properties:
+                    code:
+                      minLength: 1
+                      type: string
+                  required:
+                  - code
+                  type: object
+                provider:
+                  const: stripe
+                  type: string
+                rail:
+                  const: spt
+                  type: string
+                status:
+                  const: error
+                  type: string
+              required:
+              - credentialFormats
+              - error
+              - provider
+              - rail
+              - status
+              type: object
+            - additionalProperties: false
+              properties:
+                credentialFormats:
+                  items:
+                    const: identifier
+                    type: string
+                  type: array
+                error:
+                  not: {}
+                provider:
+                  const: stripe
+                  type: string
+                rail:
+                  const: spt
+                  type: string
+                status:
+                  enum:
+                  - active
+                  - pending_verification
+                  type: string
+              required:
+              - credentialFormats
+              - provider
+              - rail
+              - status
+              type: object
+            - additionalProperties: false
+              properties:
+                credentialFormats:
+                  items:
+                    enum:
+                    - card
+                    - network-token
+                    type: string
+                  type: array
+                error:
+                  additionalProperties: false
+                  properties:
+                    code:
+                      minLength: 1
+                      type: string
+                  required:
+                  - code
+                  type: object
+                provider:
+                  enum:
+                  - agentpay
+                  - vic
+                  type: string
+                rail:
+                  const: agentic-token
+                  type: string
+                status:
+                  const: error
+                  type: string
+              required:
+              - credentialFormats
+              - error
+              - provider
+              - rail
+              - status
+              type: object
+            - additionalProperties: false
+              properties:
+                credentialFormats:
+                  items:
+                    enum:
+                    - card
+                    - network-token
+                    type: string
+                  type: array
+                error:
+                  not: {}
+                provider:
+                  enum:
+                  - agentpay
+                  - vic
+                  type: string
+                rail:
+                  const: agentic-token
+                  type: string
+                status:
+                  enum:
+                  - active
+                  - pending_verification
+                  type: string
+              required:
+              - credentialFormats
+              - provider
+              - rail
+              - status
+              type: object
+          type: array
+        status:
+          enum:
+          - active
+          - cancelled
+          - expired
+          type: string
+        verificationConfig:
+          additionalProperties: false
+          properties:
+            allowanceId:
+              minLength: 1
+              type: string
+            environment:
+              enum:
+              - production
+              - test
+              type: string
+            publicApiKey:
+              type: string
+          required:
+          - allowanceId
+          - environment
+          - publicApiKey
+          type: object
+      required:
+      - amount
+      - description
+      - expiresAt
+      - orderIntentId
+      - paymentMethodId
+      - rails
+      - status
+      type: object
+    CreateOrderIntentInputDto:
+      additionalProperties: false
+      properties:
+        amount:
+          additionalProperties: false
+          properties:
+            currency:
+              pattern: ^[A-Za-z]{3}$
+              type: string
+            value:
+              pattern: ^\d+(\.\d{1,4})?$
+              type: string
+          required:
+          - currency
+          - value
+          type: object
+        description:
+          maxLength: 10000
+          minLength: 1
+          type: string
+        expiresAt:
+          description: ISO 8601. A UTC offset is accepted. Fractional seconds are optional.
+          example: 2024-01-15 10:30:00+00:00
+          format: date-time
+          type: string
+        merchant:
+          additionalProperties: false
+          allOf:
+          - $ref: '#/components/schemas/AgenticOrderIntentMerchantDto'
+          properties:
+            acquirerBin:
+              pattern: ^\d{6}$
+              type: string
+            categoryCode:
+              pattern: ^\d{4}$
+              type: string
+            countryCode:
+              pattern: ^[A-Za-z]{2}$
+              type: string
+            name:
+              maxLength: 200
+              minLength: 1
+              type: string
+            url:
+              maxLength: 2048
+              pattern: ^https?:\/\/
+              type: string
+        paymentMethodId:
+          minLength: 1
+          type: string
+      required:
+      - amount
+      - description
+      - expiresAt
+      - paymentMethodId
+      type: object
+    AgenticOrderIntentMerchantDto:
+      additionalProperties: false
+      properties:
+        acquirerBin:
+          pattern: ^\d{6}$
+          type: string
+        categoryCode:
+          pattern: ^\d{4}$
+          type: string
+        countryCode:
+          pattern: ^[A-Za-z]{2}$
+          type: string
+        name:
+          maxLength: 200
+          minLength: 1
+          type: string
+        url:
+          maxLength: 2048
+          pattern: ^https?:\/\/
+          type: string
+      required:
+      - countryCode
+      - name
+      - url
+      type: object
+    OrderIntentCredentialResponseDto:
+      oneOf:
+      - additionalProperties: false
+        properties:
+          amount:
+            additionalProperties: false
+            properties:
+              currency:
+                pattern: ^[A-Za-z]{3}$
+                type: string
+              value:
+                pattern: ^\d+(\.\d{1,4})?$
+                type: string
+            required:
+            - currency
+            - value
+            type: object
+          credential:
+            additionalProperties: false
+            properties:
+              format:
+                const: card
+                type: string
+              value:
+                minLength: 1
+                type: string
+            required:
+            - format
+            - value
+            type: object
+          expiresAt:
+            description: ISO 8601. A UTC offset is accepted. Fractional seconds are optional.
+            example: 2024-01-15 10:30:00+00:00
+            format: date-time
+            type: string
+          id:
+            format: uuid
+            pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+            type: string
+          rail:
+            const: encrypted-card
+            type: string
+        required:
+        - amount
+        - credential
+        - expiresAt
+        - id
+        - rail
+        type: object
+      - additionalProperties: false
+        properties:
+          amount:
+            additionalProperties: false
+            properties:
+              currency:
+                pattern: ^[A-Za-z]{3}$
+                type: string
+              value:
+                pattern: ^\d+(\.\d{1,4})?$
+                type: string
+            required:
+            - currency
+            - value
+            type: object
+          credential:
+            additionalProperties: false
+            properties:
+              format:
+                const: identifier
+                type: string
+              value:
+                minLength: 1
+                type: string
+            required:
+            - format
+            - value
+            type: object
+          expiresAt:
+            description: ISO 8601. A UTC offset is accepted. Fractional seconds are optional.
+            example: 2024-01-15 10:30:00+00:00
+            format: date-time
+            type: string
+          id:
+            minLength: 1
+            type: string
+          provider:
+            const: stripe
+            type: string
+          rail:
+            const: spt
+            type: string
+        required:
+        - amount
+        - credential
+        - expiresAt
+        - id
+        - provider
+        - rail
+        type: object
+      - additionalProperties: false
+        properties:
+          amount:
+            additionalProperties: false
+            properties:
+              currency:
+                pattern: ^[A-Za-z]{3}$
+                type: string
+              value:
+                pattern: ^\d+(\.\d{1,4})?$
+                type: string
+            required:
+            - currency
+            - value
+            type: object
+          credential:
+            anyOf:
+            - additionalProperties: false
+              properties:
+                format:
+                  const: card
+                  type: string
+                value:
+                  additionalProperties: false
+                  properties:
+                    cvc:
+                      type: string
+                    expirationMonth:
+                      maximum: 9007199254740991
+                      minimum: -9007199254740991
+                      type: integer
+                    expirationYear:
+                      maximum: 9007199254740991
+                      minimum: -9007199254740991
+                      type: integer
+                    number:
+                      type: string
+                  required:
+                  - cvc
+                  - expirationMonth
+                  - expirationYear
+                  - number
+                  type: object
+              required:
+              - format
+              - value
+              type: object
+            - additionalProperties: false
+              properties:
+                format:
+                  const: network-token
+                  type: string
+                value:
+                  additionalProperties: false
+                  properties:
+                    cryptogram:
+                      additionalProperties: false
+                      properties:
+                        expiresAt:
+                          description: ISO 8601. A UTC offset is accepted. Fractional seconds are optional.
+                          example: 2024-01-15 10:30:00+00:00
+                          format: date-time
+                          type: string
+                        type:
+                          const: CARD_APPLICATION_CRYPTOGRAM_SHORT_FORM
+                          type: string
+                        value:
+                          type: string
+                      required:
+                      - type
+                      - value
+                      type: object
+                    eci:
+                      type: string
+                    expirationMonth:
+                      maximum: 9007199254740991
+                      minimum: -9007199254740991
+                      type: integer
+                    expirationYear:
+                      maximum: 9007199254740991
+                      minimum: -9007199254740991
+                      type: integer
+                    paymentToken:
+                      type: string
+                  required:
+                  - cryptogram
+                  - eci
+                  - expirationMonth
+                  - expirationYear
+                  - paymentToken
+                  type: object
+              required:
+              - format
+              - value
+              type: object
+          expiresAt:
+            description: ISO 8601. A UTC offset is accepted. Fractional seconds are optional.
+            example: 2024-01-15 10:30:00+00:00
+            format: date-time
+            type: string
+          id:
+            minLength: 1
+            type: string
+          provider:
+            enum:
+            - agentpay
+            - vic
+            type: string
+          rail:
+            const: agentic-token
+            type: string
+        required:
+        - amount
+        - credential
+        - expiresAt
+        - id
+        - provider
+        - rail
+        type: object
+    ApiErrorDto:
+      properties:
+        code:
+          description: Machine-readable error code for programmatic handling
+          type: string
+        error:
+          example: true
+          type: boolean
+        message:
+          description: Human-readable error message describing what went wrong
+          type: string
+        parameters:
+          additionalProperties:
+            oneOf:
+            - items:
+                type: string
+              type: array
+            - type: string
+          description: Values that explain a coded error, such as the limit that was exceeded, the amount that remains, or the list of supported currencies.
+          type: object
+      required:
+      - error
+      - message
+      type: object
+    CreateOrderIntentCredentialInputDto:
+      oneOf:
+      - additionalProperties: false
+        properties:
+          amount:
+            additionalProperties: false
+            properties:
+              currency:
+                pattern: ^[A-Za-z]{3}$
+                type: string
+              value:
+                pattern: ^\d+(\.\d{1,4})?$
+                type: string
+            required:
+            - currency
+            - value
+            type: object
+          credential:
+            additionalProperties: false
+            properties:
+              format:
+                const: card
+                type: string
+              publicKey:
+                additionalProperties: false
+                properties:
+                  e:
+                    minLength: 1
+                    type: string
+                  kty:
+                    const: RSA
+                    type: string
+                  n:
+                    minLength: 342
+                    pattern: ^[A-Za-z0-9_-]+$
+                    type: string
+                required:
+                - e
+                - kty
+                - n
+                type: object
+            required:
+            - format
+            - publicKey
+            type: object
+          merchant:
+            additionalProperties: false
+            properties:
+              acquirerBin:
+                pattern: ^\d{6}$
+                type: string
+              categoryCode:
+                pattern: ^\d{4}$
+                type: string
+              countryCode:
+                pattern: ^[A-Za-z]{2}$
+                type: string
+              name:
+                maxLength: 200
+                minLength: 1
+                type: string
+              url:
+                maxLength: 2048
+                pattern: ^https?:\/\/
+                type: string
+            required:
+            - countryCode
+            - name
+            - url
+            type: object
+          rail:
+            const: encrypted-card
+            type: string
+        required:
+        - amount
+        - credential
+        - rail
+        type: object
+      - additionalProperties: false
+        properties:
+          amount:
+            additionalProperties: false
+            properties:
+              currency:
+                pattern: ^[A-Za-z]{3}$
+                type: string
+              value:
+                pattern: ^\d+(\.\d{1,4})?$
+                type: string
+            required:
+            - currency
+            - value
+            type: object
+          credential:
+            additionalProperties: false
+            properties:
+              format:
+                const: identifier
+                type: string
+              payload:
+                additionalProperties: false
+                properties:
+                  networkBusinessProfile:
+                    minLength: 1
+                    type: string
+                required:
+                - networkBusinessProfile
+                type: object
+            required:
+            - format
+            - payload
+            type: object
+          merchant:
+            additionalProperties: false
+            properties:
+              acquirerBin:
+                pattern: ^\d{6}$
+                type: string
+              categoryCode:
+                pattern: ^\d{4}$
+                type: string
+              countryCode:
+                pattern: ^[A-Za-z]{2}$
+                type: string
+              name:
+                maxLength: 200
+                minLength: 1
+                type: string
+              url:
+                maxLength: 2048
+                pattern: ^https?:\/\/
+                type: string
+            required:
+            - countryCode
+            - name
+            - url
+            type: object
+          provider:
+            const: stripe
+            type: string
+          rail:
+            const: spt
+            type: string
+        required:
+        - amount
+        - credential
+        - provider
+        - rail
+        type: object
+      - additionalProperties: false
+        properties:
+          amount:
+            additionalProperties: false
+            properties:
+              currency:
+                pattern: ^[A-Za-z]{3}$
+                type: string
+              value:
+                pattern: ^\d+(\.\d{1,4})?$
+                type: string
+            required:
+            - currency
+            - value
+            type: object
+          credential:
+            additionalProperties: false
+            properties:
+              format:
+                enum:
+                - card
+                - network-token
+                type: string
+            required:
+            - format
+            type: object
+          merchant:
+            additionalProperties: false
+            properties:
+              acquirerBin:
+                pattern: ^\d{6}$
+                type: string
+              categoryCode:
+                pattern: ^\d{4}$
+                type: string
+              countryCode:
+                pattern: ^[A-Za-z]{2}$
+                type: string
+              name:
+                maxLength: 200
+                minLength: 1
+                type: string
+              url:
+                maxLength: 2048
+                pattern: ^https?:\/\/
+                type: string
+            required:
+            - countryCode
+            - name
+            - url
+            type: object
+          provider:
+            enum:
+            - agentpay
+            - vic
+            type: string
+          rail:
+            const: agentic-token
+            type: string
+        required:
+        - amount
+        - credential
+        - provider
+        - rail
+        type: object
+  securitySchemes:
+    apiKey:
+      description: API key required for authentication
+      in: header
+      name: X-API-KEY
+      type: apiKey
+    orderClientSecret:
+      description: The `clientSecret` returned when the order was created, sent as the raw `Authorization` header value. Lets a browser or mobile client read and continue its own order without a server-side API key.
+      in: header
+      name: Authorization
+      type: apiKey
+    userJwt:
+      bearerFormat: JWT
+      description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
+      scheme: bearer
+      type: http

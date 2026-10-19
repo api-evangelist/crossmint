@@ -1,0 +1,700 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@crossmint.com
+    name: Crossmint Support
+    url: https://www.crossmint.com
+  description: Generated from Crossmint's published product API specifications. Do not edit by hand.
+  title: Crossmint Minting API Templates API
+  version: 1.0.0
+servers:
+- description: Staging environment (testnets)
+  url: https://staging.crossmint.com/api
+- description: Production environment (mainnets)
+  url: https://www.crossmint.com/api
+tags:
+- name: Minting API Templates
+paths:
+  /2022-06-09/collections/{collectionId}/templates:
+    get:
+      description: Get all templates in a collection (paginated)
+      operationId: collections.templates.list
+      parameters:
+      - in: path
+        name: collectionId
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: page
+        required: true
+        schema:
+          type: number
+      - in: query
+        name: perPage
+        required: true
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Templates retrieved successfully
+      security:
+      - apiKey: []
+      summary: Get Templates
+      tags:
+      - Minting API Templates
+    post:
+      description: Create a new template
+      operationId: collections.templates.create
+      parameters:
+      - in: path
+        name: collectionId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateCreationDTO'
+        required: true
+      responses:
+        '200':
+          description: Template created successfully
+      security:
+      - apiKey: []
+      summary: Create Template
+      tags:
+      - Minting API Templates
+  /2022-06-09/collections/{collectionId}/templates/{templateId}:
+    delete:
+      description: Delete an existing template
+      operationId: collections.templates.delete
+      parameters:
+      - in: path
+        name: collectionId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: templateId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Template deleted successfully
+      security:
+      - apiKey: []
+      summary: Delete Template
+      tags:
+      - Minting API Templates
+    get:
+      description: Get a single template
+      operationId: collections.templates.get
+      parameters:
+      - in: path
+        name: collectionId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: templateId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Template retrieved successfully
+      security:
+      - apiKey: []
+      summary: Get Template
+      tags:
+      - Minting API Templates
+    patch:
+      description: Update an existing template
+      operationId: collections.templates.update
+      parameters:
+      - in: path
+        name: collectionId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: templateId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateUpdateDTO'
+        required: true
+      responses:
+        '204':
+          description: Template updated successfully
+      security:
+      - apiKey: []
+      summary: Update Template
+      tags:
+      - Minting API Templates
+    put:
+      description: Create a new template with a pre-computed id, or get an existing one if the id already exists
+      operationId: collections.templates.createWithId
+      parameters:
+      - in: path
+        name: collectionId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: templateId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TemplateCreationDTO'
+        required: true
+      responses:
+        '200':
+          description: Template created successfully
+      security:
+      - apiKey: []
+      summary: Create Template (Idempotent)
+      tags:
+      - Minting API Templates
+components:
+  schemas:
+    TemplateCreationDTO:
+      properties:
+        metadata:
+          anyOf:
+          - anyOf:
+            - anyOf:
+              - anyOf:
+                - anyOf:
+                  - additionalProperties: false
+                    properties:
+                      collection:
+                        properties:
+                          family:
+                            type: string
+                          name:
+                            type: string
+                        type: object
+                      name:
+                        type: string
+                      properties:
+                        properties:
+                          category:
+                            type: string
+                          creators:
+                            items:
+                              additionalProperties: false
+                              properties:
+                                address:
+                                  type: string
+                                share:
+                                  default: 0
+                                  type: number
+                              required:
+                              - address
+                              type: object
+                            maxItems: 5
+                            type: array
+                          files:
+                            items:
+                              properties:
+                                cdn:
+                                  type: boolean
+                                type:
+                                  type: string
+                                uri:
+                                  type: string
+                              required:
+                              - type
+                              - uri
+                              type: object
+                            type: array
+                        type: object
+                      seller_fee_basis_points:
+                        maximum: 10000
+                        minimum: 0
+                        type: number
+                      symbol:
+                        type: string
+                      uri:
+                        type: string
+                    required:
+                    - name
+                    - uri
+                    type: object
+                  - properties:
+                      animation_url:
+                        type: string
+                      attributes:
+                        items:
+                          properties:
+                            trait_type:
+                              type: string
+                            value:
+                              anyOf:
+                              - type: number
+                              - type: string
+                          required:
+                          - trait_type
+                          - value
+                          type: object
+                        type: array
+                      collection:
+                        properties:
+                          family:
+                            type: string
+                          name:
+                            type: string
+                        type: object
+                      description:
+                        default: ''
+                        type: string
+                      external_url:
+                        type: string
+                      image:
+                        type: string
+                      name:
+                        type: string
+                      properties:
+                        properties:
+                          category:
+                            type: string
+                          creators:
+                            items:
+                              additionalProperties: false
+                              properties:
+                                address:
+                                  type: string
+                                share:
+                                  default: 0
+                                  type: number
+                              required:
+                              - address
+                              type: object
+                            maxItems: 5
+                            type: array
+                          files:
+                            items:
+                              properties:
+                                cdn:
+                                  type: boolean
+                                type:
+                                  type: string
+                                uri:
+                                  type: string
+                              required:
+                              - type
+                              - uri
+                              type: object
+                            type: array
+                        type: object
+                      seller_fee_basis_points:
+                        maximum: 10000
+                        minimum: 0
+                        type: number
+                      symbol:
+                        type: string
+                    required:
+                    - image
+                    - name
+                    type: object
+                - properties:
+                    animation_url:
+                      type: string
+                    attributes:
+                      items:
+                        properties:
+                          display_type:
+                            type: string
+                          trait_type:
+                            type: string
+                          value:
+                            anyOf:
+                            - type: number
+                            - type: string
+                        required:
+                        - trait_type
+                        - value
+                        type: object
+                      type: array
+                    description:
+                      maxLength: 5000
+                      type: string
+                    external_url:
+                      type: string
+                    image:
+                      type: string
+                    name:
+                      type: string
+                    uri:
+                      type: string
+                  required:
+                  - description
+                  - image
+                  - name
+                  type: object
+              - properties:
+                  animation_url:
+                    type: string
+                  attributes:
+                    items:
+                      properties:
+                        trait_type:
+                          type: string
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: string
+                      required:
+                      - trait_type
+                      - value
+                      type: object
+                    type: array
+                  description:
+                    maxLength: 5000
+                    type: string
+                  external_url:
+                    type: string
+                  image:
+                    type: string
+                  name:
+                    maxLength: 100
+                    type: string
+                  uri:
+                    type: string
+                required:
+                - description
+                - name
+                type: object
+            - properties:
+                animation_url:
+                  type: string
+                attributes:
+                  items:
+                    properties:
+                      trait_type:
+                        type: string
+                      value:
+                        anyOf:
+                        - type: number
+                        - type: string
+                    required:
+                    - trait_type
+                    - value
+                    type: object
+                  type: array
+                description:
+                  maxLength: 5000
+                  type: string
+                external_url:
+                  type: string
+                image:
+                  type: string
+                name:
+                  maxLength: 100
+                  type: string
+              required:
+              - description
+              - name
+              type: object
+          - type: string
+        onChain:
+          properties:
+            tokenId:
+              type: string
+          required:
+          - tokenId
+          type: object
+        reuploadLinkedFiles:
+          default: true
+          description: Whether to reupload linked files
+          type: boolean
+        supply:
+          description: Maximum supply of the template
+          properties:
+            limit:
+              type: number
+          required:
+          - limit
+          type: object
+      required:
+      - metadata
+      type: object
+    TemplateUpdateDTO:
+      properties:
+        metadata:
+          anyOf:
+          - anyOf:
+            - anyOf:
+              - anyOf:
+                - anyOf:
+                  - additionalProperties: false
+                    properties:
+                      collection:
+                        properties:
+                          family:
+                            type: string
+                          name:
+                            type: string
+                        type: object
+                      name:
+                        type: string
+                      properties:
+                        properties:
+                          category:
+                            type: string
+                          creators:
+                            items:
+                              additionalProperties: false
+                              properties:
+                                address:
+                                  type: string
+                                share:
+                                  default: 0
+                                  type: number
+                              required:
+                              - address
+                              type: object
+                            maxItems: 5
+                            type: array
+                          files:
+                            items:
+                              properties:
+                                cdn:
+                                  type: boolean
+                                type:
+                                  type: string
+                                uri:
+                                  type: string
+                              required:
+                              - type
+                              - uri
+                              type: object
+                            type: array
+                        type: object
+                      seller_fee_basis_points:
+                        maximum: 10000
+                        minimum: 0
+                        type: number
+                      symbol:
+                        type: string
+                      uri:
+                        type: string
+                    required:
+                    - name
+                    - uri
+                    type: object
+                  - properties:
+                      animation_url:
+                        type: string
+                      attributes:
+                        items:
+                          properties:
+                            trait_type:
+                              type: string
+                            value:
+                              anyOf:
+                              - type: number
+                              - type: string
+                          required:
+                          - trait_type
+                          - value
+                          type: object
+                        type: array
+                      collection:
+                        properties:
+                          family:
+                            type: string
+                          name:
+                            type: string
+                        type: object
+                      description:
+                        default: ''
+                        type: string
+                      external_url:
+                        type: string
+                      image:
+                        type: string
+                      name:
+                        type: string
+                      properties:
+                        properties:
+                          category:
+                            type: string
+                          creators:
+                            items:
+                              additionalProperties: false
+                              properties:
+                                address:
+                                  type: string
+                                share:
+                                  default: 0
+                                  type: number
+                              required:
+                              - address
+                              type: object
+                            maxItems: 5
+                            type: array
+                          files:
+                            items:
+                              properties:
+                                cdn:
+                                  type: boolean
+                                type:
+                                  type: string
+                                uri:
+                                  type: string
+                              required:
+                              - type
+                              - uri
+                              type: object
+                            type: array
+                        type: object
+                      seller_fee_basis_points:
+                        maximum: 10000
+                        minimum: 0
+                        type: number
+                      symbol:
+                        type: string
+                    required:
+                    - image
+                    - name
+                    type: object
+                - properties:
+                    animation_url:
+                      type: string
+                    attributes:
+                      items:
+                        properties:
+                          display_type:
+                            type: string
+                          trait_type:
+                            type: string
+                          value:
+                            anyOf:
+                            - type: number
+                            - type: string
+                        required:
+                        - trait_type
+                        - value
+                        type: object
+                      type: array
+                    description:
+                      maxLength: 5000
+                      type: string
+                    external_url:
+                      type: string
+                    image:
+                      type: string
+                    name:
+                      type: string
+                    uri:
+                      type: string
+                  required:
+                  - description
+                  - image
+                  - name
+                  type: object
+              - properties:
+                  animation_url:
+                    type: string
+                  attributes:
+                    items:
+                      properties:
+                        trait_type:
+                          type: string
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: string
+                      required:
+                      - trait_type
+                      - value
+                      type: object
+                    type: array
+                  description:
+                    maxLength: 5000
+                    type: string
+                  external_url:
+                    type: string
+                  image:
+                    type: string
+                  name:
+                    maxLength: 100
+                    type: string
+                  uri:
+                    type: string
+                required:
+                - description
+                - name
+                type: object
+            - properties:
+                animation_url:
+                  type: string
+                attributes:
+                  items:
+                    properties:
+                      trait_type:
+                        type: string
+                      value:
+                        anyOf:
+                        - type: number
+                        - type: string
+                    required:
+                    - trait_type
+                    - value
+                    type: object
+                  type: array
+                description:
+                  maxLength: 5000
+                  type: string
+                external_url:
+                  type: string
+                image:
+                  type: string
+                name:
+                  maxLength: 100
+                  type: string
+              required:
+              - description
+              - name
+              type: object
+          - type: string
+        reuploadLinkedFiles:
+          default: true
+          type: boolean
+        supply:
+          properties:
+            limit:
+              type: number
+          required:
+          - limit
+          type: object
+      type: object
+  securitySchemes:
+    apiKey:
+      description: API key required for authentication
+      in: header
+      name: X-API-KEY
+      type: apiKey
+    orderClientSecret:
+      description: The `clientSecret` returned when the order was created, sent as the raw `Authorization` header value. Lets a browser or mobile client read and continue its own order without a server-side API key.
+      in: header
+      name: Authorization
+      type: apiKey
+    userJwt:
+      bearerFormat: JWT
+      description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
+      scheme: bearer
+      type: http

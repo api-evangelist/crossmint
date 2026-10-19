@@ -110,68 +110,6 @@ apis:
   properties:
   - type: Documentation
     url: https://docs.crossmint.com/payments/headless/overview
-- aid: crossmint:crossmint-balances-api
-  name: Crossmint Balances API
-  description: The Balances API from Crossmint — 1 operation(s) for balances.
-  humanURL: https://docs.crossmint.com/wallets/introduction
-  baseURL: >-
-    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
-    (prod)
-  tags:
-  - Balances
-  properties:
-  - type: OpenAPI
-    url: openapi/crossmint-balances-api-openapi.yml
-- aid: crossmint:crossmint-signatures-api
-  name: Crossmint Signatures API
-  description: The Signatures API from Crossmint — 3 operation(s) for signatures.
-  humanURL: https://docs.crossmint.com/wallets/introduction
-  baseURL: >-
-    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
-    (prod)
-  tags:
-  - Signatures
-  properties:
-  - type: OpenAPI
-    url: openapi/crossmint-signatures-api-openapi.yml
-- aid: crossmint:crossmint-signers-api
-  name: Crossmint Signers API
-  description: The Signers API from Crossmint — 2 operation(s) for signers.
-  humanURL: https://docs.crossmint.com/wallets/introduction
-  baseURL: >-
-    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
-    (prod)
-  tags:
-  - Signers
-  properties:
-  - type: OpenAPI
-    url: openapi/crossmint-signers-api-openapi.yml
-- aid: crossmint:crossmint-transactions-api
-  name: Crossmint Transactions API
-  description: The Transactions API from Crossmint — 3 operation(s) for transactions.
-  humanURL: https://docs.crossmint.com/wallets/introduction
-  baseURL: >-
-    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
-    (prod)
-  tags:
-  - Transaction
-  tags_raw:
-  - Transactions
-  properties:
-  - type: OpenAPI
-    url: openapi/crossmint-transactions-api-openapi.yml
-- aid: crossmint:crossmint-transfers-api
-  name: Crossmint Transfers API
-  description: The Transfers API from Crossmint — 2 operation(s) for transfers.
-  humanURL: https://docs.crossmint.com/wallets/introduction
-  baseURL: >-
-    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
-    (prod)
-  tags:
-  - Transfers
-  properties:
-  - type: OpenAPI
-    url: openapi/crossmint-transfers-api-openapi.yml
 - aid: crossmint:crossmint-wallets-api
   name: Crossmint Wallets API
   description: The Wallets API from Crossmint — 2 operation(s) for wallets.
@@ -184,20 +122,316 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/crossmint-wallets-api-openapi.yml
-- aid: crossmint:crossmint-nfts-api
-  name: Crossmint NF Ts API
-  description: The NFTs API from Crossmint — 1 operation(s) for nfts.
+- aid: crossmint:crossmint-actions-api
+  name: Crossmint Actions API
+  description: The actions API from Crossmint — 1 operation(s) for actions.
   humanURL: https://docs.crossmint.com/wallets/introduction
   baseURL: >-
     https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
     (prod)
   tags:
-  - NFT
-  tags_raw:
-  - NFTs
+  - actions
   properties:
   - type: OpenAPI
-    url: openapi/crossmint-nfts-api-openapi.yml
+    url: openapi/crossmint-actions-api-openapi.yml
+- aid: crossmint:crossmint-agent-checkout-browser-profiles-api
+  name: Crossmint Agent Checkout Browser Profiles API
+  description: >-
+    The Agent Checkout Browser Profiles API from Crossmint — 2 operation(s) for agent checkout browser
+    profiles.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Agent Checkout Browser Profiles
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-agent-checkout-browser-profiles-api-openapi.yml
+- aid: crossmint:crossmint-agent-checkout-buyer-profiles-api
+  name: Crossmint Agent Checkout Buyer Profiles API
+  description: >-
+    The Agent Checkout Buyer Profiles API from Crossmint — 2 operation(s) for agent checkout buyer profiles.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Agent Checkout Buyer Profiles
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-agent-checkout-buyer-profiles-api-openapi.yml
+- aid: crossmint:crossmint-agent-checkouts-api
+  name: Crossmint Agent Checkouts API
+  description: The Agent Checkouts API from Crossmint — 5 operation(s) for agent checkouts.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Agent Checkouts
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-agent-checkouts-api-openapi.yml
+- aid: crossmint:crossmint-headless-checkout-orders-api
+  name: Crossmint Headless Checkout Orders API
+  description: >-
+    The Headless Checkout Orders API from Crossmint — 4 operation(s) for headless checkout orders.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Headless Checkout Orders
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-headless-checkout-orders-api-openapi.yml
+- aid: crossmint:crossmint-ip-story-protocol-api
+  name: Crossmint IP Story Protocol API
+  description: The IP Story Protocol API from Crossmint — 14 operation(s) for ip story protocol.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - IP Story Protocol
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-ip-story-protocol-api-openapi.yml
+- aid: crossmint:crossmint-minting-api-collections-api
+  name: Crossmint Minting API Collections API
+  description: >-
+    The Minting API Collections API from Crossmint — 2 operation(s) for minting api collections.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Minting API Collections
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-minting-api-collections-api-openapi.yml
+- aid: crossmint:crossmint-minting-api-nfts-api
+  name: Crossmint Minting API NFTs API
+  description: The Minting API NFTs API from Crossmint — 3 operation(s) for minting api nfts.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Minting API NFTs
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-minting-api-nfts-api-openapi.yml
+- aid: crossmint:crossmint-minting-api-nfts-v1-alpha1-api
+  name: Crossmint Minting API NFTs V1 Alpha1 API
+  description: >-
+    The Minting API NFTs V1 Alpha1 API from Crossmint — 1 operation(s) for minting api nfts v1 alpha1.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Minting API NFTs V1 Alpha1
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-minting-api-nfts-v1-alpha1-api-openapi.yml
+- aid: crossmint:crossmint-minting-api-sfts-api
+  name: Crossmint Minting API SFTs API
+  description: The Minting API SFTs API from Crossmint — 1 operation(s) for minting api sfts.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Minting API SFTs
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-minting-api-sfts-api-openapi.yml
+- aid: crossmint:crossmint-minting-api-templates-api
+  name: Crossmint Minting API Templates API
+  description: The Minting API Templates API from Crossmint — 2 operation(s) for minting api templates.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Minting API Templates
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-minting-api-templates-api-openapi.yml
+- aid: crossmint:crossmint-minting-api-unstable-api
+  name: Crossmint Minting API Unstable API
+  description: The Minting API Unstable API from Crossmint — 3 operation(s) for minting api unstable.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Minting API Unstable
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-minting-api-unstable-api-openapi.yml
+- aid: crossmint:crossmint-order-intents-api
+  name: Crossmint Order Intents API
+  description: The Order Intents API from Crossmint — 3 operation(s) for order intents.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Order Intents
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-order-intents-api-openapi.yml
+- aid: crossmint:crossmint-payment-methods-api
+  name: Crossmint Payment Methods API
+  description: The Payment Methods API from Crossmint — 3 operation(s) for payment methods.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Payment Methods
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-payment-methods-api-openapi.yml
+- aid: crossmint:crossmint-tokens-api
+  name: Crossmint Tokens API
+  description: The Tokens API from Crossmint — 2 operation(s) for tokens.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Tokens
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-tokens-api-openapi.yml
+- aid: crossmint:crossmint-tokens-by-locator-api
+  name: Crossmint Tokens by Locator API
+  description: The Tokens by Locator API from Crossmint — 1 operation(s) for tokens by locator.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Tokens by Locator
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-tokens-by-locator-api-openapi.yml
+- aid: crossmint:crossmint-unstable-api
+  name: Crossmint Unstable API
+  description: The Unstable API from Crossmint — 5 operation(s) for unstable.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Unstable
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-unstable-api-openapi.yml
+- aid: crossmint:crossmint-unstable-tokens-by-locator-api
+  name: Crossmint Unstable Tokens by Locator API
+  description: >-
+    The Unstable Tokens by Locator API from Crossmint — 1 operation(s) for unstable tokens by locator.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Unstable Tokens by Locator
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-unstable-tokens-by-locator-api-openapi.yml
+- aid: crossmint:crossmint-user-documents-api
+  name: Crossmint User Documents API
+  description: The User Documents API from Crossmint — 2 operation(s) for user documents.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - User Documents
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-user-documents-api-openapi.yml
+- aid: crossmint:crossmint-users-api
+  name: Crossmint Users API
+  description: The Users API from Crossmint — 3 operation(s) for users.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-users-api-openapi.yml
+- aid: crossmint:crossmint-users-linked-wallets-api
+  name: Crossmint Users - Linked Wallets API
+  description: >-
+    The Users - Linked Wallets API from Crossmint — 1 operation(s) for users - linked wallets.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Users - Linked Wallets
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-users-linked-wallets-api-openapi.yml
+- aid: crossmint:crossmint-v1-alpha1-api
+  name: Crossmint V1 Alpha1 API
+  description: The V1 Alpha1 API from Crossmint — 2 operation(s) for v1 alpha1.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - V1 Alpha1
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-v1-alpha1-api-openapi.yml
+- aid: crossmint:crossmint-v1-alpha2-api
+  name: Crossmint V1 Alpha2 API
+  description: The V1 Alpha2 API from Crossmint — 3 operation(s) for v1 alpha2.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - V1 Alpha2
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-v1-alpha2-api-openapi.yml
+- aid: crossmint:crossmint-verifiable-credentials-api
+  name: Crossmint Verifiable Credentials API
+  description: >-
+    The Verifiable Credentials API from Crossmint — 2 operation(s) for verifiable credentials.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Verifiable Credentials
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-verifiable-credentials-api-openapi.yml
+- aid: crossmint:crossmint-verifiable-credentials-types-api
+  name: Crossmint Verifiable Credentials Types API
+  description: >-
+    The Verifiable Credentials Types API from Crossmint — 2 operation(s) for verifiable credentials types.
+  humanURL: https://docs.crossmint.com/wallets/introduction
+  baseURL: >-
+    https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
+    (prod)
+  tags:
+  - Verifiable Credentials Types
+  properties:
+  - type: OpenAPI
+    url: openapi/crossmint-verifiable-credentials-types-api-openapi.yml
 common:
   - type: AgenticAccess
     url: agentic-access/crossmint-agentic-access.yml

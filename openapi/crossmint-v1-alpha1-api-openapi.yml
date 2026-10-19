@@ -1,0 +1,296 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@crossmint.com
+    name: Crossmint Support
+    url: https://www.crossmint.com
+  description: Generated from Crossmint's published product API specifications. Do not edit by hand.
+  title: Crossmint V1 Alpha1 API
+  version: 1.0.0
+servers:
+- description: Staging environment (testnets)
+  url: https://staging.crossmint.com/api
+- description: Production environment (mainnets)
+  url: https://www.crossmint.com/api
+tags:
+- name: V1 Alpha1
+paths:
+  /v1-alpha1/wallets/{locator}/nfts:
+    get:
+      description: 'Retrieves NFTs from a wallet.
+
+
+        **API scope required**: `wallets:nfts.read`'
+      operationId: wallets.v1Alpha1.nfts.list
+      parameters:
+      - description: Page number, starting at 1.
+        in: query
+        name: page
+        required: false
+        schema:
+          allOf:
+          - pattern: ^[1-9]\d*$
+          - pattern: ^\d+$
+          type: string
+      - description: Number of items per page.
+        in: query
+        name: perPage
+        required: false
+        schema:
+          allOf:
+          - pattern: ^[1-9]\d*$
+          - pattern: ^\d+$
+          type: string
+      - description: Filter NFTs by contract address. Can be a single address or an array of addresses.
+        in: query
+        name: contractAddress
+        required: false
+        schema:
+          items:
+            type: string
+          type: array
+      - description: Filter NFTs by token ID
+        in: query
+        name: tokenId
+        required: false
+        schema:
+          examples:
+          - '123'
+          type: string
+      - in: path
+        name: locator
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WalletNFTsResponseDto'
+          description: Returns an array of NFTs in the wallet
+      security:
+      - apiKey: []
+      summary: Get NFTs from Wallet
+      tags:
+      - V1 Alpha1
+  /v1-alpha1/wallets/{walletLocator}/credential_nfts:
+    get:
+      description: 'Returns the NFTs in a wallet that carry verifiable credentials, one page at a time. Each item is the NFT with its `locator` and metadata; Get Credential by NFT Locator returns the credential itself.
+
+
+        **API scope required**: `credentials.read`
+
+
+        **Related**: Retrieve credentials'
+      operationId: wallets.credentials.list
+      parameters:
+      - description: Page number, starting at 1.
+        in: query
+        name: page
+        required: false
+        schema:
+          allOf:
+          - pattern: ^[1-9]\d*$
+          - pattern: ^\d+$
+          type: string
+      - description: Number of items per page.
+        in: query
+        name: perPage
+        required: false
+        schema:
+          allOf:
+          - pattern: ^[1-9]\d*$
+          - pattern: ^\d+$
+          type: string
+      - description: The wallet's locator, `<chain>:<walletAddress>`.
+        in: path
+        name: walletLocator
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The wallet's credential NFTs for the requested page.
+      security:
+      - apiKey: []
+      summary: Get Credential NFTs
+      tags:
+      - V1 Alpha1
+components:
+  schemas:
+    WalletNFTsResponseDto:
+      description: Array of NFTs in the wallet
+      examples:
+      - chain: ethereum
+        isSpam: false
+        locator: ethereum:0x1234567890123456789012345678901234567890:123
+        metadata:
+          attributes:
+          - trait_type: Rarity
+            value: Legendary
+          - trait_type: Level
+            value: 10
+          description: An example NFT
+          image: https://example.com/image.png
+          name: Example NFT
+      items:
+        description: Token projection representing an NFT in a wallet
+        properties:
+          chain:
+            description: The blockchain chain
+            enum:
+            - abstract
+            - abstract-testnet
+            - apechain
+            - aptos
+            - arbitrum
+            - arbitrum-sepolia
+            - arbitrumnova
+            - arc
+            - arc-testnet
+            - astar-zkevm
+            - avalanche
+            - avalanche-fuji
+            - base
+            - base-goerli
+            - base-sepolia
+            - bsc
+            - bsc-testnet
+            - celo
+            - celo-sepolia
+            - chiliz
+            - chiliz-spicy-testnet
+            - coti
+            - coti-testnet
+            - curtis
+            - ethereum
+            - ethereum-goerli
+            - ethereum-sepolia
+            - flow
+            - flow-testnet
+            - hedera
+            - hedera-testnet
+            - hypersonic-testnet
+            - lightlink
+            - lightlink-pegasus
+            - mantle
+            - mantle-sepolia
+            - mode
+            - mode-sepolia
+            - optimism
+            - optimism-goerli
+            - optimism-sepolia
+            - plume
+            - plume-testnet
+            - polygon
+            - polygon-amoy
+            - polygon-mumbai
+            - rari
+            - rari-testnet
+            - robinhood-chain
+            - robinhood-chain-testnet
+            - scroll
+            - scroll-sepolia
+            - sei-atlantic-2-testnet
+            - sei-pacific-1
+            - shape
+            - shape-sepolia
+            - skale-nebula
+            - skale-nebula-testnet
+            - solana
+            - soneium
+            - soneium-minato-testnet
+            - space
+            - space-testnet
+            - stellar
+            - story
+            - story-testnet
+            - sui
+            - tempo
+            - tempo-testnet
+            - u2u-nebulas
+            - u2u-solaris
+            - verify-testnet
+            - viction
+            - viction-testnet
+            - world-chain
+            - world-chain-sepolia
+            - xai
+            - xai-sepolia-testnet
+            - xion
+            - zenchain-testnet
+            - zkatana
+            - zkyoto
+            - zora
+            - zora-goerli
+            - zora-sepolia
+            examples:
+            - ethereum
+            type: string
+          isSpam:
+            description: Whether the token is marked as spam
+            type: boolean
+          locator:
+            description: The unique locator for the token
+            examples:
+            - ethereum:0x1234567890123456789012345678901234567890:123
+            type: string
+          metadata:
+            description: NFT metadata including name, description, image, and attributes
+            properties:
+              animation_url:
+                type: string
+              attributes:
+                items:
+                  properties:
+                    trait_type:
+                      type: string
+                    value:
+                      anyOf:
+                      - type: boolean
+                      - type: number
+                      - type: string
+                  required:
+                  - trait_type
+                  - value
+                  type: object
+                type: array
+              description:
+                type: string
+              external_url:
+                type: string
+              image:
+                type: string
+              name:
+                type: string
+            type: object
+          subscription:
+            description: Subscription information if the token has subscription properties
+            properties:
+              expiresAt:
+                type: string
+            required:
+            - expiresAt
+            type: object
+        required:
+        - chain
+        - locator
+        type: object
+      type: array
+  securitySchemes:
+    apiKey:
+      description: API key required for authentication
+      in: header
+      name: X-API-KEY
+      type: apiKey
+    orderClientSecret:
+      description: The `clientSecret` returned when the order was created, sent as the raw `Authorization` header value. Lets a browser or mobile client read and continue its own order without a server-side API key.
+      in: header
+      name: Authorization
+      type: apiKey
+    userJwt:
+      bearerFormat: JWT
+      description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
+      scheme: bearer
+      type: http

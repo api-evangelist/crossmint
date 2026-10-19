@@ -1,0 +1,52 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@crossmint.com
+    name: Crossmint Support
+    url: https://www.crossmint.com
+  description: Generated from Crossmint's published product API specifications. Do not edit by hand.
+  title: Crossmint Actions API
+  version: 1.0.0
+servers:
+- description: Staging environment (testnets)
+  url: https://staging.crossmint.com/api
+- description: Production environment (mainnets)
+  url: https://www.crossmint.com/api
+tags:
+- name: Actions
+paths:
+  /2022-06-09/actions/{actionId}:
+    get:
+      description: Get the status of an asynchronous action by its id
+      operationId: actions.get
+      parameters:
+      - in: path
+        name: actionId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Action retrieved successfully
+      security:
+      - apiKey: []
+      summary: Get Action Status
+      tags:
+      - Actions
+components:
+  securitySchemes:
+    apiKey:
+      description: API key required for authentication
+      in: header
+      name: X-API-KEY
+      type: apiKey
+    orderClientSecret:
+      description: The `clientSecret` returned when the order was created, sent as the raw `Authorization` header value. Lets a browser or mobile client read and continue its own order without a server-side API key.
+      in: header
+      name: Authorization
+      type: apiKey
+    userJwt:
+      bearerFormat: JWT
+      description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
+      scheme: bearer
+      type: http

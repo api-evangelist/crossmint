@@ -1,0 +1,505 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@crossmint.com
+    name: Crossmint Support
+    url: https://www.crossmint.com
+  description: Generated from Crossmint's published product API specifications. Do not edit by hand.
+  title: Crossmint Agent Checkout Browser Profiles API
+  version: 1.0.0
+servers:
+- description: Staging environment (testnets)
+  url: https://staging.crossmint.com/api
+- description: Production environment (mainnets)
+  url: https://www.crossmint.com/api
+tags:
+- name: Agent Checkout Browser Profiles
+paths:
+  /unstable/agent-checkouts/browser-profiles:
+    get:
+      description: 'List the authenticated user''s browser profiles, newest first.
+
+
+        **API scope required**: `agent-checkouts.browser-profiles.read`'
+      operationId: agentCheckouts.browserProfiles.list
+      parameters:
+      - description: 'Server-side auth only: the subject to act on behalf of, namespaced under the key''s project. Defaults to a fixed service subject when omitted. Ignored for client-side (JWT) auth, where the subject comes from the token.'
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: cursor
+        required: false
+        schema:
+          minLength: 1
+          type: string
+      - in: query
+        name: limit
+        required: false
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCheckoutBrowserProfileListResponseDTO'
+          description: Returns the user's browser profile, or an empty list.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: List Browser Profiles
+      tags:
+      - Agent Checkout Browser Profiles
+    post:
+      description: 'Create a subject-scoped browser profile: a durable browser identity that lets a user''s merchant login be reused across checkout runs instead of signing in on every run.
+
+
+        A user has at most one browser profile, and it accumulates saved state across merchants.
+
+
+        **API scope required**: `agent-checkouts.browser-profiles.create`'
+      operationId: agentCheckouts.browserProfiles.create
+      parameters:
+      - description: 'Server-side auth only: the subject to act on behalf of, namespaced under the key''s project. Defaults to a fixed service subject when omitted. Ignored for client-side (JWT) auth, where the subject comes from the token.'
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAgentCheckoutBrowserProfileDTO'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCheckoutBrowserProfileResponseDTO'
+          description: The browser profile was created.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The user already has a browser profile.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: Create Browser Profile
+      tags:
+      - Agent Checkout Browser Profiles
+  /unstable/agent-checkouts/browser-profiles/{id}:
+    delete:
+      description: 'Log the user out and erase their saved browser state. This is irreversible.
+
+
+        It does not cancel checkouts already running with the profile: those runs continue, and erasure completes once they finish. A `503` means erasure could not be scheduled and the profile is intact — retry.
+
+
+        **API scope required**: `agent-checkouts.browser-profiles.delete`'
+      operationId: agentCheckouts.browserProfiles.delete
+      parameters:
+      - description: 'Server-side auth only: the subject to act on behalf of, namespaced under the key''s project. Defaults to a fixed service subject when omitted. Ignored for client-side (JWT) auth, where the subject comes from the token.'
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+          type: string
+      responses:
+        '204':
+          description: The browser profile was deleted and erasure of its state was scheduled.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Not found.
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The request conflicts with the current state of the resource.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Erasure could not be scheduled. The browser profile is unchanged — retry.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: Delete Browser Profile
+      tags:
+      - Agent Checkout Browser Profiles
+    get:
+      description: 'Retrieve a browser profile owned by the authenticated user. The response carries metadata only: what a checkout run did with the profile is reported on that run, not here.
+
+
+        A profile owned by another user returns `404`, not `403`.
+
+
+        **API scope required**: `agent-checkouts.browser-profiles.read`'
+      operationId: agentCheckouts.browserProfiles.get
+      parameters:
+      - description: 'Server-side auth only: the subject to act on behalf of, namespaced under the key''s project. Defaults to a fixed service subject when omitted. Ignored for client-side (JWT) auth, where the subject comes from the token.'
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCheckoutBrowserProfileResponseDTO'
+          description: Returns the browser profile.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Not found.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: Get Browser Profile
+      tags:
+      - Agent Checkout Browser Profiles
+    patch:
+      description: 'Rename a browser profile. `label` is the only editable field.
+
+
+        **API scope required**: `agent-checkouts.browser-profiles.update`'
+      operationId: agentCheckouts.browserProfiles.update
+      parameters:
+      - description: 'Server-side auth only: the subject to act on behalf of, namespaced under the key''s project. Defaults to a fixed service subject when omitted. Ignored for client-side (JWT) auth, where the subject comes from the token.'
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAgentCheckoutBrowserProfileDTO'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCheckoutBrowserProfileResponseDTO'
+          description: Returns the updated browser profile.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Not found.
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The request conflicts with the current state of the resource.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: Update Browser Profile
+      tags:
+      - Agent Checkout Browser Profiles
+components:
+  schemas:
+    UpdateAgentCheckoutBrowserProfileDTO:
+      properties:
+        label:
+          maxLength: 120
+          minLength: 1
+          type: string
+      required:
+      - label
+      type: object
+    AgentCheckoutBrowserProfileResponseDTO:
+      properties:
+        createdAt:
+          minLength: 1
+          type: string
+        id:
+          allOf:
+          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        label:
+          maxLength: 120
+          minLength: 1
+          type: string
+        updatedAt:
+          minLength: 1
+          type: string
+      required:
+      - createdAt
+      - id
+      - updatedAt
+      type: object
+    CreateAgentCheckoutBrowserProfileDTO:
+      properties:
+        label:
+          maxLength: 120
+          minLength: 1
+          type: string
+      type: object
+    AgentCheckoutBrowserProfileListResponseDTO:
+      properties:
+        data:
+          items:
+            properties:
+              createdAt:
+                minLength: 1
+                type: string
+              id:
+                allOf:
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                type: string
+              label:
+                maxLength: 120
+                minLength: 1
+                type: string
+              updatedAt:
+                minLength: 1
+                type: string
+            required:
+            - createdAt
+            - id
+            - updatedAt
+            type: object
+          type: array
+        nextCursor:
+          anyOf:
+          - minLength: 1
+            type: string
+          - type: 'null'
+      required:
+      - data
+      - nextCursor
+      type: object
+    ApiErrorDto:
+      properties:
+        code:
+          description: Machine-readable error code for programmatic handling
+          type: string
+        error:
+          example: true
+          type: boolean
+        message:
+          description: Human-readable error message describing what went wrong
+          type: string
+        parameters:
+          additionalProperties:
+            oneOf:
+            - items:
+                type: string
+              type: array
+            - type: string
+          description: Values that explain a coded error, such as the limit that was exceeded, the amount that remains, or the list of supported currencies.
+          type: object
+      required:
+      - error
+      - message
+      type: object
+  securitySchemes:
+    apiKey:
+      description: API key required for authentication
+      in: header
+      name: X-API-KEY
+      type: apiKey
+    orderClientSecret:
+      description: The `clientSecret` returned when the order was created, sent as the raw `Authorization` header value. Lets a browser or mobile client read and continue its own order without a server-side API key.
+      in: header
+      name: Authorization
+      type: apiKey
+    userJwt:
+      bearerFormat: JWT
+      description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
+      scheme: bearer
+      type: http

@@ -1,0 +1,714 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@crossmint.com
+    name: Crossmint Support
+    url: https://www.crossmint.com
+  description: Generated from Crossmint's published product API specifications. Do not edit by hand.
+  title: Crossmint Agent Checkout Buyer Profiles API
+  version: 1.0.0
+servers:
+- description: Staging environment (testnets)
+  url: https://staging.crossmint.com/api
+- description: Production environment (mainnets)
+  url: https://www.crossmint.com/api
+tags:
+- name: Agent Checkout Buyer Profiles
+paths:
+  /unstable/agent-checkouts/buyer-profiles:
+    get:
+      description: 'List the authenticated user''s buyer profiles, newest first. Paginate with the opaque `cursor` from `nextCursor`.
+
+
+        **API scope required**: `agent-checkouts.buyer-profiles.read`'
+      operationId: agentCheckouts.buyerProfiles.list
+      parameters:
+      - description: 'Server-side auth only: the subject to act on behalf of, namespaced under the key''s project. Defaults to a fixed service subject when omitted. Ignored for client-side (JWT) auth, where the subject comes from the token.'
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: cursor
+        required: false
+        schema:
+          minLength: 1
+          type: string
+      - in: query
+        name: limit
+        required: false
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCheckoutBuyerProfileListResponseDTO'
+          description: Returns one page of the user's buyer profiles.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: List Buyer Profiles
+      tags:
+      - Agent Checkout Buyer Profiles
+    post:
+      description: 'Create a subject-scoped buyer profile (buyer identity + global shipping address) that Universal Checkout can prefill during a checkout run. Payment data is never stored.
+
+
+        **API scope required**: `agent-checkouts.buyer-profiles.create`'
+      operationId: agentCheckouts.buyerProfiles.create
+      parameters:
+      - description: 'Server-side auth only: the subject to act on behalf of, namespaced under the key''s project. Defaults to a fixed service subject when omitted. Ignored for client-side (JWT) auth, where the subject comes from the token.'
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAgentCheckoutBuyerProfileDTO'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCheckoutBuyerProfileResponseDTO'
+          description: The buyer profile was created.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The request conflicts with the current state of the resource.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: Create Buyer Profile
+      tags:
+      - Agent Checkout Buyer Profiles
+  /unstable/agent-checkouts/buyer-profiles/{id}:
+    delete:
+      description: 'Delete a buyer profile owned by the authenticated user.
+
+
+        **API scope required**: `agent-checkouts.buyer-profiles.delete`'
+      operationId: agentCheckouts.buyerProfiles.delete
+      parameters:
+      - description: 'Server-side auth only: the subject to act on behalf of, namespaced under the key''s project. Defaults to a fixed service subject when omitted. Ignored for client-side (JWT) auth, where the subject comes from the token.'
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+          type: string
+      responses:
+        '204':
+          description: The buyer profile was deleted.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Not found.
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The request conflicts with the current state of the resource.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: Delete Buyer Profile
+      tags:
+      - Agent Checkout Buyer Profiles
+    get:
+      description: 'Retrieve a buyer profile owned by the authenticated user.
+
+
+        **API scope required**: `agent-checkouts.buyer-profiles.read`'
+      operationId: agentCheckouts.buyerProfiles.get
+      parameters:
+      - description: 'Server-side auth only: the subject to act on behalf of, namespaced under the key''s project. Defaults to a fixed service subject when omitted. Ignored for client-side (JWT) auth, where the subject comes from the token.'
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCheckoutBuyerProfileResponseDTO'
+          description: Returns the buyer profile.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Not found.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: Get Buyer Profile
+      tags:
+      - Agent Checkout Buyer Profiles
+    patch:
+      description: 'Update a buyer profile''s writable fields (any non-empty subset).
+
+
+        **API scope required**: `agent-checkouts.buyer-profiles.update`'
+      operationId: agentCheckouts.buyerProfiles.update
+      parameters:
+      - description: 'Server-side auth only: the subject to act on behalf of, namespaced under the key''s project. Defaults to a fixed service subject when omitted. Ignored for client-side (JWT) auth, where the subject comes from the token.'
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          format: uuid
+          pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAgentCheckoutBuyerProfileDTO'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCheckoutBuyerProfileResponseDTO'
+          description: Returns the updated buyer profile.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Not found.
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The request conflicts with the current state of the resource.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: Update Buyer Profile
+      tags:
+      - Agent Checkout Buyer Profiles
+components:
+  schemas:
+    AgentCheckoutBuyerProfileResponseDTO:
+      properties:
+        contact:
+          properties:
+            email:
+              allOf:
+              - pattern: ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+              - pattern: ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+              maxLength: 254
+              type: string
+            phone:
+              maxLength: 40
+              minLength: 1
+              type: string
+          type: object
+        createdAt:
+          minLength: 1
+          type: string
+        id:
+          allOf:
+          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        label:
+          maxLength: 120
+          minLength: 1
+          type: string
+        name:
+          properties:
+            first:
+              maxLength: 100
+              minLength: 1
+              type: string
+            last:
+              maxLength: 100
+              minLength: 1
+              type: string
+          type: object
+        shipping:
+          properties:
+            addressLines:
+              items:
+                maxLength: 200
+                minLength: 1
+                type: string
+              minItems: 1
+              type: array
+            administrativeAreaCode:
+              anyOf:
+              - type: 'null'
+              - type: string
+            countryCode:
+              description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+              type: string
+            locality:
+              maxLength: 120
+              minLength: 1
+              type: string
+            postalCode:
+              anyOf:
+              - maxLength: 40
+                minLength: 1
+                type: string
+              - type: 'null'
+          required:
+          - addressLines
+          - countryCode
+          - locality
+          type: object
+        updatedAt:
+          minLength: 1
+          type: string
+      required:
+      - createdAt
+      - id
+      - shipping
+      - updatedAt
+      type: object
+    UpdateAgentCheckoutBuyerProfileDTO:
+      properties:
+        contact:
+          properties:
+            email:
+              allOf:
+              - pattern: ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+              - pattern: ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+              maxLength: 254
+              type: string
+            phone:
+              maxLength: 40
+              minLength: 1
+              type: string
+          type: object
+        label:
+          maxLength: 120
+          minLength: 1
+          type: string
+        name:
+          properties:
+            first:
+              maxLength: 100
+              minLength: 1
+              type: string
+            last:
+              maxLength: 100
+              minLength: 1
+              type: string
+          type: object
+        shipping:
+          properties:
+            addressLines:
+              items:
+                maxLength: 200
+                minLength: 1
+                type: string
+              minItems: 1
+              type: array
+            administrativeAreaCode:
+              anyOf:
+              - type: 'null'
+              - type: string
+            countryCode:
+              description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+              type: string
+            locality:
+              maxLength: 120
+              minLength: 1
+              type: string
+            postalCode:
+              anyOf:
+              - maxLength: 40
+                minLength: 1
+                type: string
+              - type: 'null'
+          type: object
+      type: object
+    CreateAgentCheckoutBuyerProfileDTO:
+      properties:
+        contact:
+          properties:
+            email:
+              allOf:
+              - pattern: ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+              - pattern: ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+              maxLength: 254
+              type: string
+            phone:
+              maxLength: 40
+              minLength: 1
+              type: string
+          type: object
+        label:
+          maxLength: 120
+          minLength: 1
+          type: string
+        name:
+          properties:
+            first:
+              maxLength: 100
+              minLength: 1
+              type: string
+            last:
+              maxLength: 100
+              minLength: 1
+              type: string
+          type: object
+        shipping:
+          properties:
+            addressLines:
+              items:
+                maxLength: 200
+                minLength: 1
+                type: string
+              minItems: 1
+              type: array
+            administrativeAreaCode:
+              anyOf:
+              - type: 'null'
+              - type: string
+            countryCode:
+              description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+              type: string
+            locality:
+              maxLength: 120
+              minLength: 1
+              type: string
+            postalCode:
+              anyOf:
+              - maxLength: 40
+                minLength: 1
+                type: string
+              - type: 'null'
+          required:
+          - addressLines
+          - countryCode
+          - locality
+          type: object
+      required:
+      - shipping
+      type: object
+    ApiErrorDto:
+      properties:
+        code:
+          description: Machine-readable error code for programmatic handling
+          type: string
+        error:
+          example: true
+          type: boolean
+        message:
+          description: Human-readable error message describing what went wrong
+          type: string
+        parameters:
+          additionalProperties:
+            oneOf:
+            - items:
+                type: string
+              type: array
+            - type: string
+          description: Values that explain a coded error, such as the limit that was exceeded, the amount that remains, or the list of supported currencies.
+          type: object
+      required:
+      - error
+      - message
+      type: object
+    AgentCheckoutBuyerProfileListResponseDTO:
+      properties:
+        data:
+          items:
+            properties:
+              contact:
+                properties:
+                  email:
+                    allOf:
+                    - pattern: ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+                    - pattern: ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+                    maxLength: 254
+                    type: string
+                  phone:
+                    maxLength: 40
+                    minLength: 1
+                    type: string
+                type: object
+              createdAt:
+                minLength: 1
+                type: string
+              id:
+                allOf:
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                type: string
+              label:
+                maxLength: 120
+                minLength: 1
+                type: string
+              name:
+                properties:
+                  first:
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                  last:
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                type: object
+              shipping:
+                properties:
+                  addressLines:
+                    items:
+                      maxLength: 200
+                      minLength: 1
+                      type: string
+                    minItems: 1
+                    type: array
+                  administrativeAreaCode:
+                    anyOf:
+                    - type: 'null'
+                    - type: string
+                  countryCode:
+                    description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                    type: string
+                  locality:
+                    maxLength: 120
+                    minLength: 1
+                    type: string
+                  postalCode:
+                    anyOf:
+                    - maxLength: 40
+                      minLength: 1
+                      type: string
+                    - type: 'null'
+                required:
+                - addressLines
+                - countryCode
+                - locality
+                type: object
+              updatedAt:
+                minLength: 1
+                type: string
+            required:
+            - createdAt
+            - id
+            - shipping
+            - updatedAt
+            type: object
+          type: array
+        nextCursor:
+          anyOf:
+          - minLength: 1
+            type: string
+          - type: 'null'
+      required:
+      - data
+      - nextCursor
+      type: object
+  securitySchemes:
+    apiKey:
+      description: API key required for authentication
+      in: header
+      name: X-API-KEY
+      type: apiKey
+    orderClientSecret:
+      description: The `clientSecret` returned when the order was created, sent as the raw `Authorization` header value. Lets a browser or mobile client read and continue its own order without a server-side API key.
+      in: header
+      name: Authorization
+      type: apiKey
+    userJwt:
+      bearerFormat: JWT
+      description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
+      scheme: bearer
+      type: http

@@ -1,0 +1,4353 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@crossmint.com
+    name: Crossmint Support
+    url: https://www.crossmint.com
+  description: Generated from Crossmint's published product API specifications. Do not edit by hand.
+  title: Crossmint Agent Checkouts API
+  version: 1.0.0
+servers:
+- description: Staging environment (testnets)
+  url: https://staging.crossmint.com/api
+- description: Production environment (mainnets)
+  url: https://www.crossmint.com/api
+tags:
+- name: Agent Checkouts
+paths:
+  /unstable/agent-checkouts:
+    get:
+      description: 'Returns the authenticated user''s checkout runs, newest first, one page at a time. Each run carries its `status`, the task and start URL it was created with, and `knownSpentUsdMicros` so far.
+
+
+        **API scope required**: `agent-checkouts.read`'
+      operationId: agentCheckouts.list
+      parameters:
+      - description: Server-side subject to act on behalf of. Ignored for client-side user auth.
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: cursor
+        required: false
+        schema:
+          minLength: 1
+          type: string
+      - in: query
+        name: limit
+        required: false
+        schema:
+          maximum: 100
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCheckoutListResponseDTO'
+          description: Paginated list of checkout runs. `nextCursor` and `previousCursor` are present when more pages exist in that direction.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: List Agent Checkouts
+      tags:
+      - Agent Checkouts
+    post:
+      description: 'Starts a checkout run: the agent opens `startUrl`, works toward `task` within `constraints`, and reports back through the run''s messages. A `buyerProfileId` supplies identity and shipping details; a `browserProfileId` reuses a saved merchant login. The response is the run in `queued` status. Poll Get Agent Checkout or stream its messages to follow it.
+
+
+        **API scope required**: `agent-checkouts.create`'
+      operationId: agentCheckouts.create
+      parameters:
+      - description: Server-side subject to act on behalf of. Ignored for client-side user auth.
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAgentCheckoutDTO'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCheckoutResponseDTO'
+          description: The checkout run was accepted.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The request conflicts with the current state of the resource.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: Create Agent Checkout
+      tags:
+      - Agent Checkouts
+  /unstable/agent-checkouts/{id}:
+    get:
+      description: 'Returns one checkout run by ID. Read `status` to see where it is: `queued`, `running`, `awaiting_input` when the agent needs an answer from the user, then `succeeded`, `failed`, `cancelled`, or `blocked`. `requiredAction` describes what an `awaiting_input` run is waiting for.
+
+
+        **API scope required**: `agent-checkouts.read`'
+      operationId: agentCheckouts.get
+      parameters:
+      - description: Server-side subject to act on behalf of. Ignored for client-side user auth.
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          minLength: 1
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCheckoutResponseDTO'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Not found.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: Get Agent Checkout
+      tags:
+      - Agent Checkouts
+  /unstable/agent-checkouts/{id}/cancel:
+    post:
+      description: 'Requests cancellation of a checkout run. The response is an acknowledgement; the run reaches `cancelled` once the agent stops, which Get Agent Checkout reflects. Returns `409` when the run can no longer be cancelled.
+
+
+        **API scope required**: `agent-checkouts.cancel`'
+      operationId: agentCheckouts.cancel
+      parameters:
+      - description: Server-side subject to act on behalf of. Ignored for client-side user auth.
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          minLength: 1
+          type: string
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCheckoutCancellationAcceptedDTO'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Not found.
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The request conflicts with the current state of the resource.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: Cancel Agent Checkout
+      tags:
+      - Agent Checkouts
+  /unstable/agent-checkouts/{id}/messages:
+    get:
+      description: 'Returns the run''s conversation, one page at a time: the agent''s progress reports (`assistant`) and the user''s answers (`user`). Each message carries the run `revision` it was recorded at. For a live view, use Stream Agent Checkout Messages.
+
+
+        **API scope required**: `agent-checkouts.read`'
+      operationId: agentCheckouts.messages.list
+      parameters:
+      - description: Server-side subject to act on behalf of. Ignored for client-side user auth.
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          minLength: 1
+          type: string
+      - in: query
+        name: cursor
+        required: false
+        schema:
+          minLength: 1
+          type: string
+      - in: query
+        name: limit
+        required: false
+        schema:
+          default: 50
+          maximum: 100
+          minimum: 1
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCheckoutMessageListResponseDTO'
+          description: Paginated list of the run's messages. `nextCursor` and `previousCursor` are present when more pages exist in that direction.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Not found.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: List Agent Checkout Messages
+      tags:
+      - Agent Checkouts
+    post:
+      description: 'Sends a message into a checkout run: free text, or an `input_response` that answers an `awaiting_input` run by submitting form values, choosing an alternative, or declining. The response acknowledges receipt with a `messageId`; the agent''s reply arrives as a later message.
+
+
+        **API scope required**: `agent-checkouts.update`'
+      operationId: agentCheckouts.messages.create
+      parameters:
+      - description: Server-side subject to act on behalf of. Ignored for client-side user auth.
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          minLength: 1
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendAgentCheckoutMessageDTO'
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentCheckoutMessageAcceptedDTO'
+          description: ''
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Not found.
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The request conflicts with the current state of the resource.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: Send Agent Checkout Message
+      tags:
+      - Agent Checkouts
+  /unstable/agent-checkouts/{id}/messages/stream:
+    get:
+      description: 'Server-sent events for one checkout: `message.upsert` carries a message, `run.updated` a run update, and each event''s `id` is the cursor to resume from. Resume with `last-event-id` or `after`; omit both to stream from the start.
+
+
+        The checkout is read before the stream opens, so an unknown or inaccessible one returns a normal error status. A stale resume cursor, or one from another checkout, closes the stream instead: re-read the message history and reconnect from the cursor it reports.
+
+
+        **API scope required**: `agent-checkouts.read`'
+      operationId: agentCheckouts.messages.stream
+      parameters:
+      - description: Server-side subject to act on behalf of. Ignored for client-side user auth.
+        in: header
+        name: x-crossmint-user-id
+        required: false
+        schema:
+          type: string
+      - in: path
+        name: id
+        required: true
+        schema:
+          minLength: 1
+          type: string
+      - in: query
+        name: after
+        required: false
+        schema:
+          minLength: 1
+          type: string
+      - description: Resume cursor from the last delivered event. Takes precedence over `after`.
+        in: header
+        name: last-event-id
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            text/event-stream:
+              schema:
+                additionalProperties: true
+                type: object
+          description: SSE frames carry a message object for `message.upsert` or a run update object for `run.updated`. The frame's event name identifies the payload; its id is the resume cursor.
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Invalid arguments. Make sure you are following the API specification.
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Missing or invalid API key.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Forbidden. Ensure the credentials are correct and the authentication source is allowed.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Not found.
+        '502':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: The upstream service returned an incompatible response.
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiErrorDto'
+          description: Service unavailable. Try again in a few minutes. If the issue persists, contact Crossmint support.
+      security:
+      - apiKey: []
+        userJwt: []
+      - apiKey: []
+      summary: Stream Agent Checkout Messages
+      tags:
+      - Agent Checkouts
+components:
+  schemas:
+    AgentCheckoutCancellationAcceptedDTO:
+      properties:
+        runId:
+          minLength: 1
+          type: string
+        status:
+          enum:
+          - accepted
+          type: string
+      required:
+      - runId
+      - status
+      type: object
+    SendAgentCheckoutMessageDTO:
+      properties:
+        id:
+          maxLength: 200
+          minLength: 1
+          type: string
+        parts:
+          items:
+            anyOf:
+            - properties:
+                action:
+                  enum:
+                  - alternative
+                  type: string
+                requestId:
+                  minLength: 1
+                  type: string
+                text:
+                  maxLength: 20000
+                  minLength: 1
+                  type: string
+                type:
+                  enum:
+                  - input_response
+                  type: string
+              required:
+              - action
+              - requestId
+              - text
+              - type
+              type: object
+            - properties:
+                action:
+                  enum:
+                  - decline
+                  type: string
+                requestId:
+                  minLength: 1
+                  type: string
+                type:
+                  enum:
+                  - input_response
+                  type: string
+              required:
+              - action
+              - requestId
+              - type
+              type: object
+            - properties:
+                action:
+                  enum:
+                  - submit
+                  type: string
+                requestId:
+                  minLength: 1
+                  type: string
+                response:
+                  anyOf:
+                  - properties:
+                      answers:
+                        additionalProperties:
+                          anyOf:
+                          - anyOf:
+                            - items:
+                                type: string
+                              type: array
+                            - type: boolean
+                            - type: number
+                            - type: string
+                          - properties:
+                              protectedInputId:
+                                maxLength: 200
+                                minLength: 1
+                                type: string
+                            required:
+                            - protectedInputId
+                            type: object
+                        propertyNames:
+                          type: string
+                        type: object
+                      kind:
+                        enum:
+                        - form
+                        type: string
+                    required:
+                    - answers
+                    - kind
+                    type: object
+                  - properties:
+                      kind:
+                        enum:
+                        - payment
+                        type: string
+                      orderIntentId:
+                        maxLength: 200
+                        minLength: 1
+                        type: string
+                    required:
+                    - kind
+                    - orderIntentId
+                    type: object
+                type:
+                  enum:
+                  - input_response
+                  type: string
+              required:
+              - action
+              - requestId
+              - response
+              - type
+              type: object
+            - properties:
+                text:
+                  maxLength: 20000
+                  minLength: 1
+                  type: string
+                type:
+                  enum:
+                  - text
+                  type: string
+              required:
+              - text
+              - type
+              type: object
+          maxItems: 1
+          minItems: 1
+          type: array
+      required:
+      - id
+      - parts
+      type: object
+    AgentCheckoutMessageListResponseDTO:
+      properties:
+        data:
+          items:
+            properties:
+              createdAt:
+                allOf:
+                - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                type: string
+              id:
+                minLength: 1
+                type: string
+              parts:
+                items:
+                  anyOf:
+                  - anyOf:
+                    - properties:
+                        action:
+                          enum:
+                          - alternative
+                          type: string
+                        requestId:
+                          minLength: 1
+                          type: string
+                        text:
+                          minLength: 1
+                          type: string
+                        type:
+                          enum:
+                          - input_response
+                          type: string
+                      required:
+                      - action
+                      - requestId
+                      - text
+                      - type
+                      type: object
+                    - properties:
+                        action:
+                          enum:
+                          - decline
+                          type: string
+                        requestId:
+                          minLength: 1
+                          type: string
+                        type:
+                          enum:
+                          - input_response
+                          type: string
+                      required:
+                      - action
+                      - requestId
+                      - type
+                      type: object
+                    - properties:
+                        action:
+                          enum:
+                          - submit
+                          type: string
+                        requestId:
+                          minLength: 1
+                          type: string
+                        response:
+                          anyOf:
+                          - properties:
+                              application:
+                                enum:
+                                - already_satisfied
+                                - not_attempted
+                                - unresolved
+                                - verified
+                                type: string
+                              kind:
+                                enum:
+                                - payment
+                                type: string
+                            required:
+                            - application
+                            - kind
+                            type: object
+                          - properties:
+                              fields:
+                                items:
+                                  properties:
+                                    answer:
+                                      enum:
+                                      - omitted
+                                      - provided
+                                      type: string
+                                    application:
+                                      enum:
+                                      - already_satisfied
+                                      - not_attempted
+                                      - unresolved
+                                      - verified
+                                      type: string
+                                    key:
+                                      minLength: 1
+                                      type: string
+                                    label:
+                                      minLength: 1
+                                      type: string
+                                  required:
+                                  - answer
+                                  - application
+                                  - key
+                                  - label
+                                  type: object
+                                type: array
+                              kind:
+                                enum:
+                                - form
+                                type: string
+                            required:
+                            - fields
+                            - kind
+                            type: object
+                        type:
+                          enum:
+                          - input_response
+                          type: string
+                      required:
+                      - action
+                      - requestId
+                      - response
+                      - type
+                      type: object
+                  - properties:
+                      code:
+                        enum:
+                        - merchant.access_blocked
+                        - merchant.checkout_error
+                        - merchant.fulfillment_unavailable
+                        - merchant.human_verification_required
+                        - merchant.no_safe_path
+                        - merchant.payment_declined
+                        - policy.max_cost_exceeded
+                        - product.item_unavailable
+                        - product.requested_option_unavailable
+                        type: string
+                      outcome:
+                        enum:
+                        - blocked
+                        type: string
+                      summary:
+                        maxLength: 2000
+                        minLength: 1
+                        type: string
+                      type:
+                        enum:
+                        - result
+                        type: string
+                    required:
+                    - code
+                    - outcome
+                    - summary
+                    - type
+                    type: object
+                  - properties:
+                      delivery:
+                        enum:
+                        - accepted
+                        - consumed
+                        type: string
+                      text:
+                        maxLength: 20000
+                        minLength: 1
+                        type: string
+                      type:
+                        enum:
+                        - text
+                        type: string
+                    required:
+                    - text
+                    - type
+                    type: object
+                  - properties:
+                      expiresAt:
+                        allOf:
+                        - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                        - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                        type: string
+                      interaction:
+                        anyOf:
+                        - properties:
+                            amount:
+                              properties:
+                                currency:
+                                  pattern: ^[A-Z]{3}$
+                                  type: string
+                                kind:
+                                  enum:
+                                  - exact
+                                  - maximum
+                                  type: string
+                                value:
+                                  pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                                  type: string
+                              required:
+                              - currency
+                              - kind
+                              - value
+                              type: object
+                            kind:
+                              enum:
+                              - payment
+                              type: string
+                            merchant:
+                              properties:
+                                countryCode:
+                                  description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                                  type: string
+                                name:
+                                  maxLength: 200
+                                  minLength: 1
+                                  type: string
+                                url:
+                                  maxLength: 2048
+                                  pattern: ^https?:\/\/
+                                  type: string
+                              required:
+                              - countryCode
+                              - name
+                              - url
+                              type: object
+                            method:
+                              enum:
+                              - card
+                              type: string
+                            purpose:
+                              enum:
+                              - checkout_payment
+                              type: string
+                          required:
+                          - amount
+                          - kind
+                          - merchant
+                          - method
+                          - purpose
+                          type: object
+                        - properties:
+                            amount:
+                              properties:
+                                currency:
+                                  pattern: ^[A-Z]{3}$
+                                  type: string
+                                kind:
+                                  enum:
+                                  - exact
+                                  type: string
+                                value:
+                                  pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                                  type: string
+                              required:
+                              - currency
+                              - kind
+                              - value
+                              type: object
+                            authorizationUrl:
+                              description: Absolute URL of UC's hosted Klarna page, where the buyer pays with Klarna. Anyone with this URL can open the payment page; do not log or share it.
+                              maxLength: 2048
+                              pattern: ^https?:\/\/[^\/?#]+\/payments\/klarna\/[^\/?#]+\/[A-Za-z0-9_-]{32}$
+                              type: string
+                            kind:
+                              enum:
+                              - payment
+                              type: string
+                            merchant:
+                              properties:
+                                url:
+                                  maxLength: 2048
+                                  pattern: ^https?:\/\/
+                                  type: string
+                              required:
+                              - url
+                              type: object
+                            method:
+                              enum:
+                              - klarna
+                              type: string
+                            purpose:
+                              enum:
+                              - checkout_payment
+                              type: string
+                          required:
+                          - amount
+                          - authorizationUrl
+                          - kind
+                          - merchant
+                          - method
+                          - purpose
+                          type: object
+                        - properties:
+                            fields:
+                              items:
+                                anyOf:
+                                - properties:
+                                    handling:
+                                      enum:
+                                      - protected
+                                      type: string
+                                    input:
+                                      anyOf:
+                                      - properties:
+                                          autoComplete:
+                                            enum:
+                                            - current-password
+                                            - email
+                                            - family-name
+                                            - given-name
+                                            - name
+                                            - new-password
+                                            - 'off'
+                                            - 'on'
+                                            - one-time-code
+                                            - postal-code
+                                            - street-address
+                                            - tel
+                                            - username
+                                            type: string
+                                          display:
+                                            enum:
+                                            - masked
+                                            type: string
+                                          inputMode:
+                                            enum:
+                                            - decimal
+                                            - email
+                                            - none
+                                            - numeric
+                                            - search
+                                            - tel
+                                            - text
+                                            - url
+                                            type: string
+                                          kind:
+                                            enum:
+                                            - text
+                                            type: string
+                                          multiline:
+                                            const: false
+                                            type: boolean
+                                          placeholder:
+                                            type: string
+                                        required:
+                                        - kind
+                                        type: object
+                                      - properties:
+                                          kind:
+                                            enum:
+                                            - integer
+                                            type: string
+                                        required:
+                                        - kind
+                                        type: object
+                                      - properties:
+                                          kind:
+                                            enum:
+                                            - number
+                                            type: string
+                                        required:
+                                        - kind
+                                        type: object
+                                    key:
+                                      minLength: 1
+                                      pattern: ^(?!(?:__proto__|constructor|prototype)$)[\s\S]+$
+                                      type: string
+                                    label:
+                                      type: string
+                                    required:
+                                      type: boolean
+                                  required:
+                                  - handling
+                                  - input
+                                  - key
+                                  - label
+                                  - required
+                                  type: object
+                                - properties:
+                                    handling:
+                                      enum:
+                                      - standard
+                                      type: string
+                                    input:
+                                      anyOf:
+                                      - properties:
+                                          autoComplete:
+                                            enum:
+                                            - current-password
+                                            - email
+                                            - family-name
+                                            - given-name
+                                            - name
+                                            - new-password
+                                            - 'off'
+                                            - 'on'
+                                            - one-time-code
+                                            - postal-code
+                                            - street-address
+                                            - tel
+                                            - username
+                                            type: string
+                                          display:
+                                            enum:
+                                            - masked
+                                            type: string
+                                          inputMode:
+                                            enum:
+                                            - decimal
+                                            - email
+                                            - none
+                                            - numeric
+                                            - search
+                                            - tel
+                                            - text
+                                            - url
+                                            type: string
+                                          kind:
+                                            enum:
+                                            - text
+                                            type: string
+                                          multiline:
+                                            type: boolean
+                                          placeholder:
+                                            type: string
+                                        required:
+                                        - kind
+                                        type: object
+                                      - properties:
+                                          kind:
+                                            enum:
+                                            - boolean
+                                            type: string
+                                        required:
+                                        - kind
+                                        type: object
+                                      - properties:
+                                          kind:
+                                            enum:
+                                            - choice
+                                            type: string
+                                          options:
+                                            items:
+                                              properties:
+                                                disabled:
+                                                  type: boolean
+                                                label:
+                                                  minLength: 1
+                                                  type: string
+                                                placeholder:
+                                                  type: boolean
+                                                selected:
+                                                  type: boolean
+                                                value:
+                                                  minLength: 1
+                                                  type: string
+                                              required:
+                                              - disabled
+                                              - label
+                                              - placeholder
+                                              - selected
+                                              - value
+                                              type: object
+                                            minItems: 1
+                                            type: array
+                                          selection:
+                                            anyOf:
+                                            - properties:
+                                                kind:
+                                                  enum:
+                                                  - many
+                                                  type: string
+                                                max:
+                                                  maximum: 9007199254740991
+                                                  minimum: 0
+                                                  type: integer
+                                                min:
+                                                  maximum: 9007199254740991
+                                                  minimum: 0
+                                                  type: integer
+                                              required:
+                                              - kind
+                                              - min
+                                              type: object
+                                            - properties:
+                                                kind:
+                                                  enum:
+                                                  - one
+                                                  type: string
+                                              required:
+                                              - kind
+                                              type: object
+                                        required:
+                                        - kind
+                                        - options
+                                        - selection
+                                        type: object
+                                      - properties:
+                                          kind:
+                                            enum:
+                                            - integer
+                                            type: string
+                                        required:
+                                        - kind
+                                        type: object
+                                      - properties:
+                                          kind:
+                                            enum:
+                                            - number
+                                            type: string
+                                        required:
+                                        - kind
+                                        type: object
+                                    key:
+                                      minLength: 1
+                                      pattern: ^(?!(?:__proto__|constructor|prototype)$)[\s\S]+$
+                                      type: string
+                                    label:
+                                      type: string
+                                    required:
+                                      type: boolean
+                                  required:
+                                  - handling
+                                  - input
+                                  - key
+                                  - label
+                                  - required
+                                  type: object
+                              minItems: 1
+                              type: array
+                            kind:
+                              enum:
+                              - form
+                              type: string
+                          required:
+                          - fields
+                          - kind
+                          type: object
+                      question:
+                        minLength: 1
+                        type: string
+                      requestId:
+                        minLength: 1
+                        type: string
+                      status:
+                        enum:
+                        - closed
+                        - open
+                        type: string
+                      type:
+                        enum:
+                        - input_request
+                        type: string
+                    required:
+                    - expiresAt
+                    - interaction
+                    - question
+                    - requestId
+                    - status
+                    - type
+                    type: object
+                  - properties:
+                      operations:
+                        items:
+                          anyOf:
+                          - properties:
+                              count:
+                                maximum: 9007199254740991
+                                minimum: -9007199254740991
+                                type: integer
+                              kind:
+                                enum:
+                                - apply_buyer_information
+                                - apply_payment
+                                - cdp
+                                - click
+                                - create_checkout
+                                - evaluate
+                                - fill
+                                - inspect
+                                - lookup_product
+                                - navigate
+                                - observe
+                                - press
+                                - read_playbook
+                                - scroll
+                                - search_catalog
+                                - select
+                                - wait
+                                type: string
+                            required:
+                            - count
+                            - kind
+                            type: object
+                          - properties:
+                              count:
+                                maximum: 9007199254740991
+                                minimum: -9007199254740991
+                                type: integer
+                              kind:
+                                enum:
+                                - call_webmcp_tool
+                                type: string
+                              tool:
+                                description: WebMCP tool name
+                                minLength: 1
+                                type: string
+                            required:
+                            - count
+                            - kind
+                            - tool
+                            type: object
+                        type: array
+                      status:
+                        enum:
+                        - completed
+                        - incomplete
+                        - running
+                        - uncertain
+                        type: string
+                      type:
+                        enum:
+                        - activity
+                        type: string
+                    required:
+                    - operations
+                    - status
+                    - type
+                    type: object
+                  - properties:
+                      outcome:
+                        enum:
+                        - cancelled
+                        type: string
+                      summary:
+                        maxLength: 2000
+                        minLength: 1
+                        type: string
+                      type:
+                        enum:
+                        - result
+                        type: string
+                    required:
+                    - outcome
+                    - summary
+                    - type
+                    type: object
+                  - properties:
+                      outcome:
+                        enum:
+                        - failed
+                        type: string
+                      summary:
+                        maxLength: 2000
+                        minLength: 1
+                        type: string
+                      type:
+                        enum:
+                        - result
+                        type: string
+                    required:
+                    - outcome
+                    - summary
+                    - type
+                    type: object
+                  - properties:
+                      outcome:
+                        enum:
+                        - succeeded
+                        type: string
+                      purchase:
+                        anyOf:
+                        - properties:
+                            kind:
+                              enum:
+                              - confirmed_without_receipt
+                              type: string
+                          required:
+                          - kind
+                          type: object
+                        - properties:
+                            kind:
+                              enum:
+                              - receipt_captured
+                              type: string
+                            receipt:
+                              properties:
+                                merchantOrderId:
+                                  maxLength: 500
+                                  minLength: 1
+                                  type: string
+                                total:
+                                  properties:
+                                    amount:
+                                      pattern: ^(?:0|[1-9]\d{0,14})(?:\.\d{1,6})?$
+                                      type: string
+                                    currency:
+                                      pattern: ^[A-Z]{3}$
+                                      type: string
+                                  required:
+                                  - amount
+                                  - currency
+                                  type: object
+                              required:
+                              - total
+                              type: object
+                          required:
+                          - kind
+                          - receipt
+                          type: object
+                      summary:
+                        maxLength: 2000
+                        minLength: 1
+                        type: string
+                      type:
+                        enum:
+                        - result
+                        type: string
+                    required:
+                    - outcome
+                    - purchase
+                    - summary
+                    - type
+                    type: object
+                  - properties:
+                      text:
+                        maxLength: 240
+                        minLength: 1
+                        type: string
+                      type:
+                        enum:
+                        - progress
+                        type: string
+                    required:
+                    - text
+                    - type
+                    type: object
+                minItems: 1
+                type: array
+              revision:
+                description: Monotonically increasing version of this message. Replace a message with the same ID only when this value increases
+                maximum: 9007199254740991
+                minimum: -9007199254740991
+                type: integer
+              role:
+                enum:
+                - assistant
+                - user
+                type: string
+            required:
+            - createdAt
+            - id
+            - parts
+            - revision
+            - role
+            type: object
+          type: array
+        nextCursor:
+          anyOf:
+          - minLength: 1
+            type: string
+          - type: 'null'
+        streamCursor:
+          description: Resume the public run stream after the state represented by this page
+          minLength: 1
+          type: string
+      required:
+      - data
+      - nextCursor
+      - streamCursor
+      type: object
+    AgentCheckoutListResponseDTO:
+      properties:
+        data:
+          items:
+            anyOf:
+            - properties:
+                browser:
+                  anyOf:
+                  - properties:
+                      embedUrl:
+                        format: uri
+                        type: string
+                      permissions:
+                        items:
+                          enum:
+                          - read
+                          type: string
+                        maxItems: 1
+                        minItems: 1
+                        readOnly: true
+                        type: array
+                    required:
+                    - embedUrl
+                    - permissions
+                    type: object
+                  - type: 'null'
+                createdAt:
+                  allOf:
+                  - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                  - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                  type: string
+                input:
+                  properties:
+                    browser:
+                      description: Browser profile and requested location, or a redacted caller-owned browser; at least one property
+                      properties:
+                        cdp:
+                          description: A caller-owned CDP browser was supplied; its endpoint is never returned
+                          properties:
+                            redacted:
+                              const: true
+                              type: boolean
+                          required:
+                          - redacted
+                          type: object
+                        location:
+                          properties:
+                            countryCode:
+                              description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                              type: string
+                            type:
+                              enum:
+                              - country
+                              type: string
+                          required:
+                          - countryCode
+                          - type
+                          type: object
+                        profileId:
+                          allOf:
+                          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          type: string
+                      type: object
+                    buyerProfileId:
+                      allOf:
+                      - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                      - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                      type: string
+                    constraints:
+                      properties:
+                        maxCost:
+                          properties:
+                            amount:
+                              pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                              type: string
+                            currency:
+                              pattern: ^[A-Z]{3}$
+                              type: string
+                          required:
+                          - amount
+                          - currency
+                          type: object
+                      required:
+                      - maxCost
+                      type: object
+                    merchantGuidance:
+                      maxLength: 20000
+                      minLength: 1
+                      type: string
+                    request:
+                      properties:
+                        startUrl:
+                          format: uri
+                          type: string
+                        task:
+                          maxLength: 20000
+                          minLength: 1
+                          type: string
+                      required:
+                      - startUrl
+                      type: object
+                  required:
+                  - constraints
+                  - request
+                  type: object
+                reason:
+                  enum:
+                  - accounting_unavailable
+                  - browser_location_unsupported
+                  - browser_session_lost
+                  - cancelled
+                  - cost_limit
+                  - input_expired
+                  - model_error
+                  - reconciliation_required
+                  - runtime_error
+                  type: string
+                requiredAction:
+                  anyOf:
+                  - type: 'null'
+                  - type: 'null'
+                revision:
+                  description: Monotonically increasing version of this run snapshot. When combining polling and stream updates, retain the snapshot with the greatest revision; values may skip and have no meaning beyond ordering
+                  maximum: 9007199254740991
+                  minimum: 0
+                  type: integer
+                runId:
+                  minLength: 1
+                  type: string
+                status:
+                  enum:
+                  - failed
+                  type: string
+              required:
+              - browser
+              - createdAt
+              - input
+              - reason
+              - requiredAction
+              - revision
+              - runId
+              - status
+              type: object
+            - properties:
+                browser:
+                  anyOf:
+                  - properties:
+                      embedUrl:
+                        format: uri
+                        type: string
+                      permissions:
+                        items:
+                          enum:
+                          - read
+                          type: string
+                        maxItems: 1
+                        minItems: 1
+                        readOnly: true
+                        type: array
+                    required:
+                    - embedUrl
+                    - permissions
+                    type: object
+                  - type: 'null'
+                createdAt:
+                  allOf:
+                  - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                  - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                  type: string
+                input:
+                  properties:
+                    browser:
+                      description: Browser profile and requested location, or a redacted caller-owned browser; at least one property
+                      properties:
+                        cdp:
+                          description: A caller-owned CDP browser was supplied; its endpoint is never returned
+                          properties:
+                            redacted:
+                              const: true
+                              type: boolean
+                          required:
+                          - redacted
+                          type: object
+                        location:
+                          properties:
+                            countryCode:
+                              description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                              type: string
+                            type:
+                              enum:
+                              - country
+                              type: string
+                          required:
+                          - countryCode
+                          - type
+                          type: object
+                        profileId:
+                          allOf:
+                          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          type: string
+                      type: object
+                    buyerProfileId:
+                      allOf:
+                      - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                      - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                      type: string
+                    constraints:
+                      properties:
+                        maxCost:
+                          properties:
+                            amount:
+                              pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                              type: string
+                            currency:
+                              pattern: ^[A-Z]{3}$
+                              type: string
+                          required:
+                          - amount
+                          - currency
+                          type: object
+                      required:
+                      - maxCost
+                      type: object
+                    merchantGuidance:
+                      maxLength: 20000
+                      minLength: 1
+                      type: string
+                    request:
+                      properties:
+                        startUrl:
+                          format: uri
+                          type: string
+                        task:
+                          maxLength: 20000
+                          minLength: 1
+                          type: string
+                      required:
+                      - startUrl
+                      type: object
+                  required:
+                  - constraints
+                  - request
+                  type: object
+                requiredAction:
+                  anyOf:
+                  - type: 'null'
+                  - type: 'null'
+                result:
+                  properties:
+                    code:
+                      enum:
+                      - merchant.access_blocked
+                      - merchant.checkout_error
+                      - merchant.fulfillment_unavailable
+                      - merchant.human_verification_required
+                      - merchant.no_safe_path
+                      - merchant.payment_declined
+                      - policy.max_cost_exceeded
+                      - product.item_unavailable
+                      - product.requested_option_unavailable
+                      type: string
+                    outcome:
+                      enum:
+                      - blocked
+                      type: string
+                    summary:
+                      maxLength: 2000
+                      minLength: 1
+                      type: string
+                  required:
+                  - code
+                  - outcome
+                  - summary
+                  type: object
+                revision:
+                  description: Monotonically increasing version of this run snapshot. When combining polling and stream updates, retain the snapshot with the greatest revision; values may skip and have no meaning beyond ordering
+                  maximum: 9007199254740991
+                  minimum: 0
+                  type: integer
+                runId:
+                  minLength: 1
+                  type: string
+                status:
+                  enum:
+                  - blocked
+                  type: string
+              required:
+              - browser
+              - createdAt
+              - input
+              - requiredAction
+              - result
+              - revision
+              - runId
+              - status
+              type: object
+            - properties:
+                browser:
+                  anyOf:
+                  - properties:
+                      embedUrl:
+                        format: uri
+                        type: string
+                      permissions:
+                        items:
+                          enum:
+                          - read
+                          type: string
+                        maxItems: 1
+                        minItems: 1
+                        readOnly: true
+                        type: array
+                    required:
+                    - embedUrl
+                    - permissions
+                    type: object
+                  - type: 'null'
+                createdAt:
+                  allOf:
+                  - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                  - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                  type: string
+                input:
+                  properties:
+                    browser:
+                      description: Browser profile and requested location, or a redacted caller-owned browser; at least one property
+                      properties:
+                        cdp:
+                          description: A caller-owned CDP browser was supplied; its endpoint is never returned
+                          properties:
+                            redacted:
+                              const: true
+                              type: boolean
+                          required:
+                          - redacted
+                          type: object
+                        location:
+                          properties:
+                            countryCode:
+                              description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                              type: string
+                            type:
+                              enum:
+                              - country
+                              type: string
+                          required:
+                          - countryCode
+                          - type
+                          type: object
+                        profileId:
+                          allOf:
+                          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          type: string
+                      type: object
+                    buyerProfileId:
+                      allOf:
+                      - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                      - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                      type: string
+                    constraints:
+                      properties:
+                        maxCost:
+                          properties:
+                            amount:
+                              pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                              type: string
+                            currency:
+                              pattern: ^[A-Z]{3}$
+                              type: string
+                          required:
+                          - amount
+                          - currency
+                          type: object
+                      required:
+                      - maxCost
+                      type: object
+                    merchantGuidance:
+                      maxLength: 20000
+                      minLength: 1
+                      type: string
+                    request:
+                      properties:
+                        startUrl:
+                          format: uri
+                          type: string
+                        task:
+                          maxLength: 20000
+                          minLength: 1
+                          type: string
+                      required:
+                      - startUrl
+                      type: object
+                  required:
+                  - constraints
+                  - request
+                  type: object
+                requiredAction:
+                  anyOf:
+                  - type: 'null'
+                  - type: 'null'
+                result:
+                  properties:
+                    outcome:
+                      enum:
+                      - cancelled
+                      type: string
+                    summary:
+                      maxLength: 2000
+                      minLength: 1
+                      type: string
+                  required:
+                  - outcome
+                  - summary
+                  type: object
+                revision:
+                  description: Monotonically increasing version of this run snapshot. When combining polling and stream updates, retain the snapshot with the greatest revision; values may skip and have no meaning beyond ordering
+                  maximum: 9007199254740991
+                  minimum: 0
+                  type: integer
+                runId:
+                  minLength: 1
+                  type: string
+                status:
+                  enum:
+                  - cancelled
+                  type: string
+              required:
+              - browser
+              - createdAt
+              - input
+              - requiredAction
+              - result
+              - revision
+              - runId
+              - status
+              type: object
+            - properties:
+                browser:
+                  anyOf:
+                  - properties:
+                      embedUrl:
+                        format: uri
+                        type: string
+                      permissions:
+                        items:
+                          enum:
+                          - read
+                          type: string
+                        maxItems: 1
+                        minItems: 1
+                        readOnly: true
+                        type: array
+                    required:
+                    - embedUrl
+                    - permissions
+                    type: object
+                  - type: 'null'
+                createdAt:
+                  allOf:
+                  - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                  - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                  type: string
+                input:
+                  properties:
+                    browser:
+                      description: Browser profile and requested location, or a redacted caller-owned browser; at least one property
+                      properties:
+                        cdp:
+                          description: A caller-owned CDP browser was supplied; its endpoint is never returned
+                          properties:
+                            redacted:
+                              const: true
+                              type: boolean
+                          required:
+                          - redacted
+                          type: object
+                        location:
+                          properties:
+                            countryCode:
+                              description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                              type: string
+                            type:
+                              enum:
+                              - country
+                              type: string
+                          required:
+                          - countryCode
+                          - type
+                          type: object
+                        profileId:
+                          allOf:
+                          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          type: string
+                      type: object
+                    buyerProfileId:
+                      allOf:
+                      - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                      - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                      type: string
+                    constraints:
+                      properties:
+                        maxCost:
+                          properties:
+                            amount:
+                              pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                              type: string
+                            currency:
+                              pattern: ^[A-Z]{3}$
+                              type: string
+                          required:
+                          - amount
+                          - currency
+                          type: object
+                      required:
+                      - maxCost
+                      type: object
+                    merchantGuidance:
+                      maxLength: 20000
+                      minLength: 1
+                      type: string
+                    request:
+                      properties:
+                        startUrl:
+                          format: uri
+                          type: string
+                        task:
+                          maxLength: 20000
+                          minLength: 1
+                          type: string
+                      required:
+                      - startUrl
+                      type: object
+                  required:
+                  - constraints
+                  - request
+                  type: object
+                requiredAction:
+                  anyOf:
+                  - type: 'null'
+                  - type: 'null'
+                result:
+                  properties:
+                    outcome:
+                      enum:
+                      - succeeded
+                      type: string
+                    purchase:
+                      anyOf:
+                      - properties:
+                          kind:
+                            enum:
+                            - confirmed_without_receipt
+                            type: string
+                        required:
+                        - kind
+                        type: object
+                      - properties:
+                          kind:
+                            enum:
+                            - receipt_captured
+                            type: string
+                          receipt:
+                            properties:
+                              merchantOrderId:
+                                maxLength: 500
+                                minLength: 1
+                                type: string
+                              total:
+                                properties:
+                                  amount:
+                                    pattern: ^(?:0|[1-9]\d{0,14})(?:\.\d{1,6})?$
+                                    type: string
+                                  currency:
+                                    pattern: ^[A-Z]{3}$
+                                    type: string
+                                required:
+                                - amount
+                                - currency
+                                type: object
+                            required:
+                            - total
+                            type: object
+                        required:
+                        - kind
+                        - receipt
+                        type: object
+                    summary:
+                      maxLength: 2000
+                      minLength: 1
+                      type: string
+                  required:
+                  - outcome
+                  - purchase
+                  - summary
+                  type: object
+                revision:
+                  description: Monotonically increasing version of this run snapshot. When combining polling and stream updates, retain the snapshot with the greatest revision; values may skip and have no meaning beyond ordering
+                  maximum: 9007199254740991
+                  minimum: 0
+                  type: integer
+                runId:
+                  minLength: 1
+                  type: string
+                status:
+                  enum:
+                  - succeeded
+                  type: string
+              required:
+              - browser
+              - createdAt
+              - input
+              - requiredAction
+              - result
+              - revision
+              - runId
+              - status
+              type: object
+            - properties:
+                browser:
+                  anyOf:
+                  - properties:
+                      embedUrl:
+                        format: uri
+                        type: string
+                      permissions:
+                        items:
+                          enum:
+                          - read
+                          type: string
+                        maxItems: 1
+                        minItems: 1
+                        readOnly: true
+                        type: array
+                    required:
+                    - embedUrl
+                    - permissions
+                    type: object
+                  - type: 'null'
+                createdAt:
+                  allOf:
+                  - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                  - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                  type: string
+                input:
+                  properties:
+                    browser:
+                      description: Browser profile and requested location, or a redacted caller-owned browser; at least one property
+                      properties:
+                        cdp:
+                          description: A caller-owned CDP browser was supplied; its endpoint is never returned
+                          properties:
+                            redacted:
+                              const: true
+                              type: boolean
+                          required:
+                          - redacted
+                          type: object
+                        location:
+                          properties:
+                            countryCode:
+                              description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                              type: string
+                            type:
+                              enum:
+                              - country
+                              type: string
+                          required:
+                          - countryCode
+                          - type
+                          type: object
+                        profileId:
+                          allOf:
+                          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          type: string
+                      type: object
+                    buyerProfileId:
+                      allOf:
+                      - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                      - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                      type: string
+                    constraints:
+                      properties:
+                        maxCost:
+                          properties:
+                            amount:
+                              pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                              type: string
+                            currency:
+                              pattern: ^[A-Z]{3}$
+                              type: string
+                          required:
+                          - amount
+                          - currency
+                          type: object
+                      required:
+                      - maxCost
+                      type: object
+                    merchantGuidance:
+                      maxLength: 20000
+                      minLength: 1
+                      type: string
+                    request:
+                      properties:
+                        startUrl:
+                          format: uri
+                          type: string
+                        task:
+                          maxLength: 20000
+                          minLength: 1
+                          type: string
+                      required:
+                      - startUrl
+                      type: object
+                  required:
+                  - constraints
+                  - request
+                  type: object
+                requiredAction:
+                  anyOf:
+                  - type: 'null'
+                  - type: 'null'
+                revision:
+                  description: Monotonically increasing version of this run snapshot. When combining polling and stream updates, retain the snapshot with the greatest revision; values may skip and have no meaning beyond ordering
+                  maximum: 9007199254740991
+                  minimum: 0
+                  type: integer
+                runId:
+                  minLength: 1
+                  type: string
+                status:
+                  enum:
+                  - running
+                  type: string
+              required:
+              - browser
+              - createdAt
+              - input
+              - requiredAction
+              - revision
+              - runId
+              - status
+              type: object
+            - properties:
+                browser:
+                  anyOf:
+                  - properties:
+                      embedUrl:
+                        format: uri
+                        type: string
+                      permissions:
+                        items:
+                          enum:
+                          - read
+                          type: string
+                        maxItems: 1
+                        minItems: 1
+                        readOnly: true
+                        type: array
+                    required:
+                    - embedUrl
+                    - permissions
+                    type: object
+                  - type: 'null'
+                createdAt:
+                  allOf:
+                  - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                  - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                  type: string
+                input:
+                  properties:
+                    browser:
+                      description: Browser profile and requested location, or a redacted caller-owned browser; at least one property
+                      properties:
+                        cdp:
+                          description: A caller-owned CDP browser was supplied; its endpoint is never returned
+                          properties:
+                            redacted:
+                              const: true
+                              type: boolean
+                          required:
+                          - redacted
+                          type: object
+                        location:
+                          properties:
+                            countryCode:
+                              description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                              type: string
+                            type:
+                              enum:
+                              - country
+                              type: string
+                          required:
+                          - countryCode
+                          - type
+                          type: object
+                        profileId:
+                          allOf:
+                          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          type: string
+                      type: object
+                    buyerProfileId:
+                      allOf:
+                      - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                      - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                      type: string
+                    constraints:
+                      properties:
+                        maxCost:
+                          properties:
+                            amount:
+                              pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                              type: string
+                            currency:
+                              pattern: ^[A-Z]{3}$
+                              type: string
+                          required:
+                          - amount
+                          - currency
+                          type: object
+                      required:
+                      - maxCost
+                      type: object
+                    merchantGuidance:
+                      maxLength: 20000
+                      minLength: 1
+                      type: string
+                    request:
+                      properties:
+                        startUrl:
+                          format: uri
+                          type: string
+                        task:
+                          maxLength: 20000
+                          minLength: 1
+                          type: string
+                      required:
+                      - startUrl
+                      type: object
+                  required:
+                  - constraints
+                  - request
+                  type: object
+                requiredAction:
+                  properties:
+                    messageId:
+                      minLength: 1
+                      type: string
+                    request:
+                      properties:
+                        expiresAt:
+                          allOf:
+                          - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                          - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                          type: string
+                        interaction:
+                          anyOf:
+                          - properties:
+                              amount:
+                                properties:
+                                  currency:
+                                    pattern: ^[A-Z]{3}$
+                                    type: string
+                                  kind:
+                                    enum:
+                                    - exact
+                                    - maximum
+                                    type: string
+                                  value:
+                                    pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                                    type: string
+                                required:
+                                - currency
+                                - kind
+                                - value
+                                type: object
+                              kind:
+                                enum:
+                                - payment
+                                type: string
+                              merchant:
+                                properties:
+                                  countryCode:
+                                    description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                                    type: string
+                                  name:
+                                    maxLength: 200
+                                    minLength: 1
+                                    type: string
+                                  url:
+                                    maxLength: 2048
+                                    pattern: ^https?:\/\/
+                                    type: string
+                                required:
+                                - countryCode
+                                - name
+                                - url
+                                type: object
+                              method:
+                                enum:
+                                - card
+                                type: string
+                              purpose:
+                                enum:
+                                - checkout_payment
+                                type: string
+                            required:
+                            - amount
+                            - kind
+                            - merchant
+                            - method
+                            - purpose
+                            type: object
+                          - properties:
+                              amount:
+                                properties:
+                                  currency:
+                                    pattern: ^[A-Z]{3}$
+                                    type: string
+                                  kind:
+                                    enum:
+                                    - exact
+                                    type: string
+                                  value:
+                                    pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                                    type: string
+                                required:
+                                - currency
+                                - kind
+                                - value
+                                type: object
+                              authorizationUrl:
+                                description: Absolute URL of UC's hosted Klarna page, where the buyer pays with Klarna. Anyone with this URL can open the payment page; do not log or share it.
+                                maxLength: 2048
+                                pattern: ^https?:\/\/[^\/?#]+\/payments\/klarna\/[^\/?#]+\/[A-Za-z0-9_-]{32}$
+                                type: string
+                              kind:
+                                enum:
+                                - payment
+                                type: string
+                              merchant:
+                                properties:
+                                  url:
+                                    maxLength: 2048
+                                    pattern: ^https?:\/\/
+                                    type: string
+                                required:
+                                - url
+                                type: object
+                              method:
+                                enum:
+                                - klarna
+                                type: string
+                              purpose:
+                                enum:
+                                - checkout_payment
+                                type: string
+                            required:
+                            - amount
+                            - authorizationUrl
+                            - kind
+                            - merchant
+                            - method
+                            - purpose
+                            type: object
+                          - properties:
+                              fields:
+                                items:
+                                  anyOf:
+                                  - properties:
+                                      handling:
+                                        enum:
+                                        - protected
+                                        type: string
+                                      input:
+                                        anyOf:
+                                        - properties:
+                                            autoComplete:
+                                              enum:
+                                              - current-password
+                                              - email
+                                              - family-name
+                                              - given-name
+                                              - name
+                                              - new-password
+                                              - 'off'
+                                              - 'on'
+                                              - one-time-code
+                                              - postal-code
+                                              - street-address
+                                              - tel
+                                              - username
+                                              type: string
+                                            display:
+                                              enum:
+                                              - masked
+                                              type: string
+                                            inputMode:
+                                              enum:
+                                              - decimal
+                                              - email
+                                              - none
+                                              - numeric
+                                              - search
+                                              - tel
+                                              - text
+                                              - url
+                                              type: string
+                                            kind:
+                                              enum:
+                                              - text
+                                              type: string
+                                            multiline:
+                                              const: false
+                                              type: boolean
+                                            placeholder:
+                                              type: string
+                                          required:
+                                          - kind
+                                          type: object
+                                        - properties:
+                                            kind:
+                                              enum:
+                                              - integer
+                                              type: string
+                                          required:
+                                          - kind
+                                          type: object
+                                        - properties:
+                                            kind:
+                                              enum:
+                                              - number
+                                              type: string
+                                          required:
+                                          - kind
+                                          type: object
+                                      key:
+                                        minLength: 1
+                                        pattern: ^(?!(?:__proto__|constructor|prototype)$)[\s\S]+$
+                                        type: string
+                                      label:
+                                        type: string
+                                      required:
+                                        type: boolean
+                                    required:
+                                    - handling
+                                    - input
+                                    - key
+                                    - label
+                                    - required
+                                    type: object
+                                  - properties:
+                                      handling:
+                                        enum:
+                                        - standard
+                                        type: string
+                                      input:
+                                        anyOf:
+                                        - properties:
+                                            autoComplete:
+                                              enum:
+                                              - current-password
+                                              - email
+                                              - family-name
+                                              - given-name
+                                              - name
+                                              - new-password
+                                              - 'off'
+                                              - 'on'
+                                              - one-time-code
+                                              - postal-code
+                                              - street-address
+                                              - tel
+                                              - username
+                                              type: string
+                                            display:
+                                              enum:
+                                              - masked
+                                              type: string
+                                            inputMode:
+                                              enum:
+                                              - decimal
+                                              - email
+                                              - none
+                                              - numeric
+                                              - search
+                                              - tel
+                                              - text
+                                              - url
+                                              type: string
+                                            kind:
+                                              enum:
+                                              - text
+                                              type: string
+                                            multiline:
+                                              type: boolean
+                                            placeholder:
+                                              type: string
+                                          required:
+                                          - kind
+                                          type: object
+                                        - properties:
+                                            kind:
+                                              enum:
+                                              - boolean
+                                              type: string
+                                          required:
+                                          - kind
+                                          type: object
+                                        - properties:
+                                            kind:
+                                              enum:
+                                              - choice
+                                              type: string
+                                            options:
+                                              items:
+                                                properties:
+                                                  disabled:
+                                                    type: boolean
+                                                  label:
+                                                    minLength: 1
+                                                    type: string
+                                                  placeholder:
+                                                    type: boolean
+                                                  selected:
+                                                    type: boolean
+                                                  value:
+                                                    minLength: 1
+                                                    type: string
+                                                required:
+                                                - disabled
+                                                - label
+                                                - placeholder
+                                                - selected
+                                                - value
+                                                type: object
+                                              minItems: 1
+                                              type: array
+                                            selection:
+                                              anyOf:
+                                              - properties:
+                                                  kind:
+                                                    enum:
+                                                    - many
+                                                    type: string
+                                                  max:
+                                                    maximum: 9007199254740991
+                                                    minimum: 0
+                                                    type: integer
+                                                  min:
+                                                    maximum: 9007199254740991
+                                                    minimum: 0
+                                                    type: integer
+                                                required:
+                                                - kind
+                                                - min
+                                                type: object
+                                              - properties:
+                                                  kind:
+                                                    enum:
+                                                    - one
+                                                    type: string
+                                                required:
+                                                - kind
+                                                type: object
+                                          required:
+                                          - kind
+                                          - options
+                                          - selection
+                                          type: object
+                                        - properties:
+                                            kind:
+                                              enum:
+                                              - integer
+                                              type: string
+                                          required:
+                                          - kind
+                                          type: object
+                                        - properties:
+                                            kind:
+                                              enum:
+                                              - number
+                                              type: string
+                                          required:
+                                          - kind
+                                          type: object
+                                      key:
+                                        minLength: 1
+                                        pattern: ^(?!(?:__proto__|constructor|prototype)$)[\s\S]+$
+                                        type: string
+                                      label:
+                                        type: string
+                                      required:
+                                        type: boolean
+                                    required:
+                                    - handling
+                                    - input
+                                    - key
+                                    - label
+                                    - required
+                                    type: object
+                                minItems: 1
+                                type: array
+                              kind:
+                                enum:
+                                - form
+                                type: string
+                            required:
+                            - fields
+                            - kind
+                            type: object
+                        question:
+                          minLength: 1
+                          type: string
+                      required:
+                      - expiresAt
+                      - interaction
+                      - question
+                      type: object
+                    requestId:
+                      minLength: 1
+                      type: string
+                    type:
+                      enum:
+                      - input_response
+                      type: string
+                  required:
+                  - messageId
+                  - request
+                  - requestId
+                  - type
+                  type: object
+                revision:
+                  description: Monotonically increasing version of this run snapshot. When combining polling and stream updates, retain the snapshot with the greatest revision; values may skip and have no meaning beyond ordering
+                  maximum: 9007199254740991
+                  minimum: 0
+                  type: integer
+                runId:
+                  minLength: 1
+                  type: string
+                status:
+                  enum:
+                  - awaiting_input
+                  type: string
+              required:
+              - browser
+              - createdAt
+              - input
+              - requiredAction
+              - revision
+              - runId
+              - status
+              type: object
+            - properties:
+                browser:
+                  anyOf:
+                  - type: 'null'
+                  - type: 'null'
+                createdAt:
+                  allOf:
+                  - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                  - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                  type: string
+                input:
+                  properties:
+                    browser:
+                      description: Browser profile and requested location, or a redacted caller-owned browser; at least one property
+                      properties:
+                        cdp:
+                          description: A caller-owned CDP browser was supplied; its endpoint is never returned
+                          properties:
+                            redacted:
+                              const: true
+                              type: boolean
+                          required:
+                          - redacted
+                          type: object
+                        location:
+                          properties:
+                            countryCode:
+                              description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                              type: string
+                            type:
+                              enum:
+                              - country
+                              type: string
+                          required:
+                          - countryCode
+                          - type
+                          type: object
+                        profileId:
+                          allOf:
+                          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                          type: string
+                      type: object
+                    buyerProfileId:
+                      allOf:
+                      - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                      - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                      type: string
+                    constraints:
+                      properties:
+                        maxCost:
+                          properties:
+                            amount:
+                              pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                              type: string
+                            currency:
+                              pattern: ^[A-Z]{3}$
+                              type: string
+                          required:
+                          - amount
+                          - currency
+                          type: object
+                      required:
+                      - maxCost
+                      type: object
+                    merchantGuidance:
+                      maxLength: 20000
+                      minLength: 1
+                      type: string
+                    request:
+                      properties:
+                        startUrl:
+                          format: uri
+                          type: string
+                        task:
+                          maxLength: 20000
+                          minLength: 1
+                          type: string
+                      required:
+                      - startUrl
+                      type: object
+                  required:
+                  - constraints
+                  - request
+                  type: object
+                requiredAction:
+                  anyOf:
+                  - type: 'null'
+                  - type: 'null'
+                revision:
+                  description: Monotonically increasing version of this run snapshot. When combining polling and stream updates, retain the snapshot with the greatest revision; values may skip and have no meaning beyond ordering
+                  maximum: 9007199254740991
+                  minimum: 0
+                  type: integer
+                runId:
+                  minLength: 1
+                  type: string
+                status:
+                  enum:
+                  - queued
+                  type: string
+              required:
+              - browser
+              - createdAt
+              - input
+              - requiredAction
+              - revision
+              - runId
+              - status
+              type: object
+          type: array
+        nextCursor:
+          anyOf:
+          - minLength: 1
+            type: string
+          - type: 'null'
+      required:
+      - data
+      - nextCursor
+      type: object
+    CreateAgentCheckoutDTO:
+      additionalProperties: false
+      properties:
+        browser:
+          description: Browser profile and requested location, or a caller-owned browser; provide at least one property. A CDP connection excludes the other properties
+          properties:
+            cdp:
+              description: Caller-owned browser controlled through CDP. Cannot be combined with profileId or location. UC connects and disconnects; it never launches or closes it. Never returned by the API
+              properties:
+                headers:
+                  additionalProperties:
+                    maxLength: 8192
+                    type: string
+                  description: Headers sent when connecting to the CDP endpoint, such as provider credentials
+                  propertyNames:
+                    type: string
+                  type: object
+                url:
+                  description: Chrome DevTools Protocol endpoint UC connects to. Production accepts only wss URLs to public hosts
+                  format: uri
+                  maxLength: 4096
+                  type: string
+              required:
+              - url
+              type: object
+            location:
+              properties:
+                countryCode:
+                  description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                  type: string
+                type:
+                  enum:
+                  - country
+                  type: string
+              required:
+              - countryCode
+              - type
+              type: object
+            profileId:
+              allOf:
+              - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+              - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+              type: string
+          type: object
+        buyerProfileId:
+          allOf:
+          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+          - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+        constraints:
+          properties:
+            maxCost:
+              properties:
+                amount:
+                  pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                  type: string
+                currency:
+                  pattern: ^[A-Z]{3}$
+                  type: string
+              required:
+              - amount
+              - currency
+              type: object
+          required:
+          - maxCost
+          type: object
+        merchantGuidance:
+          maxLength: 20000
+          minLength: 1
+          type: string
+        request:
+          properties:
+            startUrl:
+              format: uri
+              type: string
+            task:
+              maxLength: 20000
+              minLength: 1
+              type: string
+          required:
+          - startUrl
+          type: object
+      required:
+      - constraints
+      - request
+      type: object
+    ApiErrorDto:
+      properties:
+        code:
+          description: Machine-readable error code for programmatic handling
+          type: string
+        error:
+          example: true
+          type: boolean
+        message:
+          description: Human-readable error message describing what went wrong
+          type: string
+        parameters:
+          additionalProperties:
+            oneOf:
+            - items:
+                type: string
+              type: array
+            - type: string
+          description: Values that explain a coded error, such as the limit that was exceeded, the amount that remains, or the list of supported currencies.
+          type: object
+      required:
+      - error
+      - message
+      type: object
+    AgentCheckoutResponseDTO:
+      anyOf:
+      - properties:
+          browser:
+            anyOf:
+            - properties:
+                embedUrl:
+                  format: uri
+                  type: string
+                permissions:
+                  items:
+                    enum:
+                    - read
+                    type: string
+                  maxItems: 1
+                  minItems: 1
+                  readOnly: true
+                  type: array
+              required:
+              - embedUrl
+              - permissions
+              type: object
+            - type: 'null'
+          createdAt:
+            allOf:
+            - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            type: string
+          input:
+            properties:
+              browser:
+                description: Browser profile and requested location, or a redacted caller-owned browser; at least one property
+                properties:
+                  cdp:
+                    description: A caller-owned CDP browser was supplied; its endpoint is never returned
+                    properties:
+                      redacted:
+                        const: true
+                        type: boolean
+                    required:
+                    - redacted
+                    type: object
+                  location:
+                    properties:
+                      countryCode:
+                        description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                        type: string
+                      type:
+                        enum:
+                        - country
+                        type: string
+                    required:
+                    - countryCode
+                    - type
+                    type: object
+                  profileId:
+                    allOf:
+                    - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                    - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                    type: string
+                type: object
+              buyerProfileId:
+                allOf:
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                type: string
+              constraints:
+                properties:
+                  maxCost:
+                    properties:
+                      amount:
+                        pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                        type: string
+                      currency:
+                        pattern: ^[A-Z]{3}$
+                        type: string
+                    required:
+                    - amount
+                    - currency
+                    type: object
+                required:
+                - maxCost
+                type: object
+              merchantGuidance:
+                maxLength: 20000
+                minLength: 1
+                type: string
+              request:
+                properties:
+                  startUrl:
+                    format: uri
+                    type: string
+                  task:
+                    maxLength: 20000
+                    minLength: 1
+                    type: string
+                required:
+                - startUrl
+                type: object
+            required:
+            - constraints
+            - request
+            type: object
+          reason:
+            enum:
+            - accounting_unavailable
+            - browser_location_unsupported
+            - browser_session_lost
+            - cancelled
+            - cost_limit
+            - input_expired
+            - model_error
+            - reconciliation_required
+            - runtime_error
+            type: string
+          requiredAction:
+            anyOf:
+            - type: 'null'
+            - type: 'null'
+          revision:
+            description: Monotonically increasing version of this run snapshot. When combining polling and stream updates, retain the snapshot with the greatest revision; values may skip and have no meaning beyond ordering
+            maximum: 9007199254740991
+            minimum: 0
+            type: integer
+          runId:
+            minLength: 1
+            type: string
+          status:
+            enum:
+            - failed
+            type: string
+        required:
+        - browser
+        - createdAt
+        - input
+        - reason
+        - requiredAction
+        - revision
+        - runId
+        - status
+        type: object
+      - properties:
+          browser:
+            anyOf:
+            - properties:
+                embedUrl:
+                  format: uri
+                  type: string
+                permissions:
+                  items:
+                    enum:
+                    - read
+                    type: string
+                  maxItems: 1
+                  minItems: 1
+                  readOnly: true
+                  type: array
+              required:
+              - embedUrl
+              - permissions
+              type: object
+            - type: 'null'
+          createdAt:
+            allOf:
+            - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            type: string
+          input:
+            properties:
+              browser:
+                description: Browser profile and requested location, or a redacted caller-owned browser; at least one property
+                properties:
+                  cdp:
+                    description: A caller-owned CDP browser was supplied; its endpoint is never returned
+                    properties:
+                      redacted:
+                        const: true
+                        type: boolean
+                    required:
+                    - redacted
+                    type: object
+                  location:
+                    properties:
+                      countryCode:
+                        description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                        type: string
+                      type:
+                        enum:
+                        - country
+                        type: string
+                    required:
+                    - countryCode
+                    - type
+                    type: object
+                  profileId:
+                    allOf:
+                    - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                    - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                    type: string
+                type: object
+              buyerProfileId:
+                allOf:
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                type: string
+              constraints:
+                properties:
+                  maxCost:
+                    properties:
+                      amount:
+                        pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                        type: string
+                      currency:
+                        pattern: ^[A-Z]{3}$
+                        type: string
+                    required:
+                    - amount
+                    - currency
+                    type: object
+                required:
+                - maxCost
+                type: object
+              merchantGuidance:
+                maxLength: 20000
+                minLength: 1
+                type: string
+              request:
+                properties:
+                  startUrl:
+                    format: uri
+                    type: string
+                  task:
+                    maxLength: 20000
+                    minLength: 1
+                    type: string
+                required:
+                - startUrl
+                type: object
+            required:
+            - constraints
+            - request
+            type: object
+          requiredAction:
+            anyOf:
+            - type: 'null'
+            - type: 'null'
+          result:
+            properties:
+              code:
+                enum:
+                - merchant.access_blocked
+                - merchant.checkout_error
+                - merchant.fulfillment_unavailable
+                - merchant.human_verification_required
+                - merchant.no_safe_path
+                - merchant.payment_declined
+                - policy.max_cost_exceeded
+                - product.item_unavailable
+                - product.requested_option_unavailable
+                type: string
+              outcome:
+                enum:
+                - blocked
+                type: string
+              summary:
+                maxLength: 2000
+                minLength: 1
+                type: string
+            required:
+            - code
+            - outcome
+            - summary
+            type: object
+          revision:
+            description: Monotonically increasing version of this run snapshot. When combining polling and stream updates, retain the snapshot with the greatest revision; values may skip and have no meaning beyond ordering
+            maximum: 9007199254740991
+            minimum: 0
+            type: integer
+          runId:
+            minLength: 1
+            type: string
+          status:
+            enum:
+            - blocked
+            type: string
+        required:
+        - browser
+        - createdAt
+        - input
+        - requiredAction
+        - result
+        - revision
+        - runId
+        - status
+        type: object
+      - properties:
+          browser:
+            anyOf:
+            - properties:
+                embedUrl:
+                  format: uri
+                  type: string
+                permissions:
+                  items:
+                    enum:
+                    - read
+                    type: string
+                  maxItems: 1
+                  minItems: 1
+                  readOnly: true
+                  type: array
+              required:
+              - embedUrl
+              - permissions
+              type: object
+            - type: 'null'
+          createdAt:
+            allOf:
+            - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            type: string
+          input:
+            properties:
+              browser:
+                description: Browser profile and requested location, or a redacted caller-owned browser; at least one property
+                properties:
+                  cdp:
+                    description: A caller-owned CDP browser was supplied; its endpoint is never returned
+                    properties:
+                      redacted:
+                        const: true
+                        type: boolean
+                    required:
+                    - redacted
+                    type: object
+                  location:
+                    properties:
+                      countryCode:
+                        description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                        type: string
+                      type:
+                        enum:
+                        - country
+                        type: string
+                    required:
+                    - countryCode
+                    - type
+                    type: object
+                  profileId:
+                    allOf:
+                    - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                    - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                    type: string
+                type: object
+              buyerProfileId:
+                allOf:
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                type: string
+              constraints:
+                properties:
+                  maxCost:
+                    properties:
+                      amount:
+                        pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                        type: string
+                      currency:
+                        pattern: ^[A-Z]{3}$
+                        type: string
+                    required:
+                    - amount
+                    - currency
+                    type: object
+                required:
+                - maxCost
+                type: object
+              merchantGuidance:
+                maxLength: 20000
+                minLength: 1
+                type: string
+              request:
+                properties:
+                  startUrl:
+                    format: uri
+                    type: string
+                  task:
+                    maxLength: 20000
+                    minLength: 1
+                    type: string
+                required:
+                - startUrl
+                type: object
+            required:
+            - constraints
+            - request
+            type: object
+          requiredAction:
+            anyOf:
+            - type: 'null'
+            - type: 'null'
+          result:
+            properties:
+              outcome:
+                enum:
+                - cancelled
+                type: string
+              summary:
+                maxLength: 2000
+                minLength: 1
+                type: string
+            required:
+            - outcome
+            - summary
+            type: object
+          revision:
+            description: Monotonically increasing version of this run snapshot. When combining polling and stream updates, retain the snapshot with the greatest revision; values may skip and have no meaning beyond ordering
+            maximum: 9007199254740991
+            minimum: 0
+            type: integer
+          runId:
+            minLength: 1
+            type: string
+          status:
+            enum:
+            - cancelled
+            type: string
+        required:
+        - browser
+        - createdAt
+        - input
+        - requiredAction
+        - result
+        - revision
+        - runId
+        - status
+        type: object
+      - properties:
+          browser:
+            anyOf:
+            - properties:
+                embedUrl:
+                  format: uri
+                  type: string
+                permissions:
+                  items:
+                    enum:
+                    - read
+                    type: string
+                  maxItems: 1
+                  minItems: 1
+                  readOnly: true
+                  type: array
+              required:
+              - embedUrl
+              - permissions
+              type: object
+            - type: 'null'
+          createdAt:
+            allOf:
+            - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            type: string
+          input:
+            properties:
+              browser:
+                description: Browser profile and requested location, or a redacted caller-owned browser; at least one property
+                properties:
+                  cdp:
+                    description: A caller-owned CDP browser was supplied; its endpoint is never returned
+                    properties:
+                      redacted:
+                        const: true
+                        type: boolean
+                    required:
+                    - redacted
+                    type: object
+                  location:
+                    properties:
+                      countryCode:
+                        description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                        type: string
+                      type:
+                        enum:
+                        - country
+                        type: string
+                    required:
+                    - countryCode
+                    - type
+                    type: object
+                  profileId:
+                    allOf:
+                    - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                    - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                    type: string
+                type: object
+              buyerProfileId:
+                allOf:
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                type: string
+              constraints:
+                properties:
+                  maxCost:
+                    properties:
+                      amount:
+                        pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                        type: string
+                      currency:
+                        pattern: ^[A-Z]{3}$
+                        type: string
+                    required:
+                    - amount
+                    - currency
+                    type: object
+                required:
+                - maxCost
+                type: object
+              merchantGuidance:
+                maxLength: 20000
+                minLength: 1
+                type: string
+              request:
+                properties:
+                  startUrl:
+                    format: uri
+                    type: string
+                  task:
+                    maxLength: 20000
+                    minLength: 1
+                    type: string
+                required:
+                - startUrl
+                type: object
+            required:
+            - constraints
+            - request
+            type: object
+          requiredAction:
+            anyOf:
+            - type: 'null'
+            - type: 'null'
+          result:
+            properties:
+              outcome:
+                enum:
+                - succeeded
+                type: string
+              purchase:
+                anyOf:
+                - properties:
+                    kind:
+                      enum:
+                      - confirmed_without_receipt
+                      type: string
+                  required:
+                  - kind
+                  type: object
+                - properties:
+                    kind:
+                      enum:
+                      - receipt_captured
+                      type: string
+                    receipt:
+                      properties:
+                        merchantOrderId:
+                          maxLength: 500
+                          minLength: 1
+                          type: string
+                        total:
+                          properties:
+                            amount:
+                              pattern: ^(?:0|[1-9]\d{0,14})(?:\.\d{1,6})?$
+                              type: string
+                            currency:
+                              pattern: ^[A-Z]{3}$
+                              type: string
+                          required:
+                          - amount
+                          - currency
+                          type: object
+                      required:
+                      - total
+                      type: object
+                  required:
+                  - kind
+                  - receipt
+                  type: object
+              summary:
+                maxLength: 2000
+                minLength: 1
+                type: string
+            required:
+            - outcome
+            - purchase
+            - summary
+            type: object
+          revision:
+            description: Monotonically increasing version of this run snapshot. When combining polling and stream updates, retain the snapshot with the greatest revision; values may skip and have no meaning beyond ordering
+            maximum: 9007199254740991
+            minimum: 0
+            type: integer
+          runId:
+            minLength: 1
+            type: string
+          status:
+            enum:
+            - succeeded
+            type: string
+        required:
+        - browser
+        - createdAt
+        - input
+        - requiredAction
+        - result
+        - revision
+        - runId
+        - status
+        type: object
+      - properties:
+          browser:
+            anyOf:
+            - properties:
+                embedUrl:
+                  format: uri
+                  type: string
+                permissions:
+                  items:
+                    enum:
+                    - read
+                    type: string
+                  maxItems: 1
+                  minItems: 1
+                  readOnly: true
+                  type: array
+              required:
+              - embedUrl
+              - permissions
+              type: object
+            - type: 'null'
+          createdAt:
+            allOf:
+            - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            type: string
+          input:
+            properties:
+              browser:
+                description: Browser profile and requested location, or a redacted caller-owned browser; at least one property
+                properties:
+                  cdp:
+                    description: A caller-owned CDP browser was supplied; its endpoint is never returned
+                    properties:
+                      redacted:
+                        const: true
+                        type: boolean
+                    required:
+                    - redacted
+                    type: object
+                  location:
+                    properties:
+                      countryCode:
+                        description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                        type: string
+                      type:
+                        enum:
+                        - country
+                        type: string
+                    required:
+                    - countryCode
+                    - type
+                    type: object
+                  profileId:
+                    allOf:
+                    - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                    - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                    type: string
+                type: object
+              buyerProfileId:
+                allOf:
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                type: string
+              constraints:
+                properties:
+                  maxCost:
+                    properties:
+                      amount:
+                        pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                        type: string
+                      currency:
+                        pattern: ^[A-Z]{3}$
+                        type: string
+                    required:
+                    - amount
+                    - currency
+                    type: object
+                required:
+                - maxCost
+                type: object
+              merchantGuidance:
+                maxLength: 20000
+                minLength: 1
+                type: string
+              request:
+                properties:
+                  startUrl:
+                    format: uri
+                    type: string
+                  task:
+                    maxLength: 20000
+                    minLength: 1
+                    type: string
+                required:
+                - startUrl
+                type: object
+            required:
+            - constraints
+            - request
+            type: object
+          requiredAction:
+            anyOf:
+            - type: 'null'
+            - type: 'null'
+          revision:
+            description: Monotonically increasing version of this run snapshot. When combining polling and stream updates, retain the snapshot with the greatest revision; values may skip and have no meaning beyond ordering
+            maximum: 9007199254740991
+            minimum: 0
+            type: integer
+          runId:
+            minLength: 1
+            type: string
+          status:
+            enum:
+            - running
+            type: string
+        required:
+        - browser
+        - createdAt
+        - input
+        - requiredAction
+        - revision
+        - runId
+        - status
+        type: object
+      - properties:
+          browser:
+            anyOf:
+            - properties:
+                embedUrl:
+                  format: uri
+                  type: string
+                permissions:
+                  items:
+                    enum:
+                    - read
+                    type: string
+                  maxItems: 1
+                  minItems: 1
+                  readOnly: true
+                  type: array
+              required:
+              - embedUrl
+              - permissions
+              type: object
+            - type: 'null'
+          createdAt:
+            allOf:
+            - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            type: string
+          input:
+            properties:
+              browser:
+                description: Browser profile and requested location, or a redacted caller-owned browser; at least one property
+                properties:
+                  cdp:
+                    description: A caller-owned CDP browser was supplied; its endpoint is never returned
+                    properties:
+                      redacted:
+                        const: true
+                        type: boolean
+                    required:
+                    - redacted
+                    type: object
+                  location:
+                    properties:
+                      countryCode:
+                        description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                        type: string
+                      type:
+                        enum:
+                        - country
+                        type: string
+                    required:
+                    - countryCode
+                    - type
+                    type: object
+                  profileId:
+                    allOf:
+                    - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                    - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                    type: string
+                type: object
+              buyerProfileId:
+                allOf:
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                type: string
+              constraints:
+                properties:
+                  maxCost:
+                    properties:
+                      amount:
+                        pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                        type: string
+                      currency:
+                        pattern: ^[A-Z]{3}$
+                        type: string
+                    required:
+                    - amount
+                    - currency
+                    type: object
+                required:
+                - maxCost
+                type: object
+              merchantGuidance:
+                maxLength: 20000
+                minLength: 1
+                type: string
+              request:
+                properties:
+                  startUrl:
+                    format: uri
+                    type: string
+                  task:
+                    maxLength: 20000
+                    minLength: 1
+                    type: string
+                required:
+                - startUrl
+                type: object
+            required:
+            - constraints
+            - request
+            type: object
+          requiredAction:
+            properties:
+              messageId:
+                minLength: 1
+                type: string
+              request:
+                properties:
+                  expiresAt:
+                    allOf:
+                    - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                    - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+                    type: string
+                  interaction:
+                    anyOf:
+                    - properties:
+                        amount:
+                          properties:
+                            currency:
+                              pattern: ^[A-Z]{3}$
+                              type: string
+                            kind:
+                              enum:
+                              - exact
+                              - maximum
+                              type: string
+                            value:
+                              pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                              type: string
+                          required:
+                          - currency
+                          - kind
+                          - value
+                          type: object
+                        kind:
+                          enum:
+                          - payment
+                          type: string
+                        merchant:
+                          properties:
+                            countryCode:
+                              description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                              type: string
+                            name:
+                              maxLength: 200
+                              minLength: 1
+                              type: string
+                            url:
+                              maxLength: 2048
+                              pattern: ^https?:\/\/
+                              type: string
+                          required:
+                          - countryCode
+                          - name
+                          - url
+                          type: object
+                        method:
+                          enum:
+                          - card
+                          type: string
+                        purpose:
+                          enum:
+                          - checkout_payment
+                          type: string
+                      required:
+                      - amount
+                      - kind
+                      - merchant
+                      - method
+                      - purpose
+                      type: object
+                    - properties:
+                        amount:
+                          properties:
+                            currency:
+                              pattern: ^[A-Z]{3}$
+                              type: string
+                            kind:
+                              enum:
+                              - exact
+                              type: string
+                            value:
+                              pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                              type: string
+                          required:
+                          - currency
+                          - kind
+                          - value
+                          type: object
+                        authorizationUrl:
+                          description: Absolute URL of UC's hosted Klarna page, where the buyer pays with Klarna. Anyone with this URL can open the payment page; do not log or share it.
+                          maxLength: 2048
+                          pattern: ^https?:\/\/[^\/?#]+\/payments\/klarna\/[^\/?#]+\/[A-Za-z0-9_-]{32}$
+                          type: string
+                        kind:
+                          enum:
+                          - payment
+                          type: string
+                        merchant:
+                          properties:
+                            url:
+                              maxLength: 2048
+                              pattern: ^https?:\/\/
+                              type: string
+                          required:
+                          - url
+                          type: object
+                        method:
+                          enum:
+                          - klarna
+                          type: string
+                        purpose:
+                          enum:
+                          - checkout_payment
+                          type: string
+                      required:
+                      - amount
+                      - authorizationUrl
+                      - kind
+                      - merchant
+                      - method
+                      - purpose
+                      type: object
+                    - properties:
+                        fields:
+                          items:
+                            anyOf:
+                            - properties:
+                                handling:
+                                  enum:
+                                  - protected
+                                  type: string
+                                input:
+                                  anyOf:
+                                  - properties:
+                                      autoComplete:
+                                        enum:
+                                        - current-password
+                                        - email
+                                        - family-name
+                                        - given-name
+                                        - name
+                                        - new-password
+                                        - 'off'
+                                        - 'on'
+                                        - one-time-code
+                                        - postal-code
+                                        - street-address
+                                        - tel
+                                        - username
+                                        type: string
+                                      display:
+                                        enum:
+                                        - masked
+                                        type: string
+                                      inputMode:
+                                        enum:
+                                        - decimal
+                                        - email
+                                        - none
+                                        - numeric
+                                        - search
+                                        - tel
+                                        - text
+                                        - url
+                                        type: string
+                                      kind:
+                                        enum:
+                                        - text
+                                        type: string
+                                      multiline:
+                                        const: false
+                                        type: boolean
+                                      placeholder:
+                                        type: string
+                                    required:
+                                    - kind
+                                    type: object
+                                  - properties:
+                                      kind:
+                                        enum:
+                                        - integer
+                                        type: string
+                                    required:
+                                    - kind
+                                    type: object
+                                  - properties:
+                                      kind:
+                                        enum:
+                                        - number
+                                        type: string
+                                    required:
+                                    - kind
+                                    type: object
+                                key:
+                                  minLength: 1
+                                  pattern: ^(?!(?:__proto__|constructor|prototype)$)[\s\S]+$
+                                  type: string
+                                label:
+                                  type: string
+                                required:
+                                  type: boolean
+                              required:
+                              - handling
+                              - input
+                              - key
+                              - label
+                              - required
+                              type: object
+                            - properties:
+                                handling:
+                                  enum:
+                                  - standard
+                                  type: string
+                                input:
+                                  anyOf:
+                                  - properties:
+                                      autoComplete:
+                                        enum:
+                                        - current-password
+                                        - email
+                                        - family-name
+                                        - given-name
+                                        - name
+                                        - new-password
+                                        - 'off'
+                                        - 'on'
+                                        - one-time-code
+                                        - postal-code
+                                        - street-address
+                                        - tel
+                                        - username
+                                        type: string
+                                      display:
+                                        enum:
+                                        - masked
+                                        type: string
+                                      inputMode:
+                                        enum:
+                                        - decimal
+                                        - email
+                                        - none
+                                        - numeric
+                                        - search
+                                        - tel
+                                        - text
+                                        - url
+                                        type: string
+                                      kind:
+                                        enum:
+                                        - text
+                                        type: string
+                                      multiline:
+                                        type: boolean
+                                      placeholder:
+                                        type: string
+                                    required:
+                                    - kind
+                                    type: object
+                                  - properties:
+                                      kind:
+                                        enum:
+                                        - boolean
+                                        type: string
+                                    required:
+                                    - kind
+                                    type: object
+                                  - properties:
+                                      kind:
+                                        enum:
+                                        - choice
+                                        type: string
+                                      options:
+                                        items:
+                                          properties:
+                                            disabled:
+                                              type: boolean
+                                            label:
+                                              minLength: 1
+                                              type: string
+                                            placeholder:
+                                              type: boolean
+                                            selected:
+                                              type: boolean
+                                            value:
+                                              minLength: 1
+                                              type: string
+                                          required:
+                                          - disabled
+                                          - label
+                                          - placeholder
+                                          - selected
+                                          - value
+                                          type: object
+                                        minItems: 1
+                                        type: array
+                                      selection:
+                                        anyOf:
+                                        - properties:
+                                            kind:
+                                              enum:
+                                              - many
+                                              type: string
+                                            max:
+                                              maximum: 9007199254740991
+                                              minimum: 0
+                                              type: integer
+                                            min:
+                                              maximum: 9007199254740991
+                                              minimum: 0
+                                              type: integer
+                                          required:
+                                          - kind
+                                          - min
+                                          type: object
+                                        - properties:
+                                            kind:
+                                              enum:
+                                              - one
+                                              type: string
+                                          required:
+                                          - kind
+                                          type: object
+                                    required:
+                                    - kind
+                                    - options
+                                    - selection
+                                    type: object
+                                  - properties:
+                                      kind:
+                                        enum:
+                                        - integer
+                                        type: string
+                                    required:
+                                    - kind
+                                    type: object
+                                  - properties:
+                                      kind:
+                                        enum:
+                                        - number
+                                        type: string
+                                    required:
+                                    - kind
+                                    type: object
+                                key:
+                                  minLength: 1
+                                  pattern: ^(?!(?:__proto__|constructor|prototype)$)[\s\S]+$
+                                  type: string
+                                label:
+                                  type: string
+                                required:
+                                  type: boolean
+                              required:
+                              - handling
+                              - input
+                              - key
+                              - label
+                              - required
+                              type: object
+                          minItems: 1
+                          type: array
+                        kind:
+                          enum:
+                          - form
+                          type: string
+                      required:
+                      - fields
+                      - kind
+                      type: object
+                  question:
+                    minLength: 1
+                    type: string
+                required:
+                - expiresAt
+                - interaction
+                - question
+                type: object
+              requestId:
+                minLength: 1
+                type: string
+              type:
+                enum:
+                - input_response
+                type: string
+            required:
+            - messageId
+            - request
+            - requestId
+            - type
+            type: object
+          revision:
+            description: Monotonically increasing version of this run snapshot. When combining polling and stream updates, retain the snapshot with the greatest revision; values may skip and have no meaning beyond ordering
+            maximum: 9007199254740991
+            minimum: 0
+            type: integer
+          runId:
+            minLength: 1
+            type: string
+          status:
+            enum:
+            - awaiting_input
+            type: string
+        required:
+        - browser
+        - createdAt
+        - input
+        - requiredAction
+        - revision
+        - runId
+        - status
+        type: object
+      - properties:
+          browser:
+            anyOf:
+            - type: 'null'
+            - type: 'null'
+          createdAt:
+            allOf:
+            - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            - pattern: ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d(?::[0-5]\d(?:\.\d+)?)?(?:Z))$
+            type: string
+          input:
+            properties:
+              browser:
+                description: Browser profile and requested location, or a redacted caller-owned browser; at least one property
+                properties:
+                  cdp:
+                    description: A caller-owned CDP browser was supplied; its endpoint is never returned
+                    properties:
+                      redacted:
+                        const: true
+                        type: boolean
+                    required:
+                    - redacted
+                    type: object
+                  location:
+                    properties:
+                      countryCode:
+                        description: ISO 3166-1 alpha-2 country code; input is trimmed and uppercased
+                        type: string
+                      type:
+                        enum:
+                        - country
+                        type: string
+                    required:
+                    - countryCode
+                    - type
+                    type: object
+                  profileId:
+                    allOf:
+                    - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                    - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                    type: string
+                type: object
+              buyerProfileId:
+                allOf:
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                - pattern: ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+                type: string
+              constraints:
+                properties:
+                  maxCost:
+                    properties:
+                      amount:
+                        pattern: ^(?:0\.(?=\d*[1-9])\d{1,6}|[1-9]\d{0,14}(?:\.\d{1,6})?)$
+                        type: string
+                      currency:
+                        pattern: ^[A-Z]{3}$
+                        type: string
+                    required:
+                    - amount
+                    - currency
+                    type: object
+                required:
+                - maxCost
+                type: object
+              merchantGuidance:
+                maxLength: 20000
+                minLength: 1
+                type: string
+              request:
+                properties:
+                  startUrl:
+                    format: uri
+                    type: string
+                  task:
+                    maxLength: 20000
+                    minLength: 1
+                    type: string
+                required:
+                - startUrl
+                type: object
+            required:
+            - constraints
+            - request
+            type: object
+          requiredAction:
+            anyOf:
+            - type: 'null'
+            - type: 'null'
+          revision:
+            description: Monotonically increasing version of this run snapshot. When combining polling and stream updates, retain the snapshot with the greatest revision; values may skip and have no meaning beyond ordering
+            maximum: 9007199254740991
+            minimum: 0
+            type: integer
+          runId:
+            minLength: 1
+            type: string
+          status:
+            enum:
+            - queued
+            type: string
+        required:
+        - browser
+        - createdAt
+        - input
+        - requiredAction
+        - revision
+        - runId
+        - status
+        type: object
+    AgentCheckoutMessageAcceptedDTO:
+      properties:
+        messageId:
+          minLength: 1
+          type: string
+        status:
+          enum:
+          - accepted
+          type: string
+      required:
+      - messageId
+      - status
+      type: object
+  securitySchemes:
+    apiKey:
+      description: API key required for authentication
+      in: header
+      name: X-API-KEY
+      type: apiKey
+    orderClientSecret:
+      description: The `clientSecret` returned when the order was created, sent as the raw `Authorization` header value. Lets a browser or mobile client read and continue its own order without a server-side API key.
+      in: header
+      name: Authorization
+      type: apiKey
+    userJwt:
+      bearerFormat: JWT
+      description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
+      scheme: bearer
+      type: http

@@ -1,0 +1,423 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@crossmint.com
+    name: Crossmint Support
+    url: https://www.crossmint.com
+  description: Generated from Crossmint's published product API specifications. Do not edit by hand.
+  title: Crossmint Users - Linked Wallets API
+  version: 1.0.0
+servers:
+- description: Staging environment (testnets)
+  url: https://staging.crossmint.com/api
+- description: Production environment (mainnets)
+  url: https://www.crossmint.com/api
+tags:
+- name: Users - Linked Wallets
+paths:
+  /2025-06-09/users/{userLocator}/linked-wallets/{address}:
+    delete:
+      description: 'Unlink an external wallet address from a user.
+
+
+        **API scope required**: `users.create`'
+      operationId: users.linkedWallets.unlink
+      parameters:
+      - description: 'A user locator can be of the format:
+
+          - `email:<email>`
+
+          - `userId:<userId>`
+
+          - `phoneNumber:<phoneNumber>`
+
+          - `twitter:<handle>`
+
+          - `x:<handle>`'
+        in: path
+        name: userLocator
+        required: true
+        schema:
+          examples:
+          - email:user@example.com
+          - userId:507f1f77bcf86cd799439011
+          - userId:did:example:cm4lr5piw0h6t1bjho0onryql
+          - phoneNumber:+12125551234
+          - twitter:johndoe
+          - x:@johndoe
+          type: string
+      - in: path
+        name: address
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Wallet unlinked from user. No content returned.
+        '404':
+          description: External wallet not found for this user
+      security:
+      - apiKey: []
+      summary: Unlink External Wallet from User
+      tags:
+      - Users - Linked Wallets
+    get:
+      description: 'Get a linked external wallet for a user by address.
+
+
+        **API scope required**: `users.read`'
+      operationId: users.linkedWallets.get
+      parameters:
+      - description: 'A user locator can be of the format:
+
+          - `email:<email>`
+
+          - `userId:<userId>`
+
+          - `phoneNumber:<phoneNumber>`
+
+          - `twitter:<handle>`
+
+          - `x:<handle>`'
+        in: path
+        name: userLocator
+        required: true
+        schema:
+          examples:
+          - email:user@example.com
+          - userId:507f1f77bcf86cd799439011
+          - userId:did:example:cm4lr5piw0h6t1bjho0onryql
+          - phoneNumber:+12125551234
+          - twitter:johndoe
+          - x:@johndoe
+          type: string
+      - in: path
+        name: address
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LinkedWalletResponseDto'
+          description: Linked wallet found
+        '404':
+          description: External wallet not found for this user
+      security:
+      - apiKey: []
+      summary: Get Linked External Wallet
+      tags:
+      - Users - Linked Wallets
+    put:
+      description: 'Link an external wallet address to a user. Optionally provide a proof to verify ownership.
+
+
+        **API scope required**: `users.create`'
+      operationId: users.linkedWallets.link
+      parameters:
+      - description: 'A user locator can be of the format:
+
+          - `email:<email>`
+
+          - `userId:<userId>`
+
+          - `phoneNumber:<phoneNumber>`
+
+          - `twitter:<handle>`
+
+          - `x:<handle>`'
+        in: path
+        name: userLocator
+        required: true
+        schema:
+          examples:
+          - email:user@example.com
+          - userId:507f1f77bcf86cd799439011
+          - userId:did:example:cm4lr5piw0h6t1bjho0onryql
+          - phoneNumber:+12125551234
+          - twitter:johndoe
+          - x:@johndoe
+          type: string
+      - in: path
+        name: address
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LinkWalletBodyDto'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LinkedWalletResponseDto'
+          description: Wallet linked to user
+      security:
+      - apiKey: []
+      summary: Link External Wallet to User
+      tags:
+      - Users - Linked Wallets
+components:
+  schemas:
+    LinkedWalletResponseDto:
+      properties:
+        address:
+          description: The wallet address
+          examples:
+          - '0x1234567890abcdef1234567890abcdef12345678'
+          type: string
+        chain:
+          description: The blockchain of the wallet
+          enum:
+          - abstract
+          - abstract-testnet
+          - apechain
+          - aptos
+          - arbitrum
+          - arbitrum-sepolia
+          - arbitrumnova
+          - arc
+          - arc-testnet
+          - astar-zkevm
+          - avalanche
+          - avalanche-fuji
+          - base
+          - base-goerli
+          - base-sepolia
+          - bsc
+          - bsc-testnet
+          - celo
+          - celo-sepolia
+          - chiliz
+          - chiliz-spicy-testnet
+          - coti
+          - coti-testnet
+          - curtis
+          - ethereum
+          - ethereum-goerli
+          - ethereum-sepolia
+          - flow
+          - flow-testnet
+          - hedera
+          - hedera-testnet
+          - hypersonic-testnet
+          - lightlink
+          - lightlink-pegasus
+          - mantle
+          - mantle-sepolia
+          - mode
+          - mode-sepolia
+          - optimism
+          - optimism-goerli
+          - optimism-sepolia
+          - plume
+          - plume-testnet
+          - polygon
+          - polygon-amoy
+          - polygon-mumbai
+          - rari
+          - rari-testnet
+          - robinhood-chain
+          - robinhood-chain-testnet
+          - scroll
+          - scroll-sepolia
+          - sei-atlantic-2-testnet
+          - sei-pacific-1
+          - shape
+          - shape-sepolia
+          - skale-nebula
+          - skale-nebula-testnet
+          - solana
+          - soneium
+          - soneium-minato-testnet
+          - space
+          - space-testnet
+          - stellar
+          - story
+          - story-testnet
+          - sui
+          - tempo
+          - tempo-testnet
+          - u2u-nebulas
+          - u2u-solaris
+          - verify-testnet
+          - viction
+          - viction-testnet
+          - world-chain
+          - world-chain-sepolia
+          - xai
+          - xai-sepolia-testnet
+          - xion
+          - zenchain-testnet
+          - zkatana
+          - zkyoto
+          - zora
+          - zora-goerli
+          - zora-sepolia
+          examples:
+          - ethereum
+          type: string
+        ownership:
+          description: Ownership verification status of the wallet
+          oneOf:
+          - description: Ownership status for a verified wallet
+            properties:
+              verified:
+                const: true
+                description: Whether the wallet ownership has been verified
+                examples:
+                - true
+                type: boolean
+            required:
+            - verified
+            type: object
+          - description: Ownership status for a wallet that has not yet been verified
+            properties:
+              verificationChallenge:
+                description: The challenge message that must be signed to verify ownership
+                type: string
+              verified:
+                const: false
+                description: Whether the wallet ownership has been verified
+                examples:
+                - false
+                type: boolean
+            required:
+            - verificationChallenge
+            - verified
+            type: object
+        type:
+          description: The type of linked wallet
+          enum:
+          - external-wallet
+          examples:
+          - external-wallet
+          type: string
+      required:
+      - address
+      - chain
+      - ownership
+      - type
+      type: object
+    LinkWalletBodyDto:
+      properties:
+        chain:
+          description: The blockchain of the wallet
+          enum:
+          - abstract
+          - abstract-testnet
+          - apechain
+          - aptos
+          - arbitrum
+          - arbitrum-sepolia
+          - arbitrumnova
+          - arc
+          - arc-testnet
+          - astar-zkevm
+          - avalanche
+          - avalanche-fuji
+          - base
+          - base-goerli
+          - base-sepolia
+          - bsc
+          - bsc-testnet
+          - celo
+          - celo-sepolia
+          - chiliz
+          - chiliz-spicy-testnet
+          - coti
+          - coti-testnet
+          - curtis
+          - ethereum
+          - ethereum-goerli
+          - ethereum-sepolia
+          - flow
+          - flow-testnet
+          - hedera
+          - hedera-testnet
+          - hypersonic-testnet
+          - lightlink
+          - lightlink-pegasus
+          - mantle
+          - mantle-sepolia
+          - mode
+          - mode-sepolia
+          - optimism
+          - optimism-goerli
+          - optimism-sepolia
+          - plume
+          - plume-testnet
+          - polygon
+          - polygon-amoy
+          - polygon-mumbai
+          - rari
+          - rari-testnet
+          - robinhood-chain
+          - robinhood-chain-testnet
+          - scroll
+          - scroll-sepolia
+          - sei-atlantic-2-testnet
+          - sei-pacific-1
+          - shape
+          - shape-sepolia
+          - skale-nebula
+          - skale-nebula-testnet
+          - solana
+          - soneium
+          - soneium-minato-testnet
+          - space
+          - space-testnet
+          - stellar
+          - story
+          - story-testnet
+          - sui
+          - tempo
+          - tempo-testnet
+          - u2u-nebulas
+          - u2u-solaris
+          - verify-testnet
+          - viction
+          - viction-testnet
+          - world-chain
+          - world-chain-sepolia
+          - xai
+          - xai-sepolia-testnet
+          - xion
+          - zenchain-testnet
+          - zkatana
+          - zkyoto
+          - zora
+          - zora-goerli
+          - zora-sepolia
+          examples:
+          - solana
+          type: string
+        proof:
+          description: A signed message proving ownership of the wallet
+          minLength: 1
+          type: string
+      required:
+      - chain
+      type: object
+  securitySchemes:
+    apiKey:
+      description: API key required for authentication
+      in: header
+      name: X-API-KEY
+      type: apiKey
+    orderClientSecret:
+      description: The `clientSecret` returned when the order was created, sent as the raw `Authorization` header value. Lets a browser or mobile client read and continue its own order without a server-side API key.
+      in: header
+      name: Authorization
+      type: apiKey
+    userJwt:
+      bearerFormat: JWT
+      description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
+      scheme: bearer
+      type: http

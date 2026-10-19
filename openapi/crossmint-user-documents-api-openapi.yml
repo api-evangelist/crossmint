@@ -1,0 +1,179 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@crossmint.com
+    name: Crossmint Support
+    url: https://www.crossmint.com
+  description: Generated from Crossmint's published product API specifications. Do not edit by hand.
+  title: Crossmint User Documents API
+  version: 1.0.0
+servers:
+- description: Staging environment (testnets)
+  url: https://staging.crossmint.com/api
+- description: Production environment (mainnets)
+  url: https://www.crossmint.com/api
+tags:
+- name: User Documents
+paths:
+  /2025-06-09/documents:
+    post:
+      description: 'Upload a document for a user.
+
+
+        **API scope required**: `users.create`'
+      operationId: documents.create
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDocumentDto'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDocumentResponseDto'
+          description: Document replaced successfully
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDocumentResponseDto'
+          description: Document created successfully
+      security:
+      - apiKey: []
+      summary: Upload a User Document
+      tags:
+      - User Documents
+  /2025-06-09/documents/{documentId}:
+    get:
+      description: 'Get a specific document by its ID.
+
+
+        **API scope required**: `users.read`'
+      operationId: documents.get
+      parameters:
+      - in: path
+        name: documentId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDocumentResponseDto'
+          description: Document retrieved successfully
+        '404':
+          description: Document not found
+      security:
+      - apiKey: []
+      summary: Get a User Document by ID
+      tags:
+      - User Documents
+components:
+  schemas:
+    CreateUserDocumentDto:
+      properties:
+        data:
+          description: Base64 encoded document data
+          examples:
+          - data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==
+          minLength: 1
+          type: string
+        documentType:
+          description: Type of document being uploaded
+          enum:
+          - id-idcard-back
+          - id-idcard-front
+          - id-passport
+          - id-residency-permit
+          - proof-of-address
+          - selfie-front
+          - selfie-left
+          - selfie-right
+          - source-of-wealth
+          examples:
+          - id-passport
+          type: string
+        expiresAt:
+          description: Document expiration date in YYYY-MM-DD format
+          examples:
+          - 2030-12-31
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          type: string
+        reference:
+          description: Reference to the user who owns this document
+          examples:
+          - userLocator: email:user@example.com
+          properties:
+            userLocator:
+              description: User identifier in the format 'email:user@example.com' or 'userId:123'
+              examples:
+              - email:user@example.com
+              minLength: 1
+              type: string
+          required:
+          - userLocator
+          type: object
+      required:
+      - data
+      - documentType
+      - reference
+      type: object
+    UserDocumentResponseDto:
+      properties:
+        createdAt:
+          description: ISO 8601 timestamp when the document was created
+          examples:
+          - 2024-12-05 10:30:00+00:00
+          type: string
+        documentType:
+          description: Type of document
+          enum:
+          - id-idcard-back
+          - id-idcard-front
+          - id-passport
+          - id-residency-permit
+          - proof-of-address
+          - selfie-front
+          - selfie-left
+          - selfie-right
+          - source-of-wealth
+          examples:
+          - id-passport
+          type: string
+        expiresAt:
+          description: Document expiration date in YYYY-MM-DD format
+          examples:
+          - 2030-12-31
+          type: string
+        id:
+          description: Unique identifier for the document
+          examples:
+          - doc_abc123xyz
+          type: string
+      required:
+      - createdAt
+      - documentType
+      - id
+      type: object
+  securitySchemes:
+    apiKey:
+      description: API key required for authentication
+      in: header
+      name: X-API-KEY
+      type: apiKey
+    orderClientSecret:
+      description: The `clientSecret` returned when the order was created, sent as the raw `Authorization` header value. Lets a browser or mobile client read and continue its own order without a server-side API key.
+      in: header
+      name: Authorization
+      type: apiKey
+    userJwt:
+      bearerFormat: JWT
+      description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
+      scheme: bearer
+      type: http

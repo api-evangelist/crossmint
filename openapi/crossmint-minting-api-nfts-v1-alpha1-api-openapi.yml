@@ -1,0 +1,125 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@crossmint.com
+    name: Crossmint Support
+    url: https://www.crossmint.com
+  description: Generated from Crossmint's published product API specifications. Do not edit by hand.
+  title: Crossmint Minting API NFTs V1 Alpha1 API
+  version: 1.0.0
+servers:
+- description: Staging environment (testnets)
+  url: https://staging.crossmint.com/api
+- description: Production environment (mainnets)
+  url: https://www.crossmint.com/api
+tags:
+- name: Minting API NFTs V1 Alpha1
+paths:
+  /v1-alpha1/minting/collections/{collectionId}/{featureSlug}:
+    delete:
+      description: 'Removes one collection feature onchain. Removing `royalties` means no new sale yields royalties to the creator (EVM chains). The change is processing when this returns.
+
+
+        **API scope required**: `collections.update`'
+      operationId: collections.features.delete
+      parameters:
+      - in: path
+        name: collectionId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: featureSlug
+        required: true
+        schema:
+          enum:
+          - base-uri
+          - payments
+          - royalties
+          - transferable
+          type: string
+      responses:
+        '204':
+          description: The change is processing.
+      security:
+      - apiKey: []
+      summary: Remove Collection Feature
+      tags:
+      - Minting API NFTs V1 Alpha1
+    get:
+      description: 'Returns the current onchain configuration of one collection feature: `royalties` (EIP-2981 royalty settings, EVM chains), `base-uri` (the metadata base URI, EVM chains), or `transferable` (whether tokens can be transferred, EVM and Aptos chains). The value reads from the chain, so a change made with Set Collection Feature can take a few seconds to appear.
+
+
+        **API scope required**: `collections.read`'
+      operationId: collections.features.get
+      parameters:
+      - in: path
+        name: collectionId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: featureSlug
+        required: true
+        schema:
+          enum:
+          - base-uri
+          - payments
+          - royalties
+          - transferable
+          type: string
+      responses:
+        '200':
+          description: The feature's current configuration as it appears onchain.
+      security:
+      - apiKey: []
+      summary: Get Collection Feature
+      tags:
+      - Minting API NFTs V1 Alpha1
+    put:
+      description: 'Updates one collection feature onchain. `royalties` configures EIP-2981 royalties for every NFT in the collection (EVM chains). `base-uri` sets the metadata base URI, so a token minted without a `metadata` parameter resolves to `{BASE_URI}/{TOKEN_ID}` (EVM chains). `transferable` sets whether tokens can be transferred (EVM and Aptos chains; the sales team enables access). The change is processing when this returns; Get Collection Feature reflects it once recorded.
+
+
+        **API scope required**: `collections.update`'
+      operationId: collections.features.update
+      parameters:
+      - in: path
+        name: collectionId
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: featureSlug
+        required: true
+        schema:
+          enum:
+          - base-uri
+          - payments
+          - royalties
+          - transferable
+          type: string
+      responses:
+        '204':
+          description: The change is processing. Read it back with Get Collection Feature.
+      security:
+      - apiKey: []
+      summary: Set Collection Feature
+      tags:
+      - Minting API NFTs V1 Alpha1
+components:
+  securitySchemes:
+    apiKey:
+      description: API key required for authentication
+      in: header
+      name: X-API-KEY
+      type: apiKey
+    orderClientSecret:
+      description: The `clientSecret` returned when the order was created, sent as the raw `Authorization` header value. Lets a browser or mobile client read and continue its own order without a server-side API key.
+      in: header
+      name: Authorization
+      type: apiKey
+    userJwt:
+      bearerFormat: JWT
+      description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
+      scheme: bearer
+      type: http

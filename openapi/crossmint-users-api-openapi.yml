@@ -1,0 +1,991 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@crossmint.com
+    name: Crossmint Support
+    url: https://www.crossmint.com
+  description: Generated from Crossmint's published product API specifications. Do not edit by hand.
+  title: Crossmint Users API
+  version: 1.0.0
+servers:
+- description: Staging environment (testnets)
+  url: https://staging.crossmint.com/api
+- description: Production environment (mainnets)
+  url: https://www.crossmint.com/api
+tags:
+- name: Users
+paths:
+  /2025-06-09/users/{userLocator}:
+    get:
+      description: 'Get a user by its id
+
+
+        **API scope required**: `users.read`'
+      operationId: users.get
+      parameters:
+      - description: 'A user locator can be of the format:
+
+          - `email:<email>`
+
+          - `userId:<userId>`
+
+          - `phoneNumber:<phoneNumber>`
+
+          - `twitter:<handle>`
+
+          - `x:<handle>`'
+        in: path
+        name: userLocator
+        required: true
+        schema:
+          examples:
+          - email:user@example.com
+          - userId:507f1f77bcf86cd799439011
+          - userId:did:example:cm4lr5piw0h6t1bjho0onryql
+          - phoneNumber:+12125551234
+          - twitter:johndoe
+          - x:@johndoe
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseDto'
+          description: User found
+      security:
+      - apiKey: []
+      summary: Get a User
+      tags:
+      - Users
+    put:
+      description: 'Create or update a user and their personal data by user locator. If the user doesn''t exist, they will be created.
+
+
+        **API scope required**: `users.create`'
+      operationId: users.upsert
+      parameters:
+      - description: 'A user locator can be of the format:
+
+          - `email:<email>`
+
+          - `userId:<userId>`
+
+          - `phoneNumber:<phoneNumber>`
+
+          - `twitter:<handle>`
+
+          - `x:<handle>`'
+        in: path
+        name: userLocator
+        required: true
+        schema:
+          examples:
+          - email:user@example.com
+          - userId:507f1f77bcf86cd799439011
+          - userId:did:example:cm4lr5piw0h6t1bjho0onryql
+          - phoneNumber:+12125551234
+          - twitter:johndoe
+          - x:@johndoe
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertUserDto'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseDto'
+          description: User updated
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseDto'
+          description: User created
+      security:
+      - apiKey: []
+      summary: Create or Update User
+      tags:
+      - Users
+  /2025-06-09/users/{userLocator}/identity-verification:
+    get:
+      description: 'Get identity verification status for a user.
+
+
+        **API scope required**: `users.read`'
+      operationId: users.identityVerification.get
+      parameters:
+      - description: 'A user locator can be of the format:
+
+          - `email:<email>`
+
+          - `userId:<userId>`
+
+          - `phoneNumber:<phoneNumber>`
+
+          - `twitter:<handle>`
+
+          - `x:<handle>`'
+        in: path
+        name: userLocator
+        required: true
+        schema:
+          examples:
+          - email:user@example.com
+          - userId:507f1f77bcf86cd799439011
+          - userId:did:example:cm4lr5piw0h6t1bjho0onryql
+          - phoneNumber:+12125551234
+          - twitter:johndoe
+          - x:@johndoe
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentityVerificationResponseDto'
+          description: Verification status
+      security:
+      - apiKey: []
+      summary: Get Identity Verification Status
+      tags:
+      - Users
+    put:
+      description: 'Trigger identity verification for a user.
+
+
+        **API scope required**: `users.create`'
+      operationId: users.identityVerification.create
+      parameters:
+      - description: 'A user locator can be of the format:
+
+          - `email:<email>`
+
+          - `userId:<userId>`
+
+          - `phoneNumber:<phoneNumber>`
+
+          - `twitter:<handle>`
+
+          - `x:<handle>`'
+        in: path
+        name: userLocator
+        required: true
+        schema:
+          examples:
+          - email:user@example.com
+          - userId:507f1f77bcf86cd799439011
+          - userId:did:example:cm4lr5piw0h6t1bjho0onryql
+          - phoneNumber:+12125551234
+          - twitter:johndoe
+          - x:@johndoe
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentityVerificationResponseDto'
+          description: Verification triggered
+      security:
+      - apiKey: []
+      summary: Trigger Identity Verification
+      tags:
+      - Users
+  /2025-06-09/users/{userLocator}/legal-documents:
+    put:
+      description: 'Record user acceptance of a legal document. Supported types are `crossmint-privacy-policy` and `crossmint-terms-of-service`. The latest version of the document is always recorded. When accepting `crossmint-terms-of-service`, the `region` field is required so the correct regional agreement is resolved.
+
+
+        **API scope required**: `users.create`'
+      operationId: users.acceptLegalDocument
+      parameters:
+      - description: 'A user locator can be of the format:
+
+          - `email:<email>`
+
+          - `userId:<userId>`
+
+          - `phoneNumber:<phoneNumber>`
+
+          - `twitter:<handle>`
+
+          - `x:<handle>`'
+        in: path
+        name: userLocator
+        required: true
+        schema:
+          examples:
+          - email:user@example.com
+          - userId:507f1f77bcf86cd799439011
+          - userId:did:example:cm4lr5piw0h6t1bjho0onryql
+          - phoneNumber:+12125551234
+          - twitter:johndoe
+          - x:@johndoe
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptLegalDocumentRequestDto'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptLegalDocumentResponseDto'
+          description: Legal document acceptance recorded
+      security:
+      - apiKey: []
+      summary: Accept Legal Document
+      tags:
+      - Users
+components:
+  schemas:
+    AcceptLegalDocumentResponseDto:
+      properties:
+        acceptedAt:
+          description: ISO 8601 in UTC. Fractional seconds are optional.
+          example: 2024-01-15 10:30:00+00:00
+          format: date-time
+          type: string
+      required:
+      - acceptedAt
+      type: object
+    AcceptLegalDocumentRequestDto:
+      properties:
+        acceptedAt:
+          description: ISO 8601 in UTC. Fractional seconds are optional.
+          example: 2024-01-15 10:30:00+00:00
+          format: date-time
+          type: string
+        region:
+          description: Region the user is operating in. **Required when `type` is `crossmint-terms-of-service`** and determines which regional Terms of Service document is accepted. Ignored for `crossmint-privacy-policy`.
+          enum:
+          - eu
+          - us
+          - worldwide
+          type: string
+        type:
+          description: The legal document the user is accepting.
+          enum:
+          - crossmint-privacy-policy
+          - crossmint-terms-of-service
+          type: string
+      required:
+      - acceptedAt
+      - type
+      type: object
+    UserResponseDto:
+      properties:
+        dueDiligence:
+          description: Whether due diligence data has been provided
+          examples:
+          - false
+          type: boolean
+        email:
+          description: User's email address
+          examples:
+          - john.doe@example.com
+          type: string
+        kycData:
+          description: Whether KYC data has been provided
+          examples:
+          - false
+          type: boolean
+        legalDocuments:
+          description: List of accepted legal documents
+          examples:
+          - acceptedAt: 2023-01-01 00:00:00+00:00
+            isValidVersion: true
+            type: crossmint-privacy-policy
+          items:
+            properties:
+              acceptedAt:
+                description: ISO 8601 timestamp of when the document was accepted
+                examples:
+                - 2023-01-01 00:00:00+00:00
+                type: string
+              isValidVersion:
+                description: Indicates whether the signed version of the document is not outdated
+                examples:
+                - true
+                type: boolean
+              type:
+                description: The type of the legal document
+                enum:
+                - crossmint-privacy-policy
+                - crossmint-terms-of-service
+                examples:
+                - crossmint-privacy-policy
+                type: string
+            required:
+            - acceptedAt
+            - isValidVersion
+            - type
+            type: object
+          type: array
+        phoneNumber:
+          description: User's phone number
+          examples:
+          - '+1234567890'
+          type: string
+        userDetails:
+          description: Whether user details have been provided
+          examples:
+          - true
+          type: boolean
+        userId:
+          description: Unique user identifier
+          examples:
+          - usr_1234567890
+          type: string
+        verificationHistory:
+          description: Whether verification history has been provided
+          examples:
+          - false
+          type: boolean
+      required:
+      - dueDiligence
+      - kycData
+      - userDetails
+      - verificationHistory
+      type: object
+    IdentityVerificationResponseDto:
+      properties:
+        eligibility:
+          description: Array of eligibility status for different verification types
+          examples:
+          - missingData:
+            - user-details
+            - kyc-data
+            missingDocuments:
+            - id
+            - proof-of-address
+            status: requires-data
+            type: onramp
+          - failureReasons:
+            - code: id-document-expired
+              message: The ID document provided is expired. Please submit a currently valid ID.
+            status: rejected
+            type: offramp
+          - status: pending-review
+            type: regulated-transfer
+          items:
+            description: Eligibility information for a specific verification type
+            examples:
+            - missingData:
+              - user-details
+              - kyc-data
+              missingDocuments:
+              - id
+              - proof-of-address
+              status: requires-data
+              type: onramp
+            properties:
+              failureReasons:
+                description: Reasons the verification was rejected. Only present on rejected entries when failure details are available.
+                examples:
+                - code: id-document-expired
+                  message: The ID document provided is expired. Please submit a currently valid ID.
+                items:
+                  description: Reason a verification was rejected
+                  examples:
+                  - code: id-document-expired
+                    message: The ID document provided is expired. Please submit a currently valid ID.
+                  properties:
+                    code:
+                      description: Machine-readable reason code identifying why the verification failed. New codes may be added over time.
+                      examples:
+                      - id-document-expired
+                      type: string
+                    message:
+                      description: Human-readable explanation of the failure that can be shown to the user.
+                      examples:
+                      - The ID document provided is expired. Please submit a currently valid ID.
+                      type: string
+                  required:
+                  - code
+                  - message
+                  type: object
+                type: array
+              missingData:
+                description: List of missing data types required to proceed with verification
+                examples:
+                - user-details
+                - kyc-data
+                items:
+                  description: Type of missing data required for verification
+                  enum:
+                  - due-diligence
+                  - kyc-data
+                  - user-details
+                  - verification-history
+                  examples:
+                  - user-details
+                  type: string
+                type: array
+              missingDocuments:
+                description: List of missing documents required to proceed with verification
+                examples:
+                - id
+                - proof-of-address
+                items:
+                  description: 'Type of missing document required for verification. Note: selfie-left and selfie-right are optional but highly recommended to increase the chances of successful KYC verification.'
+                  enum:
+                  - id
+                  - id-back
+                  - proof-of-address
+                  - selfie-front
+                  - selfie-left
+                  - selfie-right
+                  - source-of-wealth
+                  examples:
+                  - id
+                  type: string
+                type: array
+              status:
+                description: Current verification status
+                enum:
+                - not-started
+                - pending-manual-review
+                - pending-privacy-policy
+                - pending-review
+                - rejected
+                - requires-data
+                - verified
+                examples:
+                - requires-data
+                type: string
+              type:
+                description: Type of verification flow
+                enum:
+                - offramp
+                - offramp-light
+                - onramp
+                - onramp-light
+                - regulated-transfer
+                examples:
+                - onramp
+                type: string
+            required:
+            - status
+            - type
+            type: object
+          type: array
+      required:
+      - eligibility
+      type: object
+    UpsertUserDto:
+      properties:
+        dueDiligence:
+          anyOf:
+          - description: Due diligence information about the user including employment and source of funds
+            examples:
+            - employmentStatus: full-time
+              expectedYearlyTxVolume: volume-25k-75k
+              industry: financial-institution
+              sourceOfFunds: salary-disbursement
+            properties:
+              employmentStatus:
+                description: User's current employment status
+                enum:
+                - contractual
+                - full-time
+                - part-time
+                - retired
+                - self-employed
+                - student
+                - unemployed
+                examples:
+                - full-time
+                type: string
+              expectedYearlyTxVolume:
+                default: volume-0-25k
+                description: User's expected yearly transaction volume range in USD
+                enum:
+                - volume-0-25k
+                - volume-25k-75k
+                - volume-75k-150k
+                - volume-above-150k
+                examples:
+                - volume-25k-75k
+                type: string
+              industry:
+                description: Industry in which the user is employed or conducts business
+                enum:
+                - accommodation-food-services
+                - administrative-support-waste-management-remediation-services
+                - adult-entertainment
+                - agriculture-forestry-fishing-hunting
+                - arts-entertainment-recreation
+                - auctions
+                - automobiles
+                - blockchain
+                - construction
+                - crypto
+                - drugs
+                - e-commerce
+                - educational-services
+                - export-import
+                - financial-institution
+                - gambling
+                - health-care-social-assistance
+                - hedge-fund
+                - information
+                - insurance
+                - investment
+                - management-of-companies-enterprises
+                - manufacturing
+                - market-maker
+                - mining
+                - money-service-business
+                - non-profit
+                - other-services
+                - precious-metals
+                - professional-scientific-technical-services
+                - public-administration
+                - real-estate-rental-leasing
+                - registered-investment-advisor
+                - retail-trade
+                - shell-bank
+                - sto-issuer
+                - transportation-warehousing
+                - travel-transport
+                - utilities
+                - weapons
+                - wholesale-trade
+                examples:
+                - financial-institution
+                type: string
+              sourceOfFunds:
+                description: Primary source of the user's funds
+                enum:
+                - business-dividends-profits
+                - government-benefits
+                - inheritance-distribution
+                - investment-returns
+                - loan-disbursement
+                - property-sale
+                - salary-disbursement
+                - savings-personal-funds
+                examples:
+                - salary-disbursement
+                type: string
+            required:
+            - employmentStatus
+            - industry
+            - sourceOfFunds
+            title: Non-US residents
+            type: object
+          - description: Due diligence information for US users including employment, source of funds, and estimated yearly income
+            examples:
+            - employmentStatus: full-time
+              estimatedYearlyIncome: income-50k-100k
+              expectedYearlyTxVolume: volume-25k-75k
+              industry: financial-institution
+              sourceOfFunds: salary-disbursement
+            properties:
+              employmentStatus:
+                description: User's current employment status
+                enum:
+                - contractual
+                - full-time
+                - part-time
+                - retired
+                - self-employed
+                - student
+                - unemployed
+                examples:
+                - full-time
+                type: string
+              estimatedYearlyIncome:
+                description: User's estimated yearly income range in USD
+                enum:
+                - income-0-50k
+                - income-100k-250k
+                - income-250k-500k
+                - income-500k-750k
+                - income-50k-100k
+                - income-750k-1mil
+                - income-above-1mil
+                examples:
+                - income-50k-100k
+                type: string
+              expectedYearlyTxVolume:
+                default: volume-0-25k
+                description: User's expected yearly transaction volume range in USD
+                enum:
+                - volume-0-25k
+                - volume-25k-75k
+                - volume-75k-150k
+                - volume-above-150k
+                examples:
+                - volume-25k-75k
+                type: string
+              industry:
+                description: Industry in which the user is employed or conducts business
+                enum:
+                - accommodation-food-services
+                - administrative-support-waste-management-remediation-services
+                - adult-entertainment
+                - agriculture-forestry-fishing-hunting
+                - arts-entertainment-recreation
+                - auctions
+                - automobiles
+                - blockchain
+                - construction
+                - crypto
+                - drugs
+                - e-commerce
+                - educational-services
+                - export-import
+                - financial-institution
+                - gambling
+                - health-care-social-assistance
+                - hedge-fund
+                - information
+                - insurance
+                - investment
+                - management-of-companies-enterprises
+                - manufacturing
+                - market-maker
+                - mining
+                - money-service-business
+                - non-profit
+                - other-services
+                - precious-metals
+                - professional-scientific-technical-services
+                - public-administration
+                - real-estate-rental-leasing
+                - registered-investment-advisor
+                - retail-trade
+                - shell-bank
+                - sto-issuer
+                - transportation-warehousing
+                - travel-transport
+                - utilities
+                - weapons
+                - wholesale-trade
+                examples:
+                - financial-institution
+                type: string
+              sourceOfFunds:
+                description: Primary source of the user's funds
+                enum:
+                - business-dividends-profits
+                - government-benefits
+                - inheritance-distribution
+                - investment-returns
+                - loan-disbursement
+                - property-sale
+                - salary-disbursement
+                - savings-personal-funds
+                examples:
+                - salary-disbursement
+                type: string
+            required:
+            - employmentStatus
+            - estimatedYearlyIncome
+            - industry
+            - sourceOfFunds
+            title: US residents
+            type: object
+          description: Optional due diligence information for compliance purposes
+        kycData:
+          description: Optional KYC data for identity verification
+          examples:
+          - addressOfResidence:
+              city: New York
+              line1: 123 Main Street
+              line2: Apt 4B
+              postalCode: '10001'
+              stateOrRegion: NY
+            email: john.doe@example.com
+            identityDocument:
+              issuingCountryCode: US
+              number: 123-45-6789
+              type: ssn
+            nationality: US
+            phoneNumber: '+1234567890'
+          properties:
+            addressOfResidence:
+              description: Physical address of residence
+              examples:
+              - city: New York
+                line1: 123 Main Street
+                line2: Apt 4B
+                postalCode: '10001'
+                stateOrRegion: NY
+              properties:
+                city:
+                  description: City name
+                  examples:
+                  - New York
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+                line1:
+                  description: Primary address line (street address)
+                  examples:
+                  - 123 Main Street
+                  maxLength: 200
+                  minLength: 1
+                  type: string
+                line2:
+                  description: Secondary address line (apartment, suite, etc.)
+                  examples:
+                  - Apt 4B
+                  maxLength: 60
+                  type: string
+                postalCode:
+                  description: Postal or ZIP code
+                  examples:
+                  - '10001'
+                  maxLength: 20
+                  minLength: 1
+                  type: string
+                stateOrRegion:
+                  description: State, province, or region
+                  examples:
+                  - NY
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+              required:
+              - city
+              - line1
+              - postalCode
+              - stateOrRegion
+              type: object
+            email:
+              description: User's email address, required for verification
+              examples:
+              - john.doe@example.com
+              format: email
+              pattern: ^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$
+              type: string
+            identityDocument:
+              anyOf:
+              - description: Identity document details for EU/EEA residents. Passport, national ID card issued by an EU/EEA country, or (Spain only) Spanish residency permit. Spain residents cannot use a Spanish passport.
+                examples:
+                - issuingCountryCode: ES
+                  number: AB123456
+                  type: passport
+                properties:
+                  issuingCountryCode:
+                    description: Issuing country code of the identity document
+                    examples:
+                    - ES
+                    maxLength: 2
+                    minLength: 2
+                    pattern: ^[A-Z]{2}$
+                    type: string
+                  number:
+                    description: Identity document number
+                    examples:
+                    - AB123456
+                    minLength: 1
+                    type: string
+                  type:
+                    description: 'Type of identity document for EU/EEA residents: passport, or id issued by an EU/EEA country. Spain (ES) residents can also use a residency-permit issued by Spain, and cannot use a passport issued by Spain.'
+                    enum:
+                    - id
+                    - passport
+                    - residency-permit
+                    examples:
+                    - passport
+                    type: string
+                required:
+                - issuingCountryCode
+                - number
+                - type
+                title: EU/EEA residents
+                type: object
+              - description: Identity document details for US residents. Only SSN is accepted.
+                examples:
+                - issuingCountryCode: US
+                  number: 123-45-6789
+                  type: ssn
+                properties:
+                  issuingCountryCode:
+                    description: Issuing country code of the identity document
+                    examples:
+                    - US
+                    maxLength: 2
+                    minLength: 2
+                    type: string
+                  number:
+                    description: Identity document number. For SSN, must be in XXX-XX-XXXX format.
+                    examples:
+                    - 123-45-6789
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Type of identity document for US residents. Only SSN is accepted.
+                    enum:
+                    - ssn
+                    examples:
+                    - ssn
+                    type: string
+                required:
+                - issuingCountryCode
+                - number
+                - type
+                title: US residents
+                type: object
+              - description: Identity document details for non-EU/EEA and non-US residents. Passport, or national ID card issued by an EU/EEA country. Mexico and Colombia residents can also use a national ID card issued by their own country.
+                examples:
+                - issuingCountryCode: BR
+                  number: AB123456
+                  type: passport
+                properties:
+                  issuingCountryCode:
+                    description: Issuing country code of the identity document
+                    examples:
+                    - BR
+                    maxLength: 2
+                    minLength: 2
+                    pattern: ^[A-Z]{2}$
+                    type: string
+                  number:
+                    description: Identity document number
+                    examples:
+                    - AB123456
+                    minLength: 1
+                    type: string
+                  type:
+                    description: 'Type of identity document for non-EU/EEA and non-US residents: passport, or id issued by an EU/EEA country. Mexico (MX) and Colombia (CO) residents can also use an id issued by their country of residence.'
+                    enum:
+                    - id
+                    - passport
+                    examples:
+                    - passport
+                    type: string
+                required:
+                - issuingCountryCode
+                - number
+                - type
+                title: Non-EU/EEA, non-US residents
+                type: object
+              description: Identity document. The accepted types depend on the user's country of residence and on the document's issuing country; select the option matching their residency.
+            ipAddresses:
+              default: []
+              items:
+                type: string
+              type: array
+            nationality:
+              description: User's nationality in ISO 3166-1 alpha-2 format
+              examples:
+              - US
+              maxLength: 2
+              minLength: 2
+              pattern: ^[A-Z]{2}$
+              type: string
+            phoneNumber:
+              default: ''
+              description: User's phone number. Required for US residents
+              examples:
+              - '+1234567890'
+              type: string
+          required:
+          - addressOfResidence
+          - email
+          type: object
+        userDetails:
+          description: Optional user details including name, date of birth, and country of residence
+          examples:
+          - countryOfResidence: US
+            dateOfBirth: 1990-01-15
+            firstName: John
+            lastName: Doe
+          properties:
+            countryOfResidence:
+              description: User's country of residence in ISO 3166-1 alpha-2 format
+              examples:
+              - US
+              maxLength: 2
+              minLength: 2
+              pattern: ^[A-Z]{2}$
+              type: string
+            dateOfBirth:
+              description: User's date of birth in YYYY-MM-DD format
+              examples:
+              - 1990-01-15
+              maxLength: 10
+              minLength: 10
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              type: string
+            firstName:
+              allOf:
+              - pattern: \p{L}
+              - pattern: ^[\p{L}\p{M}\s'.-]+$
+              description: User's legal first name
+              examples:
+              - John
+              maxLength: 50
+              minLength: 1
+              type: string
+            lastName:
+              allOf:
+              - pattern: \p{L}
+              - pattern: ^[\p{L}\p{M}\s'.-]+$
+              description: User's legal last name
+              examples:
+              - Doe
+              maxLength: 60
+              minLength: 1
+              type: string
+          required:
+          - countryOfResidence
+          - dateOfBirth
+          - firstName
+          - lastName
+          type: object
+        verificationHistory:
+          description: Optional verification timestamps.
+          examples:
+          - idVerificationTimestamp: 2024-01-15 10:30:00+00:00
+            livenessVerificationTimestamp: 2024-01-15 10:32:00+00:00
+          properties:
+            idVerificationTimestamp:
+              description: ISO 8601 timestamp of when ID verification was completed
+              example: 2024-01-15 10:30:00+00:00
+              examples:
+              - 2024-01-15 10:30:00+00:00
+              format: date-time
+              type: string
+            livenessVerificationTimestamp:
+              description: ISO 8601 timestamp of when liveness verification was completed
+              example: 2024-01-15 10:30:00+00:00
+              examples:
+              - 2024-01-15 10:32:00+00:00
+              format: date-time
+              type: string
+          required:
+          - idVerificationTimestamp
+          - livenessVerificationTimestamp
+          type: object
+      type: object
+  securitySchemes:
+    apiKey:
+      description: API key required for authentication
+      in: header
+      name: X-API-KEY
+      type: apiKey
+    orderClientSecret:
+      description: The `clientSecret` returned when the order was created, sent as the raw `Authorization` header value. Lets a browser or mobile client read and continue its own order without a server-side API key.
+      in: header
+      name: Authorization
+      type: apiKey
+    userJwt:
+      bearerFormat: JWT
+      description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
+      scheme: bearer
+      type: http

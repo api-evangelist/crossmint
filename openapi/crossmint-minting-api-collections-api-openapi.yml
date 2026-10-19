@@ -1,0 +1,396 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@crossmint.com
+    name: Crossmint Support
+    url: https://www.crossmint.com
+  description: Generated from Crossmint's published product API specifications. Do not edit by hand.
+  title: Crossmint Minting API Collections API
+  version: 1.0.0
+servers:
+- description: Staging environment (testnets)
+  url: https://staging.crossmint.com/api
+- description: Production environment (mainnets)
+  url: https://www.crossmint.com/api
+tags:
+- name: Minting API Collections
+paths:
+  /2022-06-09/collections:
+    get:
+      description: Get all collections in a project
+      operationId: collections.list
+      parameters: []
+      responses:
+        '200':
+          description: Collections retrieved successfully
+      security:
+      - apiKey: []
+      summary: Get Collections
+      tags:
+      - Minting API Collections
+    post:
+      description: Create a new collection
+      operationId: collections.create
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCollectionDto'
+        required: true
+      responses:
+        '200':
+          description: Collection creation started successfully
+      security:
+      - apiKey: []
+      summary: Create Collection
+      tags:
+      - Minting API Collections
+  /2022-06-09/collections/{collectionId}:
+    get:
+      description: Get a single collection
+      operationId: collections.get
+      parameters:
+      - in: path
+        name: collectionId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Collection retrieved successfully
+      security:
+      - apiKey: []
+      summary: Get Collection
+      tags:
+      - Minting API Collections
+    patch:
+      description: Update an existing collection
+      operationId: collections.update
+      parameters:
+      - in: path
+        name: collectionId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCollectionDto'
+        required: true
+      responses:
+        '200':
+          description: Collection updated successfully
+      security:
+      - apiKey: []
+      summary: Update Collection
+      tags:
+      - Minting API Collections
+    put:
+      description: Create a new collection with a pre-computed id, or get an existing one if the id already exists
+      operationId: collections.createWithId
+      parameters:
+      - in: path
+        name: collectionId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCollectionDto'
+        required: true
+      responses:
+        '200':
+          description: Collection creation started successfully
+      security:
+      - apiKey: []
+      summary: Create Collection (Idempotent)
+      tags:
+      - Minting API Collections
+components:
+  schemas:
+    UpdateCollectionDto:
+      additionalProperties: false
+      properties:
+        offchainValues:
+          properties:
+            feesPayer:
+              enum:
+              - buyer
+              - buyer-subtract
+              - seller
+              type: string
+          type: object
+        payments:
+          anyOf:
+          - properties:
+              currency:
+                minLength: 1
+                type: string
+              price:
+                type: string
+              recipientAddress:
+                type: string
+            required:
+            - price
+            - recipientAddress
+            type: object
+          - type: 'null'
+        supplyLimit:
+          anyOf:
+          - type: 'null'
+          - type: number
+      type: object
+    CreateCollectionDto:
+      properties:
+        chain:
+          enum:
+          - abstract
+          - abstract-testnet
+          - apechain
+          - aptos
+          - arbitrum
+          - arbitrum-sepolia
+          - arbitrumnova
+          - arc
+          - arc-testnet
+          - astar-zkevm
+          - avalanche
+          - avalanche-fuji
+          - base
+          - base-goerli
+          - base-sepolia
+          - bsc
+          - bsc-testnet
+          - celo
+          - celo-sepolia
+          - chiliz
+          - chiliz-spicy-testnet
+          - coti
+          - coti-testnet
+          - curtis
+          - ethereum
+          - ethereum-goerli
+          - ethereum-sepolia
+          - flow
+          - flow-testnet
+          - hedera
+          - hedera-testnet
+          - hypersonic-testnet
+          - lightlink
+          - lightlink-pegasus
+          - mantle
+          - mantle-sepolia
+          - mode
+          - mode-sepolia
+          - optimism
+          - optimism-goerli
+          - optimism-sepolia
+          - plume
+          - plume-testnet
+          - polygon
+          - polygon-amoy
+          - polygon-mumbai
+          - rari
+          - rari-testnet
+          - robinhood-chain
+          - robinhood-chain-testnet
+          - scroll
+          - scroll-sepolia
+          - sei-atlantic-2-testnet
+          - sei-pacific-1
+          - shape
+          - shape-sepolia
+          - skale-nebula
+          - skale-nebula-testnet
+          - solana
+          - soneium
+          - soneium-minato-testnet
+          - space
+          - space-testnet
+          - stellar
+          - story
+          - story-testnet
+          - sui
+          - tempo
+          - tempo-testnet
+          - u2u-nebulas
+          - u2u-solaris
+          - verify-testnet
+          - viction
+          - viction-testnet
+          - world-chain
+          - world-chain-sepolia
+          - xai
+          - xai-sepolia-testnet
+          - xion
+          - zenchain-testnet
+          - zkatana
+          - zkyoto
+          - zora
+          - zora-goerli
+          - zora-sepolia
+          type: string
+        checkout:
+          properties:
+            feesPayer:
+              enum:
+              - buyer
+              - buyer-subtract
+              - seller
+              type: string
+          type: object
+        credentials:
+          description: 'Makes the collection a credential template: its NFTs carry verifiable credentials.'
+          properties:
+            delegatedSignature:
+              description: Issuer that signs credentials in place of Crossmint. Only when the issuer signs credentials itself.
+              properties:
+                endpoint:
+                  description: The issuer's endpoint that signs credentials.
+                  type: string
+                issuerDid:
+                  description: 'The issuer''s DID: `did:<chain>:<address>` or `did:web:<domain>`.'
+                  type: string
+                token:
+                  description: Bearer token for the issuer's endpoint.
+                  type: string
+              required:
+              - endpoint
+              - issuerDid
+              - token
+              type: object
+            delegatedStorageEndpoint:
+              description: Endpoint Crossmint retrieves credentials from. Only when `storage` is `delegated`.
+              type: string
+            encryption:
+              description: Whether issued credentials are encrypted, so that only the subject and the issuer can read them.
+              enum:
+              - crossmint-recoverable
+              - decentralized-lit
+              - none
+              type: string
+            physicalPass:
+              default: false
+              description: Whether each credential is also issued as a wallet pass. The issuer receives the Apple Wallet and Google Wallet links in `pass`.
+              type: boolean
+            storage:
+              description: Where issued credentials are stored.
+              enum:
+              - crossmint
+              - crossmint-private
+              - decentralized-ipfs
+              - delegated
+              type: string
+            type:
+              description: ID of the credential type every credential issued from this template must match.
+              type: string
+          required:
+          - encryption
+          - storage
+          - type
+          type: object
+        features:
+          additionalProperties: {}
+          default: {}
+          propertyNames:
+            type: string
+          type: object
+        fungibility:
+          default: non-fungible
+          enum:
+          - non-fungible
+          - semi-fungible
+          type: string
+        metadata:
+          properties:
+            description:
+              description: description of the collection
+              type: string
+            imageUrl:
+              description: url to the image of the collection
+              type: string
+            name:
+              description: name of the collection
+              type: string
+            symbol:
+              description: symbol of the collection
+              maxLength: 10
+              type: string
+          required:
+          - description
+          - name
+          type: object
+        payments:
+          properties:
+            currency:
+              minLength: 1
+              type: string
+            price:
+              type: string
+            recipientAddress:
+              type: string
+          required:
+          - price
+          - recipientAddress
+          type: object
+        plugins:
+          items:
+            anyOf:
+            - properties:
+                permanentTransferDelegateAddress:
+                  type: string
+              required:
+              - permanentTransferDelegateAddress
+              type: object
+            - properties:
+                permanentTransferDelegateAddress:
+                  type: string
+              required:
+              - permanentTransferDelegateAddress
+              type: object
+          type: array
+        reuploadLinkedFiles:
+          default: true
+          type: boolean
+        subscription:
+          anyOf:
+          - properties:
+              enabled:
+                type: boolean
+            type: object
+          - type: 'null'
+        supplyLimit:
+          type: number
+        tokenStandard:
+          enum:
+          - metaplex-core
+          - metaplex-core-compressed
+          - metaplex-token-metadata
+          type: string
+        transferable:
+          default: true
+          type: boolean
+      required:
+      - chain
+      - metadata
+      type: object
+  securitySchemes:
+    apiKey:
+      description: API key required for authentication
+      in: header
+      name: X-API-KEY
+      type: apiKey
+    orderClientSecret:
+      description: The `clientSecret` returned when the order was created, sent as the raw `Authorization` header value. Lets a browser or mobile client read and continue its own order without a server-side API key.
+      in: header
+      name: Authorization
+      type: apiKey
+    userJwt:
+      bearerFormat: JWT
+      description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
+      scheme: bearer
+      type: http

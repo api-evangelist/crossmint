@@ -1,0 +1,61 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@crossmint.com
+    name: Crossmint Support
+    url: https://www.crossmint.com
+  description: Generated from Crossmint's published product API specifications. Do not edit by hand.
+  title: Crossmint Unstable Tokens by Locator API
+  version: 1.0.0
+servers:
+- description: Staging environment (testnets)
+  url: https://staging.crossmint.com/api
+- description: Production environment (mainnets)
+  url: https://www.crossmint.com/api
+tags:
+- name: Unstable Tokens by Locator
+paths:
+  /v1-alpha1/nfts/{locator}/credentials:
+    get:
+      description: 'Returns the verifiable credential carried by an NFT, addressed by the NFT''s onchain locator. The response has the same shape as Get Credential.
+
+
+        **API scope required**: `credentials.read`
+
+
+        **Related**: Retrieve credentials'
+      operationId: credentials.getByNftLocator
+      parameters:
+      - description: The NFT's locator, `<chain>:<contractAddress>:<tokenId>`.
+        in: path
+        name: locator
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The credential as `unencryptedCredential`, `encryptedCredential`, or both, as in Get Credential.
+        '404':
+          description: No credential NFT matches `locator`.
+      security:
+      - apiKey: []
+      summary: Get Credential by NFT Locator
+      tags:
+      - Unstable Tokens by Locator
+components:
+  securitySchemes:
+    apiKey:
+      description: API key required for authentication
+      in: header
+      name: X-API-KEY
+      type: apiKey
+    orderClientSecret:
+      description: The `clientSecret` returned when the order was created, sent as the raw `Authorization` header value. Lets a browser or mobile client read and continue its own order without a server-side API key.
+      in: header
+      name: Authorization
+      type: apiKey
+    userJwt:
+      bearerFormat: JWT
+      description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
+      scheme: bearer
+      type: http

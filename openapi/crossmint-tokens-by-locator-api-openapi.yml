@@ -1,0 +1,322 @@
+openapi: 3.2.0
+info:
+  contact:
+    email: support@crossmint.com
+    name: Crossmint Support
+    url: https://www.crossmint.com
+  description: Generated from Crossmint's published product API specifications. Do not edit by hand.
+  title: Crossmint Tokens by Locator API
+  version: 1.0.0
+servers:
+- description: Staging environment (testnets)
+  url: https://staging.crossmint.com/api
+- description: Production environment (mainnets)
+  url: https://www.crossmint.com/api
+tags:
+- name: Tokens by Locator
+paths:
+  /2022-06-09/nfts/{locator}:
+    delete:
+      description: Burn an existing token
+      operationId: nfts.burnByLocator
+      parameters:
+      - in: path
+        name: locator
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Token burn started successfully
+      security:
+      - apiKey: []
+      summary: Burn Token by locator
+      tags:
+      - Tokens by Locator
+    patch:
+      description: Updates a token's metadata using a Crossmint token locator
+      operationId: nfts.updateByLocator
+      parameters:
+      - in: path
+        name: locator
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NFTUpdateDTO'
+        required: true
+      responses:
+        '200':
+          description: Token updated successfully
+      security:
+      - apiKey: []
+      summary: Update Token by Locator
+      tags:
+      - Tokens by Locator
+components:
+  schemas:
+    NFTUpdateDTO:
+      properties:
+        metadata:
+          anyOf:
+          - anyOf:
+            - anyOf:
+              - anyOf:
+                - anyOf:
+                  - additionalProperties: false
+                    properties:
+                      collection:
+                        properties:
+                          family:
+                            type: string
+                          name:
+                            type: string
+                        type: object
+                      name:
+                        type: string
+                      properties:
+                        properties:
+                          category:
+                            type: string
+                          creators:
+                            items:
+                              additionalProperties: false
+                              properties:
+                                address:
+                                  type: string
+                                share:
+                                  default: 0
+                                  type: number
+                              required:
+                              - address
+                              type: object
+                            maxItems: 5
+                            type: array
+                          files:
+                            items:
+                              properties:
+                                cdn:
+                                  type: boolean
+                                type:
+                                  type: string
+                                uri:
+                                  type: string
+                              required:
+                              - type
+                              - uri
+                              type: object
+                            type: array
+                        type: object
+                      seller_fee_basis_points:
+                        maximum: 10000
+                        minimum: 0
+                        type: number
+                      symbol:
+                        type: string
+                      uri:
+                        type: string
+                    required:
+                    - name
+                    - uri
+                    type: object
+                  - properties:
+                      animation_url:
+                        type: string
+                      attributes:
+                        items:
+                          properties:
+                            trait_type:
+                              type: string
+                            value:
+                              anyOf:
+                              - type: number
+                              - type: string
+                          required:
+                          - trait_type
+                          - value
+                          type: object
+                        type: array
+                      collection:
+                        properties:
+                          family:
+                            type: string
+                          name:
+                            type: string
+                        type: object
+                      description:
+                        default: ''
+                        type: string
+                      external_url:
+                        type: string
+                      image:
+                        type: string
+                      name:
+                        type: string
+                      properties:
+                        properties:
+                          category:
+                            type: string
+                          creators:
+                            items:
+                              additionalProperties: false
+                              properties:
+                                address:
+                                  type: string
+                                share:
+                                  default: 0
+                                  type: number
+                              required:
+                              - address
+                              type: object
+                            maxItems: 5
+                            type: array
+                          files:
+                            items:
+                              properties:
+                                cdn:
+                                  type: boolean
+                                type:
+                                  type: string
+                                uri:
+                                  type: string
+                              required:
+                              - type
+                              - uri
+                              type: object
+                            type: array
+                        type: object
+                      seller_fee_basis_points:
+                        maximum: 10000
+                        minimum: 0
+                        type: number
+                      symbol:
+                        type: string
+                    required:
+                    - image
+                    - name
+                    type: object
+                - properties:
+                    animation_url:
+                      type: string
+                    attributes:
+                      items:
+                        properties:
+                          display_type:
+                            type: string
+                          trait_type:
+                            type: string
+                          value:
+                            anyOf:
+                            - type: number
+                            - type: string
+                        required:
+                        - trait_type
+                        - value
+                        type: object
+                      type: array
+                    description:
+                      maxLength: 5000
+                      type: string
+                    external_url:
+                      type: string
+                    image:
+                      type: string
+                    name:
+                      type: string
+                    uri:
+                      type: string
+                  required:
+                  - description
+                  - image
+                  - name
+                  type: object
+              - properties:
+                  animation_url:
+                    type: string
+                  attributes:
+                    items:
+                      properties:
+                        trait_type:
+                          type: string
+                        value:
+                          anyOf:
+                          - type: number
+                          - type: string
+                      required:
+                      - trait_type
+                      - value
+                      type: object
+                    type: array
+                  description:
+                    maxLength: 5000
+                    type: string
+                  external_url:
+                    type: string
+                  image:
+                    type: string
+                  name:
+                    maxLength: 100
+                    type: string
+                  uri:
+                    type: string
+                required:
+                - description
+                - name
+                type: object
+            - properties:
+                animation_url:
+                  type: string
+                attributes:
+                  items:
+                    properties:
+                      trait_type:
+                        type: string
+                      value:
+                        anyOf:
+                        - type: number
+                        - type: string
+                    required:
+                    - trait_type
+                    - value
+                    type: object
+                  type: array
+                description:
+                  maxLength: 5000
+                  type: string
+                external_url:
+                  type: string
+                image:
+                  type: string
+                name:
+                  maxLength: 100
+                  type: string
+              required:
+              - description
+              - name
+              type: object
+          - type: string
+        reuploadLinkedFiles:
+          default: true
+          type: boolean
+      required:
+      - metadata
+      type: object
+  securitySchemes:
+    apiKey:
+      description: API key required for authentication
+      in: header
+      name: X-API-KEY
+      type: apiKey
+    orderClientSecret:
+      description: The `clientSecret` returned when the order was created, sent as the raw `Authorization` header value. Lets a browser or mobile client read and continue its own order without a server-side API key.
+      in: header
+      name: Authorization
+      type: apiKey
+    userJwt:
+      bearerFormat: JWT
+      description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
+      scheme: bearer
+      type: http

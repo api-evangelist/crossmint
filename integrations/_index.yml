@@ -29,3 +29,99 @@
     detected: '2026-10-14'
   status: not-a-workflow
   arazzo: null
+- slug: crossmint-mcp-registry
+  label: MCP Registry
+  partner: mcp
+  partner_name: MCP Registry
+  type: register
+  channel: standard-directory
+  evidence: https://registry.modelcontextprotocol.io/v0/servers?search=com.crossmint
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: registry.modelcontextprotocol.io
+    spec_file: null
+    role: mcp-server-listing
+    registered_name: com.crossmint/mcp
+    register_id: com.crossmint/mcp
+    detected_by: sweep-agent-tools.py
+    detected: '2026-10-19'
+  status: not-a-workflow
+  arazzo: null
+- slug: crossmint-eba-payment-institutions-register-psd2-emd2
+  label: EBA Payment Institutions Register (PSD2 / EMD2)
+  partner_name: EBA Payment Institutions Register (PSD2 / EMD2)
+  category: EU/EEA PSD2 payment / e-money authorisation
+  type: register
+  channel: regulator-register
+  evidence: https://euclid.eba.europa.eu/register/pir/search
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: EBA Payment Institutions Register (PSD2 / EMD2)
+    spec_file: null
+    standard: null
+    role: authorised-payment-or-e-money-institution
+    registrations:
+    - registered_name: CROSSMINT EUROPE, S.L.
+      licences:
+      - payment institution
+      register_country: ES
+      register_id: ES_BE!6949
+      matched_domain: null
+      matched_by: register-name
+      authorised: '2026-07-22'
+      competent_authority: ES_BE
+      national_ref: '6949'
+      home_services:
+      - PS_03C
+      register_name_note: register-name 'crossmint' = crossmint; no wikidata P856
+    matched_by: register-name
+    signal_note: 'participation only: a regulator authorisation / registration and its PSD2 passports (host countries);
+      no API conformance is published by this register'
+    detected_by: sweep-eu-psd2-payment-institutions.py
+    detected: '2026-10-21'
+    identity_source: register-name
+    identity_note: register gave only the name; exact normalised match to the repo's apis.yml name, one repo, Wikidata
+      P856 not contradicting (Kin 2026-10-20 decision 2)
+  status: not-a-workflow
+  arazzo: null
+- slug: crossmint-bank-of-canada-rpaa-registry-of-payment-service-providers
+  label: Bank of Canada RPAA registry of payment service providers
+  partner_name: Bank of Canada RPAA registry of payment service providers
+  category: Canadian retail payment activities (RPAA) PSP registration
+  type: register
+  channel: regulator-register
+  evidence: https://www.bankofcanada.ca/core-functions/retail-payments-supervision/psp-registry/
+  source: edge
+  relationship: standard-participant
+  contract_reference:
+    register: Bank of Canada RPAA registry of payment service providers
+    spec_file: null
+    standard: null
+    role: registered-psp
+    registrations:
+    - registered_name: CROSSMINT CANADA LTD.
+      register_status: registered
+      register_country: CA
+      register_id: 93d82bde-fd6e-f111-ab0f-70a8a50df491
+      matched_domain: crossmint.com
+      matched_by: domain
+      evidence_url: https://www.bankofcanada.ca/core-functions/retail-payments-supervision/psp-registry/psp-registry-details/?account_id=93d82bde-fd6e-f111-ab0f-70a8a50df491
+      licences:
+      - RPAA registered PSP
+      registration_date: '2026-08-04'
+      head_office_country: Canada
+      payment_functions:
+      - The provision or maintenance of an account that, in relation to an electronic funds transfer, is held on
+        behalf of one or more end users
+      - The initiation of an electronic funds transfer at the request of an end user
+      - Authorization or Transmission, Reception or Facilitation of an instruction in relation to an electronic
+        funds transfer
+      has_violations: false
+    signal_note: 'participation only: a regulator registration / payment-system membership; no API conformance is
+      published by this register'
+    detected_by: sweep-canada-rpaa-psp-registry.py
+    detected: '2026-10-22'
+  status: not-a-workflow
+  arazzo: null

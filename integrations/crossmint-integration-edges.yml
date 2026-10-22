@@ -24,7 +24,84 @@ edges:
     detected: '2026-10-14'
   detected_by: sweep-crypto.py
   first_seen: '2026-10-14'
+- partner_name: MCP Registry
+  partner: mcp
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://registry.modelcontextprotocol.io/v0/servers?search=com.crossmint
+  contract_reference:
+    register: registry.modelcontextprotocol.io
+    spec_file: null
+    role: mcp-server-listing
+    registered_name: com.crossmint/mcp
+    register_id: com.crossmint/mcp
+    detected_by: sweep-agent-tools.py
+    detected: '2026-10-19'
+  mcp_registry:
+    servers:
+    - com.crossmint/mcp
+    hosted_remote: 1
+    local_package: 0
+    transports:
+      streamable-http: 1
+    auth_declared: 0
+    catalog_declared: true
+    namespace_domains:
+    - crossmint.com
+  matched_by:
+  - namespace-domain
+  detected_by: sweep-agent-tools.py
+  first_seen: '2026-10-19'
+- partner_name: EBA Payment Institutions Register (PSD2 / EMD2)
+  partner: null
+  partner_match: register-name
+  type: register
+  channel: regulator-register
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://euclid.eba.europa.eu/register/pir/search
+  category: EU/EEA PSD2 payment / e-money authorisation
+  contract_reference:
+    register: EBA Payment Institutions Register (PSD2 / EMD2)
+    spec_file: null
+    standard: null
+    role: authorised-payment-or-e-money-institution
+    registrations:
+    - registered_name: CROSSMINT EUROPE, S.L.
+      licences:
+      - payment institution
+      register_country: ES
+      register_id: ES_BE!6949
+      matched_domain: null
+      matched_by: register-name
+      authorised: '2026-07-22'
+      competent_authority: ES_BE
+      national_ref: '6949'
+      home_services:
+      - PS_03C
+      register_name_note: register-name 'crossmint' = crossmint; no wikidata P856
+    matched_by: register-name
+    signal_note: 'participation only: a regulator authorisation / registration and its PSD2 passports (host countries);
+      no API conformance is published by this register'
+    detected_by: sweep-eu-psd2-payment-institutions.py
+    detected: '2026-10-21'
+    identity_source: register-name
+    identity_note: register gave only the name; exact normalised match to the repo's apis.yml name, one repo, Wikidata
+      P856 not contradicting (Kin 2026-10-20 decision 2)
+  detected_by: sweep-eu-psd2-payment-institutions.py
+  first_seen: '2026-10-21'
 generated: '2026-10-13'
 method: searched
 checked:
+- https://registry.modelcontextprotocol.io/v0/servers
 - https://www.esma.europa.eu/sites/default/files/2024-12/CASPS.csv
+- https://euclid.eba.europa.eu/register/api/filemetadata
+- https://euclid.eba.europa.eu/register/cir/search
+- https://euclid.eba.europa.eu/register/pir/search
+source:
+- https://euclid.eba.europa.eu/register/pir/search
+- https://euclid.eba.europa.eu/register/api/filemetadata
+- https://euclid.eba.europa.eu/register/cir/search

@@ -63299,3 +63299,9 @@ components:
       description: 'The end user''s JWT, sent as `Authorization: Bearer <JWT>` together with a client-side API key. Validated against the project''s external JWT configuration.'
       scheme: bearer
       type: http
+x-provenance:
+  method: harvested
+  publisher: Crossmint
+  source: https://www.crossmint.com/openapi.yaml
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)

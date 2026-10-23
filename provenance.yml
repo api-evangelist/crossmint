@@ -10,41 +10,41 @@ artifacts:
     method: derived
     evidence: declared in the artifact
   collections/crossmint-balances-api.opencollection.json:
-    method: derived
-    evidence: openapi/crossmint-balances-api
+    method: unknown
+    evidence: no authorship recorded
   collections/crossmint-balances-api.postman_collection.json:
-    method: derived
-    evidence: openapi/crossmint-balances-api
+    method: unknown
+    evidence: no authorship recorded
   collections/crossmint-nfts-api.opencollection.json:
-    method: derived
-    evidence: openapi/crossmint-nfts-api
+    method: unknown
+    evidence: no authorship recorded
   collections/crossmint-nfts-api.postman_collection.json:
-    method: derived
-    evidence: openapi/crossmint-nfts-api
+    method: unknown
+    evidence: no authorship recorded
   collections/crossmint-signatures-api.opencollection.json:
-    method: derived
-    evidence: openapi/crossmint-signatures-api
+    method: unknown
+    evidence: no authorship recorded
   collections/crossmint-signatures-api.postman_collection.json:
-    method: derived
-    evidence: openapi/crossmint-signatures-api
+    method: unknown
+    evidence: no authorship recorded
   collections/crossmint-signers-api.opencollection.json:
-    method: derived
-    evidence: openapi/crossmint-signers-api
+    method: unknown
+    evidence: no authorship recorded
   collections/crossmint-signers-api.postman_collection.json:
-    method: derived
-    evidence: openapi/crossmint-signers-api
+    method: unknown
+    evidence: no authorship recorded
   collections/crossmint-transactions-api.opencollection.json:
-    method: derived
-    evidence: openapi/crossmint-transactions-api
+    method: unknown
+    evidence: no authorship recorded
   collections/crossmint-transactions-api.postman_collection.json:
-    method: derived
-    evidence: openapi/crossmint-transactions-api
+    method: unknown
+    evidence: no authorship recorded
   collections/crossmint-transfers-api.opencollection.json:
-    method: derived
-    evidence: openapi/crossmint-transfers-api
+    method: unknown
+    evidence: no authorship recorded
   collections/crossmint-transfers-api.postman_collection.json:
-    method: derived
-    evidence: openapi/crossmint-transfers-api
+    method: unknown
+    evidence: no authorship recorded
   collections/crossmint-wallets-api.opencollection.json:
     method: derived
     evidence: openapi/crossmint-wallets-api
@@ -63,127 +63,13 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
-  kin/checks-2026-09-24T161608.yml:
+  integrations/_index.yml:
     method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T125852.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T133943.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T143147.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-25T154045.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-26T215308.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T094438.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T103455.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T123021.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T132314.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-27T140727.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-28T221322.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T213958.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-29T230545.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T203505.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-30T220315.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-31T223420.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T063623.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T210448.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-01T222808.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-02T224043.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T161828.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-03T174231.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T062714.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T212454.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-04T224856.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T055819.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T072335.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T144739.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T195450.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-05T211839.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T011047.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T211804.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-06T224210.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T200636.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-07T213054.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T214843.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-08T232836.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T204815.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-09-10T222408.yml:
+    evidence: carries an API Evangelist house phrase
+  integrations/crossmint-integration-edges.yml:
+    method: unknown
+    evidence: no authorship recorded
+  kin/checks-2026-10-11T110117.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-12T062655.yml:
@@ -267,29 +153,106 @@ artifacts:
   kin/score-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T210408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-25T232841.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T000835.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-03T024842.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-10-11T110117.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   llms/crossmint-llms.txt:
     method: searched
     evidence: 'derive-llms-provenance.py: harvested'
+  mcp/crossmint-mcp-tools.json:
+    method: unknown
+    evidence: no authorship recorded
+  mcp/crossmint-mcp.yml:
+    method: unknown
+    evidence: no authorship recorded
   openapi/_original/crossmint-openapi.yml:
     method: harvested
-    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
-      to the provider's source is unverified
-  openapi/crossmint-balances-api-openapi.yml:
+    evidence: byte-identical to https://www.crossmint.com/openapi.yaml (sha256 b5d72b7dafc2, fetched 2026-10-19)
+  openapi/crossmint-actions-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/crossmint-nfts-api-openapi.yml:
+  openapi/crossmint-agent-checkout-browser-profiles-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/crossmint-signatures-api-openapi.yml:
+  openapi/crossmint-agent-checkout-buyer-profiles-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/crossmint-signers-api-openapi.yml:
+  openapi/crossmint-agent-checkouts-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/crossmint-transactions-api-openapi.yml:
+  openapi/crossmint-headless-checkout-orders-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/crossmint-transfers-api-openapi.yml:
+  openapi/crossmint-ip-story-protocol-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-minting-api-collections-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-minting-api-nfts-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-minting-api-nfts-v1-alpha1-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-minting-api-sfts-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-minting-api-templates-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-minting-api-unstable-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-order-intents-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-payment-methods-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-tokens-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-tokens-by-locator-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-unstable-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-unstable-tokens-by-locator-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-user-documents-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-users-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-users-linked-wallets-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-v1-alpha1-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-v1-alpha2-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-verifiable-credentials-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/crossmint-verifiable-credentials-types-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/crossmint-wallets-api-openapi.yml:
@@ -307,3 +270,6 @@ artifacts:
   security/crossmint-vulnerability-disclosure.yml:
     method: searched
     evidence: declared in the artifact
+  vendors/crossmint-vendors.yml:
+    method: unknown
+    evidence: no authorship recorded

@@ -130,6 +130,8 @@ apis:
     https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
     (prod)
   tags:
+  - Actions
+  tags_raw:
   - actions
   properties:
   - type: OpenAPI
@@ -365,6 +367,8 @@ apis:
     https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
     (prod)
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
@@ -390,6 +394,8 @@ apis:
     https://staging.crossmint.com/api/2022-06-09 (staging) | https://www.crossmint.com/api/2022-06-09
     (prod)
   tags:
+  - V1Alpha1
+  tags_raw:
   - V1 Alpha1
   properties:
   - type: OpenAPI
